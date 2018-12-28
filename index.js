@@ -4,7 +4,7 @@ var port = 49152;
 
 app.get('/', function(req, res) {
   console.log('testing git logs');
-  res.send('post recieve - logs - ci working ✅');
+  res.send('I can\'t spell recieve - logs - ci working ✅');
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
