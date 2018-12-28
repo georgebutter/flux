@@ -9,7 +9,8 @@
     "restart": "npm run end && npm run start",
     "end": "pkill node",
     "log": "cat nohup.out",
-    "server": "node index.js"
+    "server": "node index.js",
+    "dev": "node index.js"
   },
   "author": "",
   "license": "ISC",
