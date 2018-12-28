@@ -3,7 +3,7 @@ var app = express();
 var port = 49152;
 
 app.get('/', function(req, res) {
-  console.log('getting homepage');
+  console.log('testing git logs');
   res.send('post recieve - logs - ci working ✅');
 });
 
