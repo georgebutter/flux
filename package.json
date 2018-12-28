@@ -1,0 +1,19 @@
+{
+  "name": "georgebutter",
+  "version": "1.0.0",
+  "description": "My website",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint",
+    "start": "nohup npm run server --production &",
+    "restart": "npm run end && npm run start",
+    "end": "pkill node",
+    "log": "cat nohup.out",
+    "server": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
