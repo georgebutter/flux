@@ -10,11 +10,17 @@
     "end": "pkill node",
     "log": "cat nohup.out",
     "server": "node index.js",
-    "dev": "node index.js"
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4"
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-liquid": "^0.2.6",
+    "mongoose": "^5.4.1",
+    "nodemon": "^1.18.9",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
   }
 }
