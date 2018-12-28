@@ -8,4 +8,8 @@ app.get('/', function(req, res) {
   res.send('I can\'t spell recieve - logs - ci working ✅');
 });
 
+app.get('/admin', function(req, res) {
+  res.send('admin')
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
