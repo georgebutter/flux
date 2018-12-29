@@ -5,14 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "eslint",
-    "start": "nohup npm run server --production &",
+    "start": "node index.js",
     "restart": "npm run end && npm run start",
     "end": "pkill node",
-    "log": "cat nohup.out",
-    "server": "node index.js",
+    "log": "heroku logs -a georgebutter --tail",
     "dev": "nodemon index.js"
   },
-  "author": "",
+  "author": "George Butter",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.3",
