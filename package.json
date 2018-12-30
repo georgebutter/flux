@@ -6,8 +6,6 @@
   "scripts": {
     "test": "eslint",
     "start": "node index.js",
-    "restart": "npm run end && npm run start",
-    "end": "pkill node",
     "log": "heroku logs -a georgebutter --tail",
     "dev": "nodemon index.js"
   },
