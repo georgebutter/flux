@@ -26,7 +26,7 @@ db.once('open', function () {
 var bodyParser = require('body-parser');
 
 // General
-var port = process.env || 49152;
+var port =  process.env.PORT || 3000;
 
 // Sessions for tracking logins
 app.use(session({
