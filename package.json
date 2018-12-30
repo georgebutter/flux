@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "eslint",
-    "start": "node index.js",
+    "start": "node app",
     "log": "heroku logs -a georgebutter --tail",
-    "dev": "nodemon index.js"
+    "dev": "nodemon app"
   },
   "author": "George Butter",
   "license": "ISC",
