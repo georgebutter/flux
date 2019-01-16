@@ -54,6 +54,7 @@ const options = {
   traceError: true
 };
 app.set('view engine', 'liquid');
+app.set('views', __dirname + '/client');
 app.engine('liquid', expressLiquid(options));
 app.use(expressLiquid.middleware);
 
