@@ -1,0 +1,25 @@
+<header class="theme-header bg-pink fg-purple">
+  <div class="container l">
+    <div class="row">
+      <div class="column l3 m6 s9 padding-top-3x padding-bottom-3x">
+        <meta itemprop="name" content="{{ site.name }}">
+        {% if page.layout == 'home' %}
+          <h1 class="h4" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+            <a href="/" itemprop="url" title="{{ site.name }}">
+              {{ site.name }}
+            </a>
+          </h1>
+        {% else %}
+          <span class="h4" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+            <a href="/" itemprop="url" title="{{ site.name }}">
+              {{ site.name }}
+            </a>
+          </span>
+        {% endif %}
+      </div>
+      <div class="column l9 m6 s3 padding-top-3x padding-bottom-3x right">
+        {% include navigation.html %}
+      </div>
+    </div>
+  </div>
+</header>
