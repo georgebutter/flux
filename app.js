@@ -15,11 +15,11 @@ const expressLiquid = require('express-liquid');
 const mongoose = require('mongoose');
 const Staff = require('./models/staff').Staff;
 const Site = require('./models/site').Site;
-
-mongoose.connect('mongodb://localhost/cms');
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/cms';
+mongoose.connect(mongoURI);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
+db.once('open', () => {
   console.log('Connected to database');
 });
 
