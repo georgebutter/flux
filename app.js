@@ -59,7 +59,7 @@ app.use(expressLiquid.middleware);
 
 // Get site data
 Site.findOne(null, (err, site) => {
-  this.site = site;
+  this.site = site || {};
   this.installed = this.site.installed;
   console.log(`installed; ${this.installed}`)
   if (this.installed) {
