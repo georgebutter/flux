@@ -43,7 +43,7 @@ app.use(session({
 // Parse incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/client/theme', express.static('assets'))
+app.use(express.static('/client/theme/assets'))
 
 // Setup liquid rendering
 const options = {
