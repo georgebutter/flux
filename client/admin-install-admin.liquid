@@ -20,28 +20,35 @@ This is a custom site built on a custom cms by me.
         {% endfor %}
       </ul>
     {% endif %}
-    <form action="/install/site" method="post" novalidate>
-      <h3>Store information</h3>
+    <form action="/install/admin" method="post" novalidate>
+      <h3>Create an admin account</h3>
       <div>
-        <label for="SiteName">
-          <span>Site Name</span>
+        <label for="Username">
+          <span>Username</span>
           <abbr title="required">*</abbr>
         </label>
-        <input id="SiteName" type="text" name="name" placeholder="Site name" required/>
-      </div>
-      <div>
-        <label for="Description">
-          <span>Description</span>
-          <abbr title="required">*</abbr>
-        </label>
-        <input id="Description" type="text" name="description" placeholder="Site description" required/>
+        <input id="Username" type="text" name="username" placeholder="Username" required/>
       </div>
       <div>
         <label for="Email">
           <span>Email</span>
           <abbr title="required">*</abbr>
         </label>
-        <input id="Email" type="email" name="email" placeholder="Site email" required/>
+        <input id="Email" type="email" name="email" placeholder="Email" required/>
+      </div>
+      <div>
+        <label for="Password">
+          <span>Password</span>
+          <abbr title="required">*</abbr>
+        </label>
+        <input id="Password" type="password" name="password" placeholder="Password" required/>
+      </div>
+      <div>
+        <label for="ConfirmPassword">
+          <span>Confirm Password</span>
+          <abbr title="required">*</abbr>
+        </label>
+        <input id="ConfirmPassword" type="password" name="confirm" placeholder="Confirm Password" required/>
       </div>
       <div>
         <input type="submit" value="Submit">
