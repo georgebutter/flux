@@ -10,7 +10,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
 // Rendering
-const expressLiquid = require('express-liquid');
+const expressLiquid = require('./express-liquid');
 
 // Data
 const mongoose = require('mongoose');
