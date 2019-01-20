@@ -470,12 +470,6 @@ expand-brackets@^2.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-express-liquid@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/express-liquid/-/express-liquid-0.2.6.tgz#d9e1d80e24c9718028c2b3d7bd3ef61252385629"
-  dependencies:
-    tinyliquid "0.2.x"
-
 express-session@^1.15.6:
   version "1.15.6"
   resolved "https://registry.yarnpkg.com/express-session/-/express-session-1.15.6.tgz#47b4160c88f42ab70fe8a508e31cbff76757ab0a"
@@ -953,6 +947,10 @@ latest-version@^3.0.0:
   resolved "https://registry.yarnpkg.com/latest-version/-/latest-version-3.1.0.tgz#a205383fea322b33b5ae3b18abee0dc2f356ee15"
   dependencies:
     package-json "^4.0.0"
+
+liquidjs@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/liquidjs/-/liquidjs-6.2.0.tgz#e8e022cd8996c3acb56948f9e97b955a0c4a8d21"
 
 lodash.debounce@^4.0.8:
   version "4.0.8"
@@ -1815,10 +1813,6 @@ term-size@^1.2.0:
 timed-out@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/timed-out/-/timed-out-4.0.1.tgz#f32eacac5a175bea25d7fab565ab3ed8741ef56f"
-
-tinyliquid@0.2.x:
-  version "0.2.34"
-  resolved "https://registry.yarnpkg.com/tinyliquid/-/tinyliquid-0.2.34.tgz#30bf62251834a213ad1c7050277f1bfb1d5a781e"
 
 to-object-path@^0.3.0:
   version "0.3.0"

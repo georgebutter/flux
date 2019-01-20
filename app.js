@@ -10,7 +10,11 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
 // Rendering
-const expressLiquid = require('./express-liquid');
+const Liquid = require('liquidjs');
+const engine = Liquid({
+  root: __dirname,
+  extname: '.liquid'
+});
 
 // Data
 const mongoose = require('mongoose');
@@ -47,18 +51,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/assets', express.static(__dirname + '/client/theme/assets'));
 
 // Setup liquid rendering
-const options = {
-  // the base context, optional
-  context: expressLiquid.newContext(),
-  // custom tags parser, optional
-  customTags: {},
-  // if an error occurred while rendering, show detail or not, default to false
-  traceError: true
-};
+app.engine('liquid', engine.express());
 app.set('view engine', 'liquid');
-app.set('views', __dirname + '/client');
-app.engine('liquid', expressLiquid(options));
-app.use(expressLiquid.middleware);
 
 // Get site data
 Site.findOne(null, (err, site) => {
@@ -70,7 +64,8 @@ Site.findOne(null, (err, site) => {
   console.log(`installed; ${this.installed}`)
   if (this.installed) {
     app.get('/', (req, res) => {
-      app.set('views', __dirname + '/client/theme');
+      setViews('theme');
+
       res.render('index', {
         site: this.site,
         page_title: 'Index',
@@ -80,7 +75,8 @@ Site.findOne(null, (err, site) => {
     });
 
     app.get('/admin', (req, res, next) => {
-      app.set('views', __dirname + '/client');
+      setViews('admin');
+
       console.log(`installed: ${this.installed}`);
 
       Staff.findById(req.session.userId, (error, user) => {
@@ -88,14 +84,14 @@ Site.findOne(null, (err, site) => {
           return next(error);
         } else {
           if (user === null) {
-            res.render('admin-login', {
+            res.render('login', {
               site: this.site,
               page_title: 'Admin',
               canonical_url: canoncalUrl(req),
-              template: 'admin-login'
+              template: 'login'
             });
           } else {
-            res.render('admin-dashboard', {
+            res.render('dashboard', {
               site: this.site,
               page_title: 'Dashboard',
               canonical_url: canoncalUrl(req),
@@ -119,7 +115,8 @@ Site.findOne(null, (err, site) => {
     })
 
     app.get('/admin/logout', (req, res, next) => {
-      app.set('views', __dirname + '/client');
+      setViews('admin');
+
       if (req.session) {
         // Delete session object
         req.session.destroy((err) => {
@@ -138,17 +135,19 @@ Site.findOne(null, (err, site) => {
     });
 
     app.get('/install', (req, res, next) => {
+      setViews('admin');
+
       if (!this.site) {
-        console.log('admin-install');
-        res.render('admin-install', {
+        console.log('install');
+        res.render('install', {
           site: this.site,
           page_title: 'Install - Create site',
           canonical_url: canoncalUrl(req),
           errors: null
         });
       } else {
-        console.log('admin-install-admin');
-        res.render('admin-install-admin', {
+        console.log('install-admin');
+        res.render('install-admin', {
           site: this.site,
           page_title: 'Install - Create admin',
           canonical_url: canoncalUrl(req),
@@ -158,6 +157,8 @@ Site.findOne(null, (err, site) => {
     });
 
     app.post('/install/site', (req, res, next) => {
+      setViews('admin');
+
       if (this.site) {
         return res.render('error', {
           site: this.site,
@@ -183,7 +184,7 @@ Site.findOne(null, (err, site) => {
       }
 
       if (errors.length) {
-        return res.render('admin-install', {
+        return res.render('install', {
           site: this.site,
           page_title: 'Install',
           canonical_url: canoncalUrl(req),
@@ -201,7 +202,7 @@ Site.findOne(null, (err, site) => {
         Site.create(siteData, (error, site) => {
           if (error) {
             errors.push(error);
-            return res.render('admin-install', {
+            return res.render('install', {
               site: this.site,
               page_title: 'Install',
               canonical_url: canoncalUrl(req),
@@ -216,7 +217,8 @@ Site.findOne(null, (err, site) => {
     });
 
     app.post('/install/admin', (req, res, next) => {
-      console.log('installing admin')
+      setViews('admin');
+
       const {
         username,
         email,
@@ -243,7 +245,7 @@ Site.findOne(null, (err, site) => {
       if (errors.length) {
         console.log('errors');
         console.log(errors);
-        return res.render('admin-install-admin', {
+        return res.render('install-admin', {
           site: this.site,
           page_title: 'Install - Create admin',
           canonical_url: canoncalUrl(req),
@@ -259,7 +261,7 @@ Site.findOne(null, (err, site) => {
         Staff.create(userData, (error, user) => {
           console.log(user)
           if (error) {
-            return res.render('admin-install-admin', {
+            return res.render('install-admin', {
               site: this.site,
               page_title: 'Install',
               canonical_url: canoncalUrl(req),
@@ -281,8 +283,8 @@ Site.findOne(null, (err, site) => {
   }
 
   app.get('/admin/delete', (req, res, next) => {
-    console.log(req.url)
-    console.log('deleting staff')
+    setViews('admin');
+
     Staff.deleteMany({}, (err) => {
       console.log('staff deleted')
       if (err) {
@@ -310,6 +312,7 @@ Site.findOne(null, (err, site) => {
   });
 
   app.get('*', (req, res) => {
+    setViews('theme');
     return res.render('error', {
       site: this.site,
       page_title: '404',
@@ -324,4 +327,12 @@ app.listen(port, () => console.log(`George Butter site is live! 🚀`));
 
 function canoncalUrl(req) {
   return `${req.protocol}${req.protocol ? '://' : '' }${req.hostname}${req.path}`;
+}
+
+function setViews(v) {
+  app.set('views', [
+    `${__dirname}/client/${v}/layouts`,
+    `${__dirname}/client/${v}/templates`,
+    `${__dirname}/client/${v}/snippets`
+  ]);
 }
