@@ -1,7 +1,11 @@
 // Routing
 const path = require('path');
 const express = require('express');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
 const app = express();
+const config = require('./webpack.config.js');
+const compiler = webpack(config);
 
 // Authentication
 const passport = require('passport');
@@ -35,6 +39,9 @@ const bodyParser = require('body-parser');
 const port =  process.env.PORT || 3000;
 const siteHandle =  process.env.SITE_HANDLE || 'georgebutter';
 
+app.use(webpackDevMiddleware(compiler, {
+  publicPath: config.output.publicPath
+}));
 // Sessions for tracking logins
 app.use(session({
   secret: 'open up',
@@ -48,7 +55,8 @@ app.use(session({
 // Parse incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/assets', express.static(__dirname + '/client/theme/assets'));
+app.use('/assets', express.static(`${__dirname}/client/theme/assets`));
+app.use('/admin/assets', express.static(`${__dirname}/client/admin/assets`));
 
 // Setup liquid rendering
 app.engine('liquid', engine.express());
@@ -84,17 +92,18 @@ Site.findOne(null, (err, site) => {
           return next(error);
         } else {
           if (user === null) {
-            res.render('login', {
+            return res.render('login', {
               site: this.site,
               page_title: 'Admin',
               canonical_url: canoncalUrl(req),
               template: 'login'
             });
           } else {
-            res.render('dashboard', {
+            return res.render('dashboard', {
               site: this.site,
               page_title: 'Dashboard',
               canonical_url: canoncalUrl(req),
+              template: 'dashboard'
             });
           }
         }
@@ -313,6 +322,7 @@ Site.findOne(null, (err, site) => {
 
   app.get('*', (req, res) => {
     setViews('theme');
+    console.log(req.url)
     return res.render('error', {
       site: this.site,
       page_title: '404',

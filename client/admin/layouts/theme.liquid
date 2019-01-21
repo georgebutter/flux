@@ -1,5 +1,8 @@
 <html>
   <head>
+    <title>{{ site.name }}{{ site.description }}</title>
+    <script src="/admin/assets/admin.bundle.js"></script>
+    <script src="/admin/assets/{{ template }}.bundle.js"></script>
   </head>
   <body>
     {% block 'content' %}
