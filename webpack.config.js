@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const mode = process.env.MODE || 'development';
 
 // const CleanWebpackPlugin = require('clean-webpack-plugin');
-const HtmlWebPackPlugin = require("html-webpack-plugin");
+// const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
