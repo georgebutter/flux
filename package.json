@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "test": "eslint",
-    "start": "npm run build && node app.js",
+    "start": "node app.js",
     "log": "heroku logs -a georgebutter --tail",
     "build": "webpack"
   },
