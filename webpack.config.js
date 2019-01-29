@@ -3,9 +3,6 @@ const webpack = require('webpack');
 
 const mode = process.env.MODE || 'development';
 
-// const CleanWebpackPlugin = require('clean-webpack-plugin');
-// const HtmlWebPackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
@@ -15,14 +12,9 @@ module.exports = {
   },
   devtool: 'source-map',
   plugins: [
-    // new CleanWebpackPlugin(['client/admin/assets']),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new MiniCssExtractPlugin({
-      filename: "styles.css",
-      chunkFilename: "styles.css"
-    }),
     new VueLoaderPlugin(),
   ],
   mode: 'development',
