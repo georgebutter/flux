@@ -36,7 +36,7 @@ const bodyParser = require('body-parser');
 const env = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 3000;
 const siteHandle = process.env.SITE_HANDLE || 'georgebutter';
-
+console.log(`Environment: ${env}`)
 if (env === 'development') {
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const config = require('./webpack.config.js');
