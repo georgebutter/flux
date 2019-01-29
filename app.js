@@ -1,7 +1,6 @@
 // Routing
 const path = require('path');
 const express = require('express');
-const webpack = require('webpack');
 const app = express();
 
 // Authentication
@@ -38,6 +37,7 @@ const port = process.env.PORT || 3000;
 const siteHandle = process.env.SITE_HANDLE || 'georgebutter';
 console.log(`Environment: ${env}`)
 if (env === 'development') {
+  const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const config = require('./webpack.config.js');
   const compiler = webpack(config);
