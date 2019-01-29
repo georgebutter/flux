@@ -2,10 +2,7 @@
 const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
 const app = express();
-const config = require('./webpack.config.js');
-const compiler = webpack(config);
 
 // Authentication
 const passport = require('passport');
@@ -36,12 +33,19 @@ db.once('open', () => {
 const bodyParser = require('body-parser');
 
 // General
-const port =  process.env.PORT || 3000;
-const siteHandle =  process.env.SITE_HANDLE || 'georgebutter';
+const env = process.env.NODE_ENV || 'development';
+const port = process.env.PORT || 3000;
+const siteHandle = process.env.SITE_HANDLE || 'georgebutter';
 
-app.use(webpackDevMiddleware(compiler, {
-  publicPath: config.output.publicPath
-}));
+if (env === 'development') {
+  const webpackDevMiddleware = require('webpack-dev-middleware');
+  const config = require('./webpack.config.js');
+  const compiler = webpack(config);
+  app.use(webpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath
+  }));
+}
+
 // Sessions for tracking logins
 app.use(session({
   secret: 'open up',

@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const mode = process.env.MODE || 'development';
+const mode = process.env.NODE_ENV || 'development';
 
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
