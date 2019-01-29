@@ -1,6 +1,11 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import Dashboard from './components/dashboard.js'
-import '../styles.css';
+import Vue from 'vue'
+import Dashboard from './components/dashboard.vue'
 
-ReactDOM.render(<Dashboard />, document.getElementById("dashboard")); 
+Vue.config.productionTip = false;
+
+/* eslint-disable no-new */
+new Vue({
+  el: '#dashboard',
+  template: '<Dashboard/>',
+  components: { Dashboard }
+})

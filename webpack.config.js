@@ -1,20 +1,21 @@
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
-const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true';
+
+const mode = process.env.MODE || 'development';
+
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
-const mode = process.env.MODE || 'production';
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
   entry: {
-    admin: ['./src/admin.js', hotMiddlewareScript],
-    dashboard: ['./src/dashboard.js', hotMiddlewareScript],
+    admin: './src/admin.js',
+    dashboard: './src/dashboard.js',
   },
   devtool: 'source-map',
   plugins: [
-    new CleanWebpackPlugin(['client/admin/assets']),
+    // new CleanWebpackPlugin(['client/admin/assets']),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
@@ -22,8 +23,9 @@ module.exports = {
       filename: "styles.css",
       chunkFilename: "styles.css"
     }),
+    new VueLoaderPlugin(),
   ],
-  mode: 'production',
+  mode: 'development',
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'client/admin/assets/'),
@@ -37,12 +39,31 @@ module.exports = {
         use: { loader: 'babel-loader' }
       },
       {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
+      {
         test: /\.css$/,
         use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader", "postcss-loader",
-        ],
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+            }
+          },
+          {
+            loader: 'postcss-loader'
+          }
+        ]
       }
     ],
+  },
+  resolve: {
+    alias: {
+      vue: 'vue/dist/vue.js'
+    }
   }
 };
