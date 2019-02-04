@@ -74,6 +74,16 @@ Site.findOne(null, (err, site) => {
     this.installed = this.site.installed;
   }
   console.log(`installed; ${this.installed}`)
+  app.get('/admin/style-guide', (req, res, next) => {
+    setViews('admin');
+
+    res.render('style-guide', {
+      site: this.site,
+      page_title: 'Style guide',
+      canonical_url: canoncalUrl(req),
+      template: 'style-guide'
+    });
+  });
   if (this.installed) {
     app.get('/', (req, res) => {
       setViews('theme');
@@ -90,7 +100,7 @@ Site.findOne(null, (err, site) => {
       setViews('admin');
 
       console.log(`installed: ${this.installed}`);
-
+      console.log(req.session.userId);
       Staff.findById(req.session.userId, (error, user) => {
         if (error) {
           return next(error);
@@ -100,14 +110,17 @@ Site.findOne(null, (err, site) => {
               site: this.site,
               page_title: 'Admin',
               canonical_url: canoncalUrl(req),
-              template: 'login'
+              template: 'login',
+              user: false
             });
           } else {
+            console.log(user)
             return res.render('dashboard', {
               site: this.site,
               page_title: 'Dashboard',
               canonical_url: canoncalUrl(req),
-              template: 'dashboard'
+              template: 'dashboard',
+              user: user
             });
           }
         }
@@ -156,7 +169,8 @@ Site.findOne(null, (err, site) => {
           site: this.site,
           page_title: 'Install - Create site',
           canonical_url: canoncalUrl(req),
-          errors: null
+          template: 'install',
+          errors: null,
         });
       } else {
         console.log('install-admin');
@@ -164,7 +178,8 @@ Site.findOne(null, (err, site) => {
           site: this.site,
           page_title: 'Install - Create admin',
           canonical_url: canoncalUrl(req),
-          errors: null
+          template: 'install',
+          errors: null,
         });
       }
     });
@@ -201,6 +216,7 @@ Site.findOne(null, (err, site) => {
           site: this.site,
           page_title: 'Install',
           canonical_url: canoncalUrl(req),
+          template: 'install',
           errors: errors
         });
       } else {

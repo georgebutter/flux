@@ -9,6 +9,7 @@ module.exports = {
   entry: {
     admin: './src/admin.js',
     dashboard: './src/dashboard.js',
+    'style-guide': './src/style-guide.js',
   },
   devtool: 'source-map',
   plugins: [

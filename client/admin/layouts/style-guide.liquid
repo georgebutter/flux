@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html class="h-full">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title>{{ site.name }}{{ site.description }}</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Karla|Rubik" rel="stylesheet">
+
+    <script type="text/javascript" defer="defer" src="/admin/assets/admin.bundle.js"></script>
+    <script type="text/javascript" defer="defer" src="/admin/assets/{{ template }}.bundle.js">
+    </script>
+
+  </head>
+  <body class="bg-grey-lightest min-h-full font-sans">
+    <main id="{{ template }}">
+      {% block 'content' %}
+        <h1>Admin</h1>
+      {% endblock %}
+    </main>
+  </body>
+</html>

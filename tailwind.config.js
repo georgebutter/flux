@@ -53,7 +53,7 @@ let colors = {
   'grey': '#b8c2cc',
   'grey-light': '#dae1e7',
   'grey-lighter': '#f1f5f8',
-  'grey-lightest': '#f8fafc',
+  'grey-lightest': '#FAFAFA',
   'white': '#ffffff',
 
   'red-darkest': '#3b0d0c',
@@ -195,6 +195,7 @@ module.exports = {
 
   fonts: {
     'sans': [
+      'Rubik',
       'system-ui',
       'BlinkMacSystemFont',
       '-apple-system',
@@ -768,7 +769,7 @@ module.exports = {
   */
 
   shadows: {
-    default: '0 2px 4px 0 rgba(0,0,0,0.10)',
+    default: '0 0 10px 0 rgba(0,0,0,0.7)',
     'md': '0 4px 8px 0 rgba(0,0,0,0.12), 0 2px 4px 0 rgba(0,0,0,0.08)',
     'lg': '0 15px 30px 0 rgba(0,0,0,0.11), 0 5px 15px 0 rgba(0,0,0,0.08)',
     'inner': 'inset 0 2px 4px 0 rgba(0,0,0,0.06)',
@@ -957,6 +958,12 @@ module.exports = {
     require('tailwindcss/plugins/container')({
       // center: true,
       // padding: '1rem',
+    }),
+    require('tailwindcss-gradients')({
+      variants: ['responsive'],
+      gradients: {
+        'purple-indigo-blue': [colors.purple, colors.indigo, colors.blue],
+      },
     }),
   ],
 
