@@ -4,19 +4,20 @@ const webpack = require('webpack');
 const mode = process.env.NODE_ENV || 'development';
 
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-
 module.exports = {
   entry: {
-    admin: './src/admin.js',
-    dashboard: './src/dashboard.js',
+    'install': './src/install.js',
     'style-guide': './src/style-guide.js',
+    'admin': './src/admin.js',
+    'login': './src/login.js',
+    'dashboard': './src/dashboard.js',
   },
   devtool: 'source-map',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new VueLoaderPlugin(),
+    new VueLoaderPlugin()
   ],
   mode: 'development',
   output: {

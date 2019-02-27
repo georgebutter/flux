@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Dashboard from './components/dashboard.vue'
+import Dashboard from './templates/dashboard.vue'
 
 Vue.config.productionTip = false;
 

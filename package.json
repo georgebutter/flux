@@ -4,24 +4,34 @@
   "description": "My website",
   "private": true,
   "watch": {
-    "test": {
-      "patterns": ["src"],
-      "extensions": "js,jsx"
+    "build": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "js,vue"
+    },
+    "reload": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "js,vue"
     }
   },
   "scripts": {
     "test": "eslint",
     "watch": "npm-watch",
-    "dev": "concurrently \"yarn start\" \"npm-watch build\"",
+    "dev": "concurrently \"browser-sync start --config bs-config.js\" \"yarn start\"  \"npm-watch reload\" \"npm-watch build\"",
     "start": "nodemon app.js",
     "log": "heroku logs -a georgebutter --tail",
-    "build": "webpack"
+    "build": "webpack",
+    "reload": "browser-sync reload --config bs-config.js"
   },
   "author": "George Butter",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.3",
     "body-parser": "^1.18.3",
+    "browser-sync": "^2.26.3",
     "concurrently": "^4.1.0",
     "connect-mongo": "^2.0.3",
     "express": "^4.16.4",

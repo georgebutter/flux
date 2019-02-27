@@ -1,12 +1,28 @@
-<html>
+<!DOCTYPE html>
+<html class="h-full">
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
     <title>{{ site.name }}{{ site.description }}</title>
-    <script defer="defer" src="/admin/assets/admin.bundle.js"></script>
-    <script defer="defer" src="/admin/assets/{{ template }}.bundle.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,500" rel="stylesheet">
+
+    <script type="text/javascript" defer="defer" src="/admin/assets/admin.bundle.js"></script>
+    <script type="text/javascript" defer="defer" src="/admin/assets/{{ template }}.bundle.js">
+    </script>
+
+    <script type="application/json">
+      {
+        user: {{ user }}
+      }
+    </script>
   </head>
-  <body>
-    {% block 'content' %}
-      <h1>Admin</h1>
-    {% endblock %}
+  <body class="bg-grey-lightest min-h-full font-sans layout-theme template-{{ template }}">
+    <main id="{{ template }}">
+      {% block 'content' %}
+        <h1>Admin</h1>
+      {% endblock %}
+    </main>
   </body>
 </html>
