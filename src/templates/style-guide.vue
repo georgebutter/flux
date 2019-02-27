@@ -3,7 +3,9 @@
   <section>
     <div class="bg-white shadow py-2">
       <div class="container mx-auto">
-        <p>Testing</p>
+        <a href="#colours">Colours</a>
+        <a href="#typography">Typography</a>
+        <a href="#components">Components</a>
       </div>
     </div>
     <div class="py-10 px-4">
@@ -140,35 +142,72 @@
           <div class="w-full p-2 text-center">
             <p class="text-5xl mb-5 font-bold">Work Sans</p>
           </div>
-          <div class="w-1/4 p-2">
+          <div class="w-full md:w-1/4 p-2">
             <h1 class="mb-4">
               Heading 1
             </h1>
           </div>
-          <div class="w-1/4 p-2">
+          <div class="w-full md:w-1/4 p-2">
             <h2 class="mb-4">
               Heading 2
             </h2>
           </div>
-          <div class="w-1/4 p-2">
+          <div class="w-full md:w-1/4 p-2">
             <h3 class="mb-4">
               Heading 3
             </h3>
           </div>
-          <div class="w-1/4 p-2">
+          <div class="w-full md:w-1/4 p-2">
             <h4 class="mb-4">
               Heading 4
             </h4>
           </div>
-          <div class="w-1/4 p-2">
+          <div class="w-full md:w-1/4 p-2">
             <h5 class="mb-4">
               Heading 5
             </h5>
           </div>
-          <div class="w-1/4 p-2">
+          <div class="w-full md:w-1/4 p-2">
             <h6 class="mb-4">
               Heading 6
             </h6>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="py-10 px-4">
+      <div class="container mx-auto text-black">
+        <div class="flex flex-wrap -mx-4 mb-4">
+          <div class="w-full p-2">
+            <h2 id="components" name="components" class="mb-4">
+              <a href="#components" class="text-accent no-underline">
+                Components
+              </a>
+            </h2>
+          </div>
+          <div class="w-full p-2">
+            <h3 class="uppercase text-black mb-4">
+              Buttons
+            </h3>
+          </div>
+          <div class="w-1/3 flex flex-wrap">
+            <div class="w-1/2 mb-8">
+              <primary-button>Default</primary-button>
+            </div>
+            <div class="w-1/2 mb-8">
+              <primary-button disabled>Disabled</primary-button>
+            </div>
+            <div class="w-1/2 mb-8">
+              <secondary-button>Default</secondary-button>
+            </div>
+            <div class="w-1/2 mb-8">
+              <secondary-button disabled>Disabled</secondary-button>
+            </div>
+          </div>
+          <div class="w-1/3 flex">
+
+          </div>
+          <div class="w-1/3">
           </div>
         </div>
       </div>
@@ -177,24 +216,16 @@
 </template>
 
 <script>
-const swatch = {
-  props: ['color', 'column'],
-  template: `
-    <div :class="column +' p-2'">
-      <div class="rounded-lg shadow-lg">
-        <div :class="'bg-'+ color.class +' ratio-1:1 rounded-t-lg'">
-        </div>
-        <div class="bg-white rounded-b-lg p-4 text-center">
-          <p class="text-grey">{{ color.hex }}</p>
-        </div>
-      </div>
-    </div>
-  `
-}
+import PrimaryButton from '../components/primary-button.vue';
+import SecondaryButton from '../components/secondary-button.vue';
+import Swatch from '../components/swatch.vue';
+
 export default {
   name: 'app',
   components: {
-    swatch: swatch
+    "swatch": Swatch,
+    "primary-button": PrimaryButton,
+    "secondary-button": SecondaryButton
   },
   data () {
     return {
