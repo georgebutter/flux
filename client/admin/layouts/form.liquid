@@ -17,12 +17,15 @@
         errors: {{ errors }},
       }
     </script>
+    {% include 'root' %}
   </head>
-  <body class="bg-grey-lightest min-h-full font-sans layout-form template-{{ template }}">
+  <body class="bg-grey-lightest min-h-full font-sans flex">
     <main id="{{ template }}">
-      {% block 'content' %}
-        <h1>Admin</h1>
-      {% endblock %}
+      <noscript>
+        {% block 'content' %}
+          <h1>Admin</h1>
+        {% endblock %}
+      </noscript>
     </main>
   </body>
 </html>

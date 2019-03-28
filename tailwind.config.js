@@ -44,34 +44,34 @@ let defaultConfig = require('tailwindcss/defaultConfig')()
 */
 
 let colors = {
-  'transparent': 'transparent',
-  'primary': '#BE52F2',
-  'primary-light': '#DBA5F5',
-  'primary-lighter': '#EEDFF2',
-  'accent': '#6979F8',
-  'accent-light': '#A5AFFB',
-  'accent-lighter': '#E5E7FA',
-  'yellow': '#FFCF5C',
-  'yellow-light': '#FFE29D',
-  'yellow-lighter': '#FFF8E7',
-  'orange': '#FFA26B',
-  'orange-light': '#FFC7A6',
-  'orange-lighter': '#FFE8DA',
-  'cyan': '#0084F4',
-  'cyan-light': '#66B5F8',
-  'cyan-lighter': '#D5E9FA',
-  'green': '#00C48C',
-  'green-light': '#7DDFC3',
-  'green-lighter': '#D5F2EA',
-  'pink': '#FF647C',
-  'pink-light': '#FDAFBB',
-  'pink-lighter': '#FBE4E8',
-  'black': '#1A051D',
-  'grey': '#3F3356',
-  'grey-light': '#D0C9D6',
-  'grey-lighter': '#ECE9F1',
-  'grey-lightest': '#F7F5F9',
-  'white': '#ffffff'
+  'transparent': 'var(--transparent)',
+  'primary': 'var(--primary)',
+  'primary-light': 'var(--primary-light)',
+  'primary-lighter': 'var(--primary-lighter)',
+  'accent': 'var(--accent)',
+  'accent-light': 'var(--accent-light)',
+  'accent-lighter': 'var(--accent-lighter)',
+  'yellow': 'var(--yellow)',
+  'yellow-light': 'var(--yellow-light)',
+  'yellow-lighter': 'var(--yellow-lighter)',
+  'orange': 'var(--orange)',
+  'orange-light': 'var(--orange-light)',
+  'orange-lighter': 'var(--orange-lighter)',
+  'cyan': 'var(--cyan)',
+  'cyan-light': 'var(--cyan-light)',
+  'cyan-lighter': 'var(--cyan-lighter)',
+  'green': 'var(--green)',
+  'green-light': 'var(--green-light)',
+  'green-lighter': 'var(--green-lighter)',
+  'pink': 'var(--pink)',
+  'pink-light': 'var(--pink-light)',
+  'pink-lighter': 'var(--pink-lighter)',
+  'black': 'var(--black)',
+  'grey': 'var(--grey)',
+  'grey-light': 'var(--grey-light)',
+  'grey-lighter': 'var(--grey-lighter)',
+  'grey-lightest': 'var(--grey-lightest)',
+  'white': 'var(--white)'
 }
 
 module.exports = {
@@ -201,7 +201,7 @@ module.exports = {
     'xs': '.75rem',     // 12px
     'sm': '.875rem',    // 14px
     'base': '1rem',     // 16px
-    'md': '1.125rem', 
+    'md': '1.125rem',
     'lg': '1.125rem',   // 18px
     'xl': '1.25rem',    // 20px
     '2xl': '1.5rem',    // 24px

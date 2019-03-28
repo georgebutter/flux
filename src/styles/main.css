@@ -8,6 +8,7 @@
 
 html {
   height: 100%;
+  font-size: 16px;
 }
 
 .ratio-1\:1 {
@@ -17,4 +18,22 @@ html {
   content: "";
   display: block;
   padding-top: 100%;
+}
+
+input::placeholder {
+  color: var(--grey-light);
+}
+
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  -webkit-clip-path: inset(50%);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
 }

@@ -202,15 +202,24 @@ Site.findOne(null, (err, site) => {
       } = req.body;
       const errors = [];
       if (!name) {
-        errors.push('Name cannot be blank');
+        errors.push({
+          message: 'Name cannot be blank',
+          field: 'name',
+        });
       }
       if (!description) {
-        errors.push('Description cannot be blank');
+        errors.push({
+          message: 'Description cannot be blank',
+          field: 'description',
+        });
       }
       if (!email) {
-        errors.push('Site email cannot be blank');
+        errors.push({
+          message: 'Site email cannot be blank',
+          field: 'email'
+        });
       }
-
+      console.log(errors)
       if (errors.length) {
         return res.render('install', {
           site: this.site,
@@ -230,7 +239,7 @@ Site.findOne(null, (err, site) => {
         console.log('saving site to database')
         Site.create(siteData, (error, site) => {
           if (error) {
-            errors.push(error);
+            errors.push({ message: error });
             return res.render('install', {
               site: this.site,
               page_title: 'Install',
@@ -256,20 +265,35 @@ Site.findOne(null, (err, site) => {
       } = req.body;
       const errors = [];
       if (!username) {
-        errors.push('Username cannot be blank');
+        errors.push({
+          message: 'Username cannot be blank',
+          field: 'username'
+        });
       }
       if (!email) {
-        errors.push('Email cannot be blank');
+        errors.push({
+          message: 'Email cannot be blank',
+          field: 'email'
+        });
       }
       if (!password) {
-        errors.push('Password cannot be blank');
+        errors.push({
+          message: 'Password cannot be blank',
+          field: 'password'
+        });
       } else {
         if (password.length < 6) {
-          errors.push('Password must be at least 6 characters');
+          errors.push({
+            message: 'Password must be at least 6 characters',
+            field: 'password'
+          });
         }
       }
       if (password !== confirm) {
-        errors.push('Passwords don\'t match');
+        errors.push({
+          message: `Passwords don't match`,
+          field: 'confirm'
+        });
       }
       if (errors.length) {
         console.log('errors');

@@ -12,13 +12,9 @@
     <script type="text/javascript" defer="defer" src="/admin/assets/{{ template }}.bundle.js">
     </script>
 
-    <script type="application/json">
-      {
-        user: {{ user }}
-      }
-    </script>
+    {% include 'root' %}
   </head>
-  <body class="bg-grey-lightest min-h-full font-sans layout-theme template-{{ template }}">
+  <body class="bg-grey-lightest min-h-full font-sans">
     <main id="{{ template }}">
       {% block 'content' %}
         <h1>Admin</h1>

@@ -3,9 +3,11 @@
   <section>
     <div class="bg-white shadow py-2">
       <div class="container mx-auto">
-        <a href="#colours">Colours</a>
-        <a href="#typography">Typography</a>
-        <a href="#components">Components</a>
+        <div class="-mx-4">
+          <a href="#colours" class="no-underline text-uppercase text-black">Colours</a>
+          <a href="#typography" class="no-underline text-uppercase text-black">Typography</a>
+          <a href="#components" class="no-underline text-uppercase text-black">Components</a>
+        </div>
       </div>
     </div>
     <div class="py-10 px-4">
@@ -143,32 +145,32 @@
             <p class="text-5xl mb-5 font-bold">Work Sans</p>
           </div>
           <div class="w-full md:w-1/4 p-2">
-            <h1 class="mb-4">
+            <h1 class="mb-4 text-4xl">
               Heading 1
             </h1>
           </div>
           <div class="w-full md:w-1/4 p-2">
-            <h2 class="mb-4">
+            <h2 class="mb-4 text-3xl">
               Heading 2
             </h2>
           </div>
           <div class="w-full md:w-1/4 p-2">
-            <h3 class="mb-4">
+            <h3 class="mb-4 text-xl">
               Heading 3
             </h3>
           </div>
           <div class="w-full md:w-1/4 p-2">
-            <h4 class="mb-4">
+            <h4 class="mb-4 text-lg font-normal">
               Heading 4
             </h4>
           </div>
           <div class="w-full md:w-1/4 p-2">
-            <h5 class="mb-4">
+            <h5 class="mb-4 text-md">
               Heading 5
             </h5>
           </div>
           <div class="w-full md:w-1/4 p-2">
-            <h6 class="mb-4">
+            <h6 class="mb-4 text-base">
               Heading 6
             </h6>
           </div>
@@ -209,6 +211,51 @@
           </div>
           <div class="w-1/3">
           </div>
+          <div class="w-full p-2">
+            <h3 class="uppercase text-black mb-4">
+              Inputs
+            </h3>
+          </div>
+          <div class="w-full -mx-4">
+            <div class="w-1/3 flex flex-wrap px-4">
+              <form class="w-full" autocomplete="off">
+                <text-field placeholder="Placeholder"/>
+              </form>
+            </div>
+            <div class="w-1/3 flex flex-wrap px-4">
+              <password-field/>
+            </div>
+          </div>
+
+          <div class="w-full p-2 mt-8">
+            <h3 class="uppercase text-black mb-4">
+              Other Components
+            </h3>
+          </div>
+          <div class="w-full">
+            <h4 class="uppercase text-black mb-4">
+              Labels
+            </h4>
+            <div>
+              <note colour="primary">Primary</note>
+              <note colour="accent">Accent</note>
+              <note colour="cyan">Information</note>
+              <note colour="pink">Error</note>
+              <note colour="green">Success</note>
+              <note colour="yellow">Warning</note>
+              <note colour="orange">Other</note>
+            </div>
+            <div>
+              <note inverse colour="primary">Primary</note>
+              <note inverse colour="accent">Accent</note>
+              <note inverse colour="cyan">Information</note>
+              <note inverse colour="pink">Error</note>
+              <note inverse colour="green">Success</note>
+              <note inverse colour="yellow">Warning</note>
+              <note inverse colour="orange">Other</note>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -218,14 +265,20 @@
 <script>
 import PrimaryButton from '../components/primary-button.vue';
 import SecondaryButton from '../components/secondary-button.vue';
+import PasswordField from '../components/password-field.vue';
+import TextField from '../components/text-field.vue';
 import Swatch from '../components/swatch.vue';
+import Note from '../components/note.vue';
 
 export default {
   name: 'app',
   components: {
     "swatch": Swatch,
+    "note": Note,
     "primary-button": PrimaryButton,
-    "secondary-button": SecondaryButton
+    "secondary-button": SecondaryButton,
+    "password-field": PasswordField,
+    "text-field": TextField,
   },
   data () {
     return {
