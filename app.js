@@ -9,6 +9,15 @@ const localStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
+// File management
+const fs = require('fs-extra');
+const git = require('nodegit');
+const repoDir = './client/theme';
+const repoPath = path.resolve(repoDir);
+const gitDir = 0;
+var repo;
+var gitIndex;
+
 // Rendering
 const Liquid = require('liquidjs');
 const engine = Liquid({
@@ -36,6 +45,47 @@ const validator = require('validator');
 const env = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 3000;
 const siteHandle = process.env.SITE_HANDLE || 'georgebutter';
+
+// // Ensure we have a themes directory
+// fs.ensureDir(path.resolve(__dirname, repoDir))
+// .then(function() {
+//   // Initialize repository
+//   return git.Repository.init(path.resolve(__dirname, repoDir), 0);
+// })
+// .then(function(repoResult) {
+//   repo = repoResult;
+//   return fs.writeFile(path.join(repo.workdir(), 'log.md'), `theme created: ${Date.now()}`);
+// })
+// .then(function(){
+//   return repo.refreshIndex();
+// })
+// .then(function(idx) {
+//   gitIndex = idx;
+// })
+// .then(function() {
+//   return gitIndex.addAll();
+// })
+// .then(function() {
+//   return gitIndex.write();
+// })
+// .then(function() {
+//   return gitIndex.writeTree();
+// })
+// .then(function(oid) {
+//   var author = git.Signature.now("George Butter",
+//     "threeninenineone@gmail.com");
+//   var committer = git.Signature.now("George Butter",
+//     "butsandcats@github.com");
+//
+//   // Since we're creating an inital commit, it has no parents. Note that unlike
+//   // normal we don't get the head either, because there isn't one yet.
+//   return repo.createCommit("HEAD", author, committer, "message", oid, []);
+// })
+// .then(function(commitId) {
+//   console.log("New Commit: ", commitId);
+//   repo.createBranch('master', commitId, force);
+// })
+
 console.log(`Environment: ${env}`)
 if (env === 'development') {
   const webpack = require('webpack');
@@ -86,6 +136,7 @@ Site.findOne(null, (err, site) => {
       template: 'style-guide'
     });
   });
+  console.log(`installed: ${this.installed}`)
   if (this.installed) {
     app.get('/', (req, res) => {
       setViews('theme');
@@ -418,7 +469,6 @@ Site.findOne(null, (err, site) => {
 
   app.get('*', (req, res) => {
     setViews('theme');
-    console.log(req.url)
     return res.render('error', {
       site: this.site,
       page_title: '404',
