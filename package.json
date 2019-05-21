@@ -20,8 +20,8 @@
   "scripts": {
     "test": "eslint",
     "watch": "npm-watch",
-    "dev": "concurrently \"browser-sync start --config bs-config.js\" \"yarn start\"  \"npm-watch reload\" \"npm-watch build\"",
-    "start": "nodemon app.js",
+    "dev": "concurrently \"browser-sync start --config bs-config.js\" \"npm-watch start\"  \"npm-watch reload\" \"npm-watch build\"",
+    "start": "nodemon --inspect app.js",
     "log": "heroku logs -a georgebutter --tail",
     "build": "webpack",
     "reload": "browser-sync reload --config bs-config.js"
@@ -43,7 +43,8 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "tailwindcss-gradients": "^1.1.0"
+    "tailwindcss-gradients": "^1.1.0",
+    "validator": "^10.11.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

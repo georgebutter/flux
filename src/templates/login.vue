@@ -1,40 +1,39 @@
 
 <template>
-  <div id="app" class="font-sans flex flex-col flex-grow">
-    <div class="w-full max-w-sm p-4 self-center">
-      <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <div class="mb-4">
-          <label class="block text-grey-darker text-sm font-bold mb-2" for="username">
-            Username
-          </label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username"/>
+  <div id="app" class="flex flex-col w-full">
+    <div class="flex h-full">
+      <div class="w-1/2 h-full bg-gradient-t-primary flex justify-center items-center">
+        <div class="w-full h-full px-12 lg:px-32 max-w-lg">
+          <illustration-login/>
         </div>
-        <div class="mb-6">
-          <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
-            Password
-          </label>
-          <input class="shadow appearance-none border border-red rounded w-full py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************"/>
-          <p class="text-red text-xs italic">Please choose a password.</p>
+      </div>
+      <div class="w-1/2 h-full flex items-center">
+        <div class="w-full max-w-sm">
+          <admin-login-form :errors="errors" :form="form" :fields="fields"/>
         </div>
-        <div class="flex items-center justify-between">
-          <button class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-            Sign In
-          </button>
-          <a class="inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker" href="#">
-            Forgot Password?
-          </a>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import IllustrationLogin from '../components/illustration-login.vue';
+import LoginForm from '../snippets/admin-login-form.vue';
+
 export default {
   name: 'app',
+  components: {
+    "illustration-login": IllustrationLogin,
+    "admin-login-form": LoginForm,
+  },
   data () {
+    const { errors, form, template, suffix } = window.siteData;
     return {
-      img: './assets/logo.png'
+      errors: errors,
+      fields: errors ? errors.map(error => error.field) : [],
+      form: form,
+      suffix: suffix,
+      template: template,
     }
   }
 }

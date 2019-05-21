@@ -30,6 +30,7 @@ db.once('open', () => {
 
 // Middleware
 const bodyParser = require('body-parser');
+const validator = require('validator');
 
 // General
 const env = process.env.NODE_ENV || 'development';
@@ -69,11 +70,12 @@ app.set('view engine', 'liquid');
 // Get site data
 Site.findOne(null, (err, site) => {
   this.site = site;
+  console.log(this.site)
   this.installed = null;
   if (this.site) {
     this.installed = this.site.installed;
   }
-  console.log(`installed; ${this.installed}`)
+  console.log(`Installed: ${this.installed}`)
   app.get('/admin/style-guide', (req, res, next) => {
     setViews('admin');
 
@@ -101,6 +103,7 @@ Site.findOne(null, (err, site) => {
 
       console.log(`installed: ${this.installed}`);
       console.log(req.session.userId);
+      const errors = [];
       Staff.findById(req.session.userId, (error, user) => {
         if (error) {
           return next(error);
@@ -111,15 +114,16 @@ Site.findOne(null, (err, site) => {
               page_title: 'Admin',
               canonical_url: canoncalUrl(req),
               template: 'login',
+              errors: errors,
               user: false
             });
           } else {
-            console.log(user)
             return res.render('dashboard', {
               site: this.site,
               page_title: 'Dashboard',
               canonical_url: canoncalUrl(req),
               template: 'dashboard',
+              errors: errors,
               user: user
             });
           }
@@ -128,11 +132,21 @@ Site.findOne(null, (err, site) => {
     });
 
     app.post('/admin', (req, res, next) => {
+      setViews('admin');
+      const errors = [];
       Staff.authenticate(req.body.username, req.body.password, (error, user) => {
         if (error || !user) {
-          var err = new Error('Wrong username or password.');
-          err.status = 401;
-          return next(err);
+          errors.push({
+            message: 'Username or password could not be found.'
+          })
+          return res.render('login', {
+            site: this.site,
+            page_title: 'Admin',
+            canonical_url: canoncalUrl(req),
+            template: 'login',
+            errors: errors,
+            user: user
+          });
         } else {
           req.session.userId = user._id;
           return res.redirect('/admin');
@@ -156,13 +170,15 @@ Site.findOne(null, (err, site) => {
     });
 
   } else {
+    console.log('not installed')
     app.get('/', (req, res) => {
+      setViews('admin');
       res.redirect('/install');
     });
 
     app.get('/install', (req, res, next) => {
       setViews('admin');
-
+      console.log(this.site)
       if (!this.site) {
         console.log('install');
         res.render('install', {
@@ -170,6 +186,7 @@ Site.findOne(null, (err, site) => {
           page_title: 'Install - Create site',
           canonical_url: canoncalUrl(req),
           template: 'install',
+          suffix: 'site',
           errors: null,
         });
       } else {
@@ -179,6 +196,7 @@ Site.findOne(null, (err, site) => {
           page_title: 'Install - Create admin',
           canonical_url: canoncalUrl(req),
           template: 'install',
+          suffix: 'admin',
           errors: null,
         });
       }
@@ -186,7 +204,7 @@ Site.findOne(null, (err, site) => {
 
     app.post('/install/site', (req, res, next) => {
       setViews('admin');
-
+      console.log('POST: /install/site');
       if (this.site) {
         return res.render('error', {
           site: this.site,
@@ -200,6 +218,12 @@ Site.findOne(null, (err, site) => {
         description,
         email
       } = req.body;
+      console.log(req)
+      const form = {
+        name,
+        description,
+        email
+      };
       const errors = [];
       if (!name) {
         errors.push({
@@ -218,6 +242,13 @@ Site.findOne(null, (err, site) => {
           message: 'Site email cannot be blank',
           field: 'email'
         });
+      } else {
+        if (!validator.isEmail(email)) {
+          errors.push({
+            message: 'Please provide a valid email address',
+            field: 'email'
+          });
+        }
       }
       console.log(errors)
       if (errors.length) {
@@ -226,14 +257,17 @@ Site.findOne(null, (err, site) => {
           page_title: 'Install',
           canonical_url: canoncalUrl(req),
           template: 'install',
-          errors: errors
+          suffix: 'site',
+          errors: errors,
+          form: form
         });
       } else {
         const siteData = {
           name: name,
           handle: name,
           description: description,
-          email: email
+          email: email,
+          form: form
         }
 
         console.log('saving site to database')
@@ -244,6 +278,7 @@ Site.findOne(null, (err, site) => {
               site: this.site,
               page_title: 'Install',
               canonical_url: canoncalUrl(req),
+              template: 'install',
               errors: errors
             });
           } else {
@@ -263,6 +298,13 @@ Site.findOne(null, (err, site) => {
         password,
         confirm
       } = req.body;
+      console.log(req.body)
+      const form = {
+        username,
+        email,
+        password,
+        confirm
+      };
       const errors = [];
       if (!username) {
         errors.push({
@@ -273,6 +315,11 @@ Site.findOne(null, (err, site) => {
       if (!email) {
         errors.push({
           message: 'Email cannot be blank',
+          field: 'email'
+        });
+      } else if (!validator.isEmail(email)) {
+        errors.push({
+          message: 'Please provide a valid email address',
           field: 'email'
         });
       }
@@ -298,11 +345,14 @@ Site.findOne(null, (err, site) => {
       if (errors.length) {
         console.log('errors');
         console.log(errors);
-        return res.render('install-admin', {
+        return res.render('install', {
           site: this.site,
           page_title: 'Install - Create admin',
           canonical_url: canoncalUrl(req),
-          errors: errors
+          template: 'install',
+          suffix: 'admin',
+          errors: errors,
+          form: form
         });
       } else {
         const userData = {
@@ -314,9 +364,10 @@ Site.findOne(null, (err, site) => {
         Staff.create(userData, (error, user) => {
           console.log(user)
           if (error) {
-            return res.render('install-admin', {
+            return res.render('install', {
               site: this.site,
               page_title: 'Install',
+              template: 'install',
               canonical_url: canoncalUrl(req),
               errors: [error]
             });
@@ -356,6 +407,7 @@ Site.findOne(null, (err, site) => {
           }
           console.log('redirecting to /install')
           this.site = null;
+          this.installed = null;
           return res.redirect('/install');
         })
 

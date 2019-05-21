@@ -427,6 +427,7 @@ module.exports = {
   */
 
   width: {
+    '0': '0',
     'auto': 'auto',
     'px': '1px',
     '1': '0.25rem',
@@ -623,6 +624,7 @@ module.exports = {
     '20': '5rem',
     '24': '6rem',
     '32': '8rem',
+    '64': '16rem',
   },
 
 
@@ -909,7 +911,7 @@ module.exports = {
     require('tailwindcss-gradients')({
       variants: ['responsive'],
       gradients: {
-        'purple-indigo-blue': [colors.purple, colors.indigo, colors.blue],
+        'primary': [colors['primary-light'], colors['primary-lighter'], colors['accent-lighter']],
       },
     }),
   ],

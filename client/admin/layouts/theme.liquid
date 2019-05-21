@@ -4,21 +4,31 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-    <title>{{ site.name }}{{ site.description }}</title>
+    <title>
+      {{ page_title }} | {{ site.name }} | {{ site.description }}
+    </title>
 
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,500" rel="stylesheet">
 
-    <script type="text/javascript" defer="defer" src="/admin/assets/admin.bundle.js"></script>
-    <script type="text/javascript" defer="defer" src="/admin/assets/{{ template }}.bundle.js">
+    <script defer="defer" src="/admin/assets/admin.bundle.js"></script>
+    <script defer="defer" src="/admin/assets/{{ template }}.bundle.js"></script>
+    <script id="data">
+      window.siteData = {
+        canonical_url: '{{ canonical_url }}',
+        template: '{{ template }}',
+        suffix: '{{ suffix }}',
+        site: {{ site }}
+      }
     </script>
-
     {% include 'root' %}
   </head>
-  <body class="bg-grey-lightest min-h-full font-sans">
+  <body class="bg-grey-lightest min-h-full font-sans flex">
     <main id="{{ template }}">
-      {% block 'content' %}
-        <h1>Admin</h1>
-      {% endblock %}
+      <noscript>
+        {% block 'content' %}
+          <h1>Admin</h1>
+        {% endblock %}
+      </noscript>
     </main>
   </body>
 </html>
