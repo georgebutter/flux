@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const MonacoEditorPlugin = require('monaco-editor-webpack-plugin')
 const mode = process.env.NODE_ENV || 'development';
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 module.exports = {
@@ -18,15 +17,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new VueLoaderPlugin(),
-    new MonacoEditorPlugin({
-      // https://github.com/Microsoft/monaco-editor-webpack-plugin#options
-      // Include a subset of languages support
-      // Some language extensions like typescript are so huge that may impact build performance
-      // e.g. Build full languages support with webpack 4.0 takes over 80 seconds
-      // Languages are loaded on demand at runtime
-      languages: ['javascript', 'css', 'html', 'liquid']
-    })
+    new VueLoaderPlugin()
   ],
   mode: 'development',
   output: {

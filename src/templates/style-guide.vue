@@ -1,7 +1,7 @@
 
 <template>
   <section>
-    <div class="bg-white shadow py-2">
+    <div class="bg-white shadow py-2 fixed pin-t pin-x py-2 shadow z-20">
       <div class="container mx-auto">
         <div class="-mx-4">
           <a href="#colours" class="no-underline text-uppercase text-black">Colours</a>

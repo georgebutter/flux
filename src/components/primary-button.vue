@@ -1,5 +1,5 @@
 <template>
-  <a v-if="href !== ''" :href="href" :disabled="disabled" :class="['py-2 px-10 inline-block rounded focus:outline-none active:outline-none border-2 no-underline', disabled ? 'bg-grey-lighter text-grey-light cursor-not-allowed border-grey-lighter' : 'bg-accent text-white hover:bg-accent-lighter hover:border-accent-lighter hover:text-accent border-accent']"  @click="toggleLoading">
+  <a v-if="href !== false" :href="href" :disabled="disabled" :class="['py-2 px-10 inline-block rounded focus:outline-none active:outline-none border-2 no-underline', disabled ? 'bg-grey-lighter text-grey-light cursor-not-allowed border-grey-lighter' : 'bg-accent text-white hover:bg-accent-lighter hover:border-accent-lighter hover:text-accent border-accent']"  @click="toggleLoading">
     <slot v-if="!loading"></slot>
     <loader v-if="loading"/>
   </a>
@@ -23,7 +23,10 @@ export default {
   props: {
     disabled: Boolean,
     loading: Boolean,
-    href: String
+    href: {
+      type: String,
+      default: false,
+    }
   }
 }
 </script>

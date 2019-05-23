@@ -204,6 +204,7 @@ Site.findOne(null, (err, site) => {
           return res.redirect('/admin');
         } else {
           req.session.userId = user._id;
+          console.log('Logging in');
           return res.redirect('/admin');
         }
       });
