@@ -1,24 +1,27 @@
 <template>
-  <aside class="bg-white flex-shrink h-full p-4 z-10 border-r-2 border-grey-lighter">
+  <aside :class="['sidebar bg-white pin-b z-10 fixed overflow-y-auto transition-width', sidebarOpen  ? 'w-64' : 'w-14']">
     <button-sidebar
-      :sidebarOpen="sidebarOpen"
       icon="icon-house"
       text="Dashboard"
       href="/admin"
+      :active="pageTitle === 'Dashboard'"
     >
     </button-sidebar>
     <button-sidebar
-      :sidebarOpen="sidebarOpen"
       icon="icon-devices"
       text="Themes"
-      href="/admin/themes">
+      href="/admin/themes"
+      :active="pageTitle === 'Themes' || pageTitle === 'Theme'"
+    >
     </button-sidebar>
     <button-sidebar
-      :sidebarOpen="sidebarOpen"
       icon="icon-cog"
-      text="Settings">
+      text="Settings"
+      href="/admin/settings"
+      :active="pageTitle === 'Settings'"
+    >
     </button-sidebar>
-    <button :class="['focus:outline-none active:outline-none hover:text-accent-light rounded text-grey-light mb-3 p-2 flex items-center overflow-hidden transition-width', sidebarOpen  ? 'w-full' : 'w-10']"
+    <button class="focus:outline-none active:outline-none hover:text-grey text-grey-light py-4 px-6 flex whitespace-no-wrap overflow-hidden"
     @click="sidebarOpen = !sidebarOpen"
     >
       <span>
@@ -48,6 +51,15 @@ export default {
     return {
       sidebarOpen: true,
     }
+  },
+  props: {
+    pageTitle: String
   }
 }
 </script>
+
+<style>
+.sidebar {
+  top: 50px;
+}
+</style>

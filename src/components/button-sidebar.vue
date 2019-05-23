@@ -1,5 +1,5 @@
 <template>
-  <a :href="href" :class="['focus:outline-none active:outline-none bg-accent-lighter rounded text-accent mb-3 p-2 flex items-center overflow-hidden transition-width no-underline', sidebarOpen  ? 'w-full' : 'w-10']">
+  <a :href="href" :class="['focus:outline-none active:outline-none hover:text-grey hover:border-grey p-4 border-l-4 overflow-hidden no-underline flex whitespace-no-wrap', active ? 'text-grey border-grey' : 'text-grey-light border-grey-light']">
     <span>
       <component :is="icon" width="20" height="20"/>
     </span>
@@ -21,10 +21,10 @@ export default {
     "icon-devices": IconDevices,
   },
   props: {
-    sidebarOpen: Boolean,
     text: String,
     icon: String,
     href: String,
+    active: Boolean
   }
 }
 </script>

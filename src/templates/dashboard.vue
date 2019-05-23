@@ -1,37 +1,18 @@
-
 <template>
-  <div id="app" class="w-full flex flex-row">
-    <sidebar></sidebar>
-    <main class="flex-grow">
-      <header class="w-full flex bg-white shadow">
-        <div class="w-1/2 px-4">
-          {{ site.name }}
-        </div>
-        <div class="w-1/2 px-4 text-right">
-          <a href="/admin/logout">Logout</a>
-        </div>
-      </header>
-    </main>
-  </div>
+  <admin-container>
+    <section class="p-6">
+      <h2>Test</h2>
+    </section>
+  </admin-container>
 </template>
 
 <script>
-import Sidebar from '../snippets/sidebar.vue';
+import AdminContainer from '../snippets/admin-container.vue';
 
 export default {
   name: 'dashboard',
   components: {
-    "sidebar": Sidebar,
-  },
-  data () {
-    const { site, template, suffix } = window.siteData;
-    return {
-      suffix: suffix,
-      template: template,
-      site: site,
-      sidebarOpen: true
-    }
+    "admin-container": AdminContainer,
   }
 }
 </script>
-<style src="../styles/main.css"></style>
