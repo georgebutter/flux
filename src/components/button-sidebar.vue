@@ -12,11 +12,13 @@
 <script>
 import IconHouse from '../components/icon-house.vue';
 import IconCog from '../components/icon-cog.vue';
+import IconDevices from '../components/icon-devices.vue';
 
 export default {
   components: {
     "icon-house": IconHouse,
     "icon-cog": IconCog,
+    "icon-devices": IconDevices,
   },
   props: {
     sidebarOpen: Boolean,

@@ -1,36 +1,7 @@
 
 <template>
   <div id="app" class="w-full flex flex-row">
-    <aside class="bg-white flex-shrink h-full p-4 z-10 border-r-2 border-grey-lighter">
-      <button-sidebar
-        :sidebarOpen="sidebarOpen"
-        icon="icon-house"
-        text="Dashboard"
-        href="/admin"
-      >
-      </button-sidebar>
-      <button-sidebar
-        :sidebarOpen="sidebarOpen"
-        icon="icon-cog"
-        text="Themes"
-        href="/admin/themes">
-      </button-sidebar>
-      <button-sidebar
-        :sidebarOpen="sidebarOpen"
-        icon="icon-cog"
-        text="Settings">
-      </button-sidebar>
-      <button :class="['focus:outline-none active:outline-none hover:text-accent-light rounded text-grey-light mb-3 p-2 flex items-center overflow-hidden transition-width', sidebarOpen  ? 'w-full' : 'w-10']"
-      @click="sidebarOpen = !sidebarOpen"
-      >
-        <span>
-          <icon-close-menu width="20" height="20"/>
-        </span>
-        <span class="ml-4 whitespace-no-wrap">
-          Toggle Sidebar
-        </span>
-      </button>
-    </aside>
+    <sidebar></sidebar>
     <main class="flex-grow">
       <header class="w-full flex bg-white shadow">
         <div class="w-1/2 px-4">
@@ -45,16 +16,12 @@
 </template>
 
 <script>
-import SideBarButton from '../components/button-sidebar.vue';
-import IconOpenMenu from '../components/icon-open-menu.vue';
-import IconCloseMenu from '../components/icon-close-menu.vue';
+import Sidebar from '../snippets/sidebar.vue';
 
 export default {
   name: 'dashboard',
   components: {
-    "button-sidebar": SideBarButton,
-    "icon-close-menu": IconCloseMenu,
-    "icon-open-menu": IconOpenMenu,
+    "sidebar": Sidebar,
   },
   data () {
     const { site, template, suffix } = window.siteData;

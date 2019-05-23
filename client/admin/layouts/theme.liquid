@@ -14,10 +14,14 @@
     <script defer="defer" src="/admin/assets/{{ template }}.bundle.js"></script>
     <script id="data">
       window.siteData = {
+        page_title: '{{ page_title }}',
         canonical_url: '{{ canonical_url }}',
         template: '{{ template }}',
         suffix: '{{ suffix }}',
-        site: {{ site }}
+        site: {{ site }},
+        {% if themes %}themes: {{ themes }},{% endif %}
+        {% if theme %}theme: '{{ theme }}',{% endif %}
+        {% if fileTree %}fileTree: {{ fileTree }},{% endif %}
       }
     </script>
     {% include 'root' %}

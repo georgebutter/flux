@@ -1,3 +1,5 @@
+// Debugging
+const colors = require('colors');
 // Routing
 const path = require('path');
 const express = require('express');
@@ -27,6 +29,9 @@ const engine = Liquid({
 
 // Data
 const mongoose = require('mongoose');
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 const Staff = require('./models/staff').Staff;
 const Site = require('./models/site').Site;
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/cms';
@@ -34,7 +39,7 @@ mongoose.connect(mongoURI);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
-  console.log('Connected to database');
+  console.log('[db] Connected to database'.green);
 });
 
 // Middleware
@@ -46,47 +51,57 @@ const env = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 3000;
 const siteHandle = process.env.SITE_HANDLE || 'georgebutter';
 
-// // Ensure we have a themes directory
-// fs.ensureDir(path.resolve(__dirname, repoDir))
-// .then(function() {
-//   // Initialize repository
-//   return git.Repository.init(path.resolve(__dirname, repoDir), 0);
-// })
-// .then(function(repoResult) {
-//   repo = repoResult;
-//   return fs.writeFile(path.join(repo.workdir(), 'log.md'), `theme created: ${Date.now()}`);
-// })
-// .then(function(){
-//   return repo.refreshIndex();
-// })
-// .then(function(idx) {
-//   gitIndex = idx;
-// })
-// .then(function() {
-//   return gitIndex.addAll();
-// })
-// .then(function() {
-//   return gitIndex.write();
-// })
-// .then(function() {
-//   return gitIndex.writeTree();
-// })
-// .then(function(oid) {
-//   var author = git.Signature.now("George Butter",
-//     "threeninenineone@gmail.com");
-//   var committer = git.Signature.now("George Butter",
-//     "butsandcats@github.com");
-//
-//   // Since we're creating an inital commit, it has no parents. Note that unlike
-//   // normal we don't get the head either, because there isn't one yet.
-//   return repo.createCommit("HEAD", author, committer, "message", oid, []);
-// })
-// .then(function(commitId) {
-//   console.log("New Commit: ", commitId);
-//   repo.createBranch('master', commitId, force);
-// })
+// Ensure that git has been setup for Themes
+git.Repository.open(path.resolve(__dirname, repoDir))
+.then(function(repoResult) {
+  console.log('[git] Repository found'.blue);
+  repo = repoResult;
+})
+.catch(function() {
+  console.log('[git] Creating repository'.blue);
+  // Create themes git
+  // Ensure we have a themes directory
+  fs.ensureDir(path.resolve(__dirname, repoDir))
+  .then(function() {
+    // Initialize repository
+    return git.Repository.init(path.resolve(__dirname, repoDir), 0);
+  })
+  .then(function(repoResult) {
+    repo = repoResult;
+    return fs.writeFile(path.join(repo.workdir(), 'log.md'), `theme created: ${Date.now()}`);
+  })
+  .then(function(){
+    return repo.refreshIndex();
+  })
+  .then(function(idx) {
+    gitIndex = idx;
+  })
+  .then(function() {
+    return gitIndex.addAll(['.']);
+  })
+  .then(function() {
+    return gitIndex.write();
+  })
+  .then(function() {
+    return gitIndex.writeTree();
+  })
+  .then(function(oid) {
+    var author = git.Signature.now('George Butter',
+      'threeninenineone@gmail.com');
+    var committer = git.Signature.now('George Butter',
+      'butsandcats@github.com');
 
-console.log(`Environment: ${env}`)
+    // Since we're creating an inital commit, it has no parents. Note that unlike
+    // normal we don't get the head either, because there isn't one yet.
+    return repo.createCommit("HEAD", author, committer, ":sparkles: Initial commit", oid, []);
+  })
+  .then(function(commitId) {
+    console.log(`[git] New Commit: ${commitId}`.blue);
+    repo.createBranch('master', commitId, true);
+  })
+});
+
+console.log(`[status] Environment: ${env}`.grey)
 if (env === 'development') {
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -120,12 +135,11 @@ app.set('view engine', 'liquid');
 // Get site data
 Site.findOne(null, (err, site) => {
   this.site = site;
-  console.log(this.site)
   this.installed = null;
   if (this.site) {
     this.installed = this.site.installed;
   }
-  console.log(`Installed: ${this.installed}`)
+  console.log(`[status] Installed: ${this.installed}`.grey)
   app.get('/admin/style-guide', (req, res, next) => {
     setViews('admin');
 
@@ -136,7 +150,7 @@ Site.findOne(null, (err, site) => {
       template: 'style-guide'
     });
   });
-  console.log(`installed: ${this.installed}`)
+
   if (this.installed) {
     app.get('/', (req, res) => {
       setViews('theme');
@@ -151,9 +165,6 @@ Site.findOne(null, (err, site) => {
 
     app.get('/admin', (req, res, next) => {
       setViews('admin');
-
-      console.log(`installed: ${this.installed}`);
-      console.log(req.session.userId);
       const errors = [];
       Staff.findById(req.session.userId, (error, user) => {
         if (error) {
@@ -190,19 +201,121 @@ Site.findOne(null, (err, site) => {
           errors.push({
             message: 'Username or password could not be found.'
           })
-          return res.render('login', {
-            site: this.site,
-            page_title: 'Admin',
-            canonical_url: canoncalUrl(req),
-            template: 'login',
-            errors: errors,
-            user: user
-          });
+          return res.redirect('/admin');
         } else {
           req.session.userId = user._id;
           return res.redirect('/admin');
         }
       });
+    })
+
+    app.get('/admin/themes', (req, res, next) => {
+      setViews('admin');
+      const errors = [];
+      const site = this.site;
+      // Get files list
+      repo.getReferenceNames(1).then(function(branchRefs) {
+        const themes = branchRefs.map((branchRef) => branchRef.replace('refs/heads/', ''))
+        console.log(`[status] ${themes.join(', ')}`.grey);
+        Staff.findById(req.session.userId, (error, user) => {
+          if (error) {
+            return next(error);
+          } else {
+            if (user === null) {
+              return res.redirect('/admin');
+            } else {
+              return res.render('themes', {
+                site: site,
+                page_title: 'Themes',
+                canonical_url: canoncalUrl(req),
+                template: 'themes',
+                errors: errors,
+                user: user,
+                themes: themes
+              });
+            }
+          }
+        });
+      })
+    })
+
+    app.get('/admin/themes/:theme', (req, res, next) => {
+      setViews('admin');
+      const errors = [];
+      const fileTree = {
+        assets: [],
+        layouts: [],
+        templates: [],
+        snippets: [],
+      };
+      git.Repository.open(path.resolve(__dirname, repoDir))
+      .then(function(repo) {
+        return repo.getMasterCommit();
+      })
+      .then(function(firstCommitOnMaster) {
+        return firstCommitOnMaster.getTree();
+      })
+      .then(function(tree) {
+        // `walk()` returns an event.
+        var walker = tree.walk();
+        walker.on('entry', function(entry) {
+          const paths = entry.path().split('/')
+          if (paths.length === 2) {
+            const parent = paths[0];
+            const child = paths[1]
+            fileTree[parent].push(child);
+          }
+        });
+        walker.start();
+      })
+      .done(function() {
+        Staff.findById(req.session.userId, (error, user) => {
+          if (error) {
+            return next(error);
+          } else {
+            if (user === null) {
+              return res.redirect('/admin');
+            } else {
+              return res.render('theme', {
+                site: site,
+                page_title: 'Theme',
+                canonical_url: canoncalUrl(req),
+                template: 'theme',
+                errors: errors,
+                user: user,
+                theme: req.params.theme,
+                fileTree: fileTree
+              });
+            }
+          }
+        });
+      });
+    });
+
+    app.get('/admin/themes/:theme/:key/:file.json', (req, res, next) => {
+      setViews('admin');
+      const { theme, key, file } = req.params;
+      console.log({ theme, key, file })
+      git.Repository.open(path.resolve(__dirname, repoDir))
+      .then(function(repo) {
+        return repo.getMasterCommit();
+      })
+      .then(function(commit) {
+        return commit.getEntry(`${key}/${file}`);
+      })
+      .then(function(entry) {
+        _entry = entry;
+        return _entry.getBlob();
+      })
+      .then(function(blob) {
+        return res.json({
+          url: `${key}/${file}`,
+          format: `${file.split('.')[1]}`,
+          file: blob.toString()
+        });
+      })
+      .done();
+
     })
 
     app.get('/admin/logout', (req, res, next) => {
@@ -221,7 +334,6 @@ Site.findOne(null, (err, site) => {
     });
 
   } else {
-    console.log('not installed')
     app.get('/', (req, res) => {
       setViews('admin');
       res.redirect('/install');
@@ -229,9 +341,7 @@ Site.findOne(null, (err, site) => {
 
     app.get('/install', (req, res, next) => {
       setViews('admin');
-      console.log(this.site)
       if (!this.site) {
-        console.log('install');
         res.render('install', {
           site: this.site,
           page_title: 'Install - Create site',
@@ -241,7 +351,6 @@ Site.findOne(null, (err, site) => {
           errors: null,
         });
       } else {
-        console.log('install-admin');
         res.render('install-admin', {
           site: this.site,
           page_title: 'Install - Create admin',
@@ -255,7 +364,6 @@ Site.findOne(null, (err, site) => {
 
     app.post('/install/site', (req, res, next) => {
       setViews('admin');
-      console.log('POST: /install/site');
       if (this.site) {
         return res.render('error', {
           site: this.site,
@@ -269,7 +377,7 @@ Site.findOne(null, (err, site) => {
         description,
         email
       } = req.body;
-      console.log(req)
+
       const form = {
         name,
         description,
@@ -301,7 +409,6 @@ Site.findOne(null, (err, site) => {
           });
         }
       }
-      console.log(errors)
       if (errors.length) {
         return res.render('install', {
           site: this.site,
@@ -321,7 +428,7 @@ Site.findOne(null, (err, site) => {
           form: form
         }
 
-        console.log('saving site to database')
+        console.log('[db] Saving site to database'.green)
         Site.create(siteData, (error, site) => {
           if (error) {
             errors.push({ message: error });
@@ -349,7 +456,6 @@ Site.findOne(null, (err, site) => {
         password,
         confirm
       } = req.body;
-      console.log(req.body)
       const form = {
         username,
         email,
@@ -394,8 +500,6 @@ Site.findOne(null, (err, site) => {
         });
       }
       if (errors.length) {
-        console.log('errors');
-        console.log(errors);
         return res.render('install', {
           site: this.site,
           page_title: 'Install - Create admin',
@@ -413,7 +517,6 @@ Site.findOne(null, (err, site) => {
           confirm: confirm
         }
         Staff.create(userData, (error, user) => {
-          console.log(user)
           if (error) {
             return res.render('install', {
               site: this.site,
@@ -424,10 +527,9 @@ Site.findOne(null, (err, site) => {
             });
           } else {
             req.session.userId = user._id;
-            console.log('setting installed to true')
             this.installed = true;
             Site.updateOne({}, {$set: {"installed": true}}, () => {
-              console.log('updated site to installed')
+              console.log('[db] Updated site to installed'.green);
               return res.redirect('/admin');
             })
 
@@ -441,14 +543,13 @@ Site.findOne(null, (err, site) => {
     setViews('admin');
 
     Staff.deleteMany({}, (err) => {
-      console.log('staff deleted')
+      console.log('[db] staff deleted'.green);
       if (err) {
         console.error(err);
         return res.send(JSON.stringify(err));
       }
-      console.log('deleting site')
       Site.deleteMany({}, (error) => {
-        console.log('site deleted')
+        console.log('[db] Site deleted'.green);
         if (error) {
           return res.send(JSON.stringify(error));
         }
@@ -456,7 +557,6 @@ Site.findOne(null, (err, site) => {
           if (err) {
             return res.send(JSON.stringify(err));
           }
-          console.log('redirecting to /install')
           this.site = null;
           this.installed = null;
           return res.redirect('/install');
@@ -479,7 +579,7 @@ Site.findOne(null, (err, site) => {
 });
 
 // Listen on port
-app.listen(port, () => console.log(`George Butter site is live! 🚀`));
+app.listen(port, () => console.log(`[status] Site is live! 🚀`.grey));
 
 function canoncalUrl(req) {
   return `${req.protocol}${req.protocol ? '://' : '' }${req.hostname}${req.path}`;

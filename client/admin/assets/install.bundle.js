@@ -64,7 +64,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "29975e3e4330eabe3bad";
+/******/ 	var hotCurrentHash = "ffbd852f69e8a312c905";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -927,6 +927,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -939,7 +943,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     disabled: Boolean,
-    loading: Boolean
+    loading: Boolean,
+    href: String
   }
 });
 
@@ -5531,25 +5536,45 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "button",
-    {
-      class: [
-        "py-2 px-10 inline-block rounded focus:outline-none active:outline-none border-2",
-        _vm.disabled
-          ? "bg-grey-lighter text-grey-light cursor-not-allowed border-grey-lighter"
-          : "bg-accent text-white hover:bg-accent-lighter hover:border-accent-lighter hover:text-accent border-accent"
-      ],
-      attrs: { disabled: _vm.disabled },
-      on: { click: _vm.toggleLoading }
-    },
-    [
-      !_vm.loading ? _vm._t("default") : _vm._e(),
-      _vm._v(" "),
-      _vm.loading ? _c("loader") : _vm._e()
-    ],
-    2
-  )
+  return _vm.href !== ""
+    ? _c(
+        "a",
+        {
+          class: [
+            "py-2 px-10 inline-block rounded focus:outline-none active:outline-none border-2 no-underline",
+            _vm.disabled
+              ? "bg-grey-lighter text-grey-light cursor-not-allowed border-grey-lighter"
+              : "bg-accent text-white hover:bg-accent-lighter hover:border-accent-lighter hover:text-accent border-accent"
+          ],
+          attrs: { href: _vm.href, disabled: _vm.disabled },
+          on: { click: _vm.toggleLoading }
+        },
+        [
+          !_vm.loading ? _vm._t("default") : _vm._e(),
+          _vm._v(" "),
+          _vm.loading ? _c("loader") : _vm._e()
+        ],
+        2
+      )
+    : _c(
+        "button",
+        {
+          class: [
+            "py-2 px-10 inline-block rounded focus:outline-none active:outline-none border-2",
+            _vm.disabled
+              ? "bg-grey-lighter text-grey-light cursor-not-allowed border-grey-lighter"
+              : "bg-accent text-white hover:bg-accent-lighter hover:border-accent-lighter hover:text-accent border-accent"
+          ],
+          attrs: { disabled: _vm.disabled },
+          on: { click: _vm.toggleLoading }
+        },
+        [
+          !_vm.loading ? _vm._t("default") : _vm._e(),
+          _vm._v(" "),
+          _vm.loading ? _c("loader") : _vm._e()
+        ],
+        2
+      )
 }
 var staticRenderFns = []
 render._withStripped = true
