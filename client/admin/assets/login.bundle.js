@@ -64,7 +64,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "3ffebb5aac963104a72b";
+/******/ 	var hotCurrentHash = "752e8795ae0547ad8821";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -3868,7 +3868,7 @@ var render = function() {
         "a",
         {
           class: [
-            "py-2 px-10 inline-block rounded focus:outline-none active:outline-none border-2 no-underline",
+            "py-2 px-10 inline-block rounded-full focus:outline-none active:outline-none border-2 no-underline",
             _vm.disabled
               ? "bg-grey-lighter text-grey-light cursor-not-allowed border-grey-lighter"
               : "bg-accent text-white hover:bg-accent-lighter hover:border-accent-lighter hover:text-accent border-accent"
@@ -3887,7 +3887,7 @@ var render = function() {
         "button",
         {
           class: [
-            "py-2 px-10 inline-block rounded focus:outline-none active:outline-none border-2",
+            "py-2 px-10 inline-block rounded-full focus:outline-none active:outline-none border-2",
             _vm.disabled
               ? "bg-grey-lighter text-grey-light cursor-not-allowed border-grey-lighter"
               : "bg-accent text-white hover:bg-accent-lighter hover:border-accent-lighter hover:text-accent border-accent"

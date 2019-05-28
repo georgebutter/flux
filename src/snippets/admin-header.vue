@@ -12,8 +12,13 @@
 </template>
 
 <script>
+import Logo from '../components/logo.vue';
+
 export default {
   name: 'admin-header',
+  components: {
+    "logo": Logo,
+  },
   props: {
     site: Object
   }

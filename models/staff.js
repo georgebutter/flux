@@ -31,7 +31,6 @@ var StaffSchema = new mongoose.Schema({
 StaffSchema.statics.authenticate = function (username, password, callback) {
   Staff.findOne({ username: username })
     .exec(function (err, user) {
-      console.log(err, user)
       if (err) {
         return callback(err)
       } else if (!user) {
@@ -41,7 +40,6 @@ StaffSchema.statics.authenticate = function (username, password, callback) {
       }
 
       bcrypt.compare(password, user.password, function (err, result) {
-        console.log(result)
         if (result === true) {
           return callback(null, user);
         } else {
