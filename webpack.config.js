@@ -8,9 +8,13 @@ module.exports = {
     'style-guide': './src/style-guide.js',
     'themes': './src/themes.js',
     'theme': './src/theme.js',
+    'settings': './src/settings.js',
+    'apps': './src/apps.js',
+    'users': './src/users.js',
     'admin': './src/admin.js',
     'login': './src/login.js',
     'dashboard': './src/dashboard.js',
+    '404': './src/404.js',
   },
   devtool: 'source-map',
   plugins: [

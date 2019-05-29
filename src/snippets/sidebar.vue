@@ -5,22 +5,31 @@
       text="Dashboard"
       href="/admin"
       :active="pageTitle === 'Dashboard'"
-    >
-    </button-sidebar>
+    />
+    <button-sidebar
+      icon="icon-users"
+      text="Users"
+      href="/admin/users"
+      :active="pageTitle === 'Users'"
+    />
     <button-sidebar
       icon="icon-devices"
       text="Themes"
       href="/admin/themes"
       :active="pageTitle === 'Themes' || pageTitle === 'Theme'"
-    >
-    </button-sidebar>
+    />
+    <button-sidebar
+      icon="icon-apps"
+      text="Apps"
+      href="/admin/apps"
+      :active="pageTitle === 'Apps'"
+    />
     <button-sidebar
       icon="icon-cog"
       text="Settings"
       href="/admin/settings"
       :active="pageTitle === 'Settings'"
-    >
-    </button-sidebar>
+    />
     <button class="focus:outline-none active:outline-none hover:text-grey text-grey-light py-4 px-6 flex whitespace-no-wrap overflow-hidden"
     @click="sidebarOpen = !sidebarOpen"
     >

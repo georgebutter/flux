@@ -44,6 +44,66 @@ exports.getDashboard = (req, res, next) => {
   });
 }
 
+exports.getUsers = (req, res, next) => {
+  setViews(req.app);
+  const site = req.app.get('site');
+  const errors = [];
+  Staff.findById(req.session.userId, (error, user) => {
+    if (user) {
+      return res.render('users', {
+        site: site,
+        page_title: 'Users',
+        canonical_url: canoncalUrl(req),
+        template: 'users',
+        errors: errors,
+        user: user,
+      });
+    } else {
+      return res.redirect('/admin');
+    }
+  });
+}
+
+exports.getApps = (req, res, next) => {
+  setViews(req.app);
+  const site = req.app.get('site');
+  const errors = [];
+  Staff.findById(req.session.userId, (error, user) => {
+    if (user) {
+      return res.render('apps', {
+        site: site,
+        page_title: 'Apps',
+        canonical_url: canoncalUrl(req),
+        template: 'apps',
+        errors: errors,
+        user: user,
+      });
+    } else {
+      return res.redirect('/admin');
+    }
+  });
+}
+
+exports.getSettings = (req, res, next) => {
+  setViews(req.app);
+  const site = req.app.get('site');
+  const errors = [];
+  Staff.findById(req.session.userId, (error, user) => {
+    if (user) {
+      return res.render('settings', {
+        site: site,
+        page_title: 'Settings',
+        canonical_url: canoncalUrl(req),
+        template: 'settings',
+        errors: errors,
+        user: user,
+      });
+    } else {
+      return res.redirect('/admin');
+    }
+  });
+}
+
 exports.getThemes = (req, res, next) => {
   setViews(req.app);
   const errors = [];
@@ -186,7 +246,7 @@ exports.logout = (req, res, next) => {
   return res.redirect('/');
 }
 
-exports.postLogin = (req, res, next) => {
+exports.postLogin = (req, res) => {
   const errors = [];
   Staff.authenticate(req.body.username, req.body.password, (error, user) => {
     if (error || !user) {
@@ -198,6 +258,17 @@ exports.postLogin = (req, res, next) => {
       req.session.userId = user._id;
       return res.redirect('/admin');
     }
+  });
+}
+
+exports.get404 = (req, res) => {
+  setViews(req.app);
+  return res.render('404', {
+    site: req.app.get('site'),
+    page_title: '404',
+    canonical_url: canoncalUrl(req),
+    template: '404',
+    errors: ['404 - Page not found']
   });
 }
 

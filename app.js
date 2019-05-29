@@ -89,7 +89,10 @@ Site.findOne()
 // Admin GET
 app.get('/admin/style-guide', adminController.getStyleGuide);
 app.get('/admin', adminController.getDashboard);
-app.get('/admin/themes', adminController.getThemes)
+app.get('/admin/themes', adminController.getThemes);
+app.get('/admin/users', adminController.getUsers);
+app.get('/admin/settings', adminController.getSettings);
+app.get('/admin/apps', adminController.getApps);
 app.get('/admin/themes/:theme', adminController.getTheme);
 app.get('/admin/logout', adminController.logout);
 app.get('/admin/delete', adminController.deleteSite);
@@ -107,6 +110,7 @@ app.post('/install/site', installController.postSite);
 app.post('/install/admin', installController.postAdmin);
 
 // 404
+app.get('/admin/*', adminController.get404);
 app.get('*', themeController.get404);
 
 // Listen on port

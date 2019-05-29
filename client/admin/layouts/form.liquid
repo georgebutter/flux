@@ -24,7 +24,7 @@
     {% include 'root' %}
   </head>
   <body class="bg-grey-lightest min-h-full font-sans flex">
-    <main id="{{ template }}">
+    <main id="{% if template == '404' %}FourOhFour{% else %}{{ template }}{% endif %}">
       <noscript>
         {% block 'content' %}
           <h1>Admin</h1>
