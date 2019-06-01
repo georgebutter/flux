@@ -10,6 +10,7 @@ module.exports = {
     'theme': './src/theme.js',
     'settings': './src/settings.js',
     'apps': './src/apps.js',
+    'create-app': './src/create-app.js',
     'users': './src/users.js',
     'admin': './src/admin.js',
     'login': './src/login.js',

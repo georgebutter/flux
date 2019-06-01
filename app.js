@@ -3,6 +3,7 @@ const colors = require('colors');
 // Routing
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 // Authentication
 const session = require('express-session');
@@ -58,6 +59,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/assets', express.static(`${__dirname}/client/theme/assets`));
 app.use('/admin/assets', express.static(`${__dirname}/client/admin/assets`));
 
+// enabling CORS for all requests
+app.use(cors());
+
 // Setup liquid rendering
 const Liquid = require('liquidjs');
 const engine = Liquid({
@@ -93,13 +97,16 @@ app.get('/admin/themes', adminController.getThemes);
 app.get('/admin/users', adminController.getUsers);
 app.get('/admin/settings', adminController.getSettings);
 app.get('/admin/apps', adminController.getApps);
+app.get('/admin/apps/create', adminController.getAppsCreate);
 app.get('/admin/themes/:theme', adminController.getTheme);
 app.get('/admin/logout', adminController.logout);
 app.get('/admin/delete', adminController.deleteSite);
 // Admin API
 app.get('/admin/themes/:theme/:key/:file.json', adminController.getFileJson);
 // Admin POST
-app.post('/admin', adminController.postLogin)
+app.post('/admin', adminController.postLogin);
+app.post('/admin/apps/create', adminController.postCreateApp);
+
 
 // Theme Routes
 app.get('/', themeController.getHome);

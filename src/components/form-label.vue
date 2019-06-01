@@ -1,3 +1,6 @@
 <template>
-<label class="visually-hidden">Email</label>
+<label class="visually-hidden">
+  <slot>
+  </slot>
+</label>
 </template>

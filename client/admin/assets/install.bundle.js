@@ -64,7 +64,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "0941b949f628de1a2d90";
+/******/ 	var hotCurrentHash = "16e8c32422b398a9cdfd";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -2663,7 +2663,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("label", { staticClass: "visually-hidden" }, [_vm._v("Email")])
+  return _c("label", { staticClass: "visually-hidden" }, [_vm._t("default")], 2)
 }
 var staticRenderFns = []
 render._withStripped = true

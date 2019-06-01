@@ -22,7 +22,7 @@
       icon="icon-apps"
       text="Apps"
       href="/admin/apps"
-      :active="pageTitle === 'Apps'"
+      :active="pageTitle === 'Apps' || pageTitle === 'Create a new app'"
     />
     <button-sidebar
       icon="icon-cog"

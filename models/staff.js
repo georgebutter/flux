@@ -49,7 +49,6 @@ StaffSchema.statics.authenticate = function (username, password, callback) {
     });
 }
 
-
 // Hashing a password before saving it to the database
 StaffSchema.pre('save', function (next) {
   var user = this;
