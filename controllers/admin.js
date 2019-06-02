@@ -294,6 +294,25 @@ exports.getFileJson = (req, res, next) => {
   .done();
 }
 
+exports.getFile = (req, res, next) => {
+  const { theme, key, file } = req.params;
+  git.Repository.open(path.resolve(repoDir))
+  .then(function(repo) {
+    return repo.getMasterCommit();
+  })
+  .then(function(commit) {
+    return commit.getEntry(`${key}/${file}`);
+  })
+  .then(function(entry) {
+    _entry = entry;
+    return _entry.getBlob();
+  })
+  .then(function(blob) {
+    return res.send(blob.toString());
+  })
+  .done();
+}
+
 exports.logout = (req, res, next) => {
   if (req.session) {
     // Delete session object
