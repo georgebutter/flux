@@ -64,7 +64,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "16e8c32422b398a9cdfd";
+/******/ 	var hotCurrentHash = "bfd7fc244dc7966bc5bf";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -877,7 +877,7 @@ __webpack_require__.r(__webpack_exports__);
     disabled: Boolean,
     loading: Boolean,
     href: {
-      type: String,
+      type: [String, Boolean],
       default: false
     }
   }
@@ -1062,6 +1062,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _snippets_admin_container_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../snippets/admin-container.vue */ "./src/snippets/admin-container.vue");
 /* harmony import */ var _components_primary_button_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/primary-button.vue */ "./src/components/primary-button.vue");
 /* harmony import */ var _components_icon_apps_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/icon-apps.vue */ "./src/components/icon-apps.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3289,30 +3311,67 @@ var render = function() {
       _vm.apps && _vm.apps.length
         ? _c(
             "div",
-            { staticClass: "bg-white rounded shadow-lg p-4" },
-            _vm._l(_vm.apps, function(app) {
-              return _c("div", [
-                _c("div", { staticClass: "flex" }, [
-                  _c("div", { staticClass: "w-1/2" }, [
-                    _c("h2", [_vm._v(_vm._s(app.name))])
+            { staticClass: "bg-white rounded shadow-lg px-4" },
+            [
+              _c(
+                "div",
+                { staticClass: "flex -mx-4 border-b border-grey-lighter" },
+                [
+                  _c("div", { staticClass: "w-1/3 p-4" }, [
+                    _c("h4", [
+                      _vm._v("\n            Private app name\n          ")
+                    ])
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "w-1/2 text-right" },
-                    [
-                      _c(
-                        "primary-button",
-                        { attrs: { href: "/admin/apps/" + app.id } },
-                        [_vm._v("\n              Edit\n            ")]
-                      )
-                    ],
-                    1
-                  )
-                ])
-              ])
-            }),
-            0
+                  _c("div", { staticClass: "w-1/3 p-4" }, [
+                    _c("h4", [_vm._v("\n            API key\n          ")])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "w-1/3 p-4" }, [
+                    _c("h4", [
+                      _vm._v("\n            Contact email\n          ")
+                    ])
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.apps, function(app) {
+                return _c(
+                  "a",
+                  {
+                    staticClass:
+                      "flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black",
+                    attrs: { href: "/admin/apps/" + app._id }
+                  },
+                  [
+                    _c("div", { staticClass: "w-1/3 p-4" }, [
+                      _c("p", { staticClass: "underline-none" }, [
+                        _vm._v(
+                          "\n            " + _vm._s(app.name) + "\n          "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-1/3 p-4" }, [
+                      _c("p", { staticClass: "underline-none" }, [
+                        _vm._v(
+                          "\n            " + _vm._s(app.key) + "\n          "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-1/3 p-4" }, [
+                      _c("p", { staticClass: "underline-none" }, [
+                        _vm._v(
+                          "\n            " + _vm._s(app.email) + "\n          "
+                        )
+                      ])
+                    ])
+                  ]
+                )
+              })
+            ],
+            2
           )
         : _c(
             "div",

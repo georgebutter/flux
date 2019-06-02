@@ -45,7 +45,8 @@ if (env === 'development') {
 
 // Sessions for tracking logins
 app.use(session({
-  secret: 'open up',
+  name: 'session_id',
+  secret: 'oixfbodfijnluh8p934tnkjs',
   resave: true,
   saveUninitialized: false,
   store: new MongoStore({
@@ -98,6 +99,7 @@ app.get('/admin/users', adminController.getUsers);
 app.get('/admin/settings', adminController.getSettings);
 app.get('/admin/apps', adminController.getApps);
 app.get('/admin/apps/create', adminController.getAppsCreate);
+app.get('/admin/apps/:id', adminController.getApp);
 app.get('/admin/themes/:theme', adminController.getTheme);
 app.get('/admin/logout', adminController.logout);
 app.get('/admin/delete', adminController.deleteSite);
@@ -106,6 +108,7 @@ app.get('/admin/themes/:theme/:key/:file.json', adminController.getFileJson);
 // Admin POST
 app.post('/admin', adminController.postLogin);
 app.post('/admin/apps/create', adminController.postCreateApp);
+app.post('/admin/apps/:id/update', adminController.postUpdateApp);
 
 
 // Theme Routes

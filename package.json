@@ -50,6 +50,7 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "tailwindcss-gradients": "^1.1.0",
+    "uuid": "^3.3.2",
     "validator": "^10.11.0",
     "vue-monaco": "^0.3.2"
   },

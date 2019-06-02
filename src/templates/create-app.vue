@@ -2,6 +2,13 @@
   <admin-container>
     <section class="p-6">
       <form action="/admin/apps/create" method="post" autocomplete="off" novalidate>
+        <div class="mb-4" v-if="errors">
+          <ul class="list-reset">
+            <li v-for="error in errors">
+              <note colour="pink">{{ error.message }}</note>
+            </li>
+          </ul>
+        </div>
         <div class="flex mb-4">
           <div class="w-1/3 px-2">
             <h3 class="mb-4 text-grey">
@@ -49,20 +56,24 @@
                   </p>
                 </div>
                 <div class="w-1/4 items-end">
-                  <select-field name="themes" :options="[
-                    {
-                      value: 'none',
-                      text: 'No access'
-                    },
-                    {
-                      value: 'read',
-                      text: 'Read access'
-                    },
-                    {
-                      value: 'readwrite',
-                      text: 'Read and write'
-                    }
-                  ]"/>
+                  <select-field
+                    name="themes"
+                    error="fields.includes('themes')"
+                    :options="[
+                      {
+                        value: 'none',
+                        text: 'No access'
+                      },
+                      {
+                        value: 'read',
+                        text: 'Read access'
+                      },
+                      {
+                        value: 'readwrite',
+                        text: 'Read and write'
+                      }
+                    ]"
+                  />
                 </div>
               </div>
             </div>
@@ -81,6 +92,7 @@
 </template>
 
 <script>
+import Note from '../components/note.vue';
 import PrimaryButton from '../components/primary-button.vue';
 import AdminContainer from '../snippets/admin-container.vue';
 import TextField from '../components/text-field.vue';
@@ -91,6 +103,7 @@ import SelectField from '../components/select-field.vue';
 export default {
   name: 'create-app',
   components: {
+    "note": Note,
     "primary-button": PrimaryButton,
     "admin-container": AdminContainer,
     "text-field": TextField,

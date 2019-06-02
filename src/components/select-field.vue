@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
-    <select @focus="clearError" :name="name" :class="['block appearance-none w-full bg-grey-lightrounded p-2 shadow-lg outline-none text-base border focus:border-grey-lighter border-transparent text-grey', error ? 'border-pink text-pink' : 'border-transparent text-grey']">
-      <option v-for="option in options" :value="option.value">
+    <select @focus="clearError" @change="$emit('onChange', $event)" :name="name" :class="['block appearance-none w-full bg-grey-lightrounded p-2 shadow-lg outline-none text-base border focus:border-grey-lighter border-transparent text-grey', error ? 'border-pink text-pink' : 'border-transparent text-grey']">
+      <option v-for="option in options" :value="option.value" :selected="option.value === selectedValue">
         {{ option.text }}
       </option>
     </select>
@@ -26,8 +26,9 @@ export default {
     }
   },
   props: {
-    options: String,
+    options: Array,
     name: String,
+    selectedValue: String,
     error: Boolean
   }
 }

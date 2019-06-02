@@ -4,10 +4,12 @@ const { App } = require('../models/app');
 
 const path = require('path');
 const git = require('nodegit');
-const crypto = require('crypto');
+const uuidV4 = require('uuid/v4');
+const validator = require('validator');
+const colors = require('colors');
+
 const repoDir = './client/theme';
 
-const colors = require('colors');
 
 exports.getStyleGuide = (req, res, next) => {
   setViews(req.app);
@@ -72,18 +74,52 @@ exports.getApps = (req, res, next) => {
   setViews(req.app);
   const site = req.app.get('site');
   const errors = [];
-  Staff.findById(req.session.userId, (error, user) => {
-    if (user) {
-      return res.render('apps', {
-        site: site,
-        page_title: 'Apps',
-        canonical_url: canoncalUrl(req),
-        template: 'apps',
-        errors: errors,
-        user: user,
-      });
+  App.find({}, function(err, apps) {
+    if (err) {
+      throw err;
     } else {
-      return res.redirect('/admin');
+      Staff.findById(req.session.userId, (error, user) => {
+        if (user) {
+          return res.render('apps', {
+            site: site,
+            page_title: 'Apps',
+            canonical_url: canoncalUrl(req),
+            template: 'apps',
+            errors: errors,
+            user: user,
+            apps: apps
+          });
+        } else {
+          return res.redirect('/admin');
+        }
+      });
+    }
+  });
+}
+
+exports.getApp = (req, res, next) => {
+  setViews(req.app);
+  const site = req.app.get('site');
+  const errors = [];
+  App.findById(req.params.id, function(err, app) {
+    if (err) {
+      throw err;
+    } else {
+      Staff.findById(req.session.userId, (error, user) => {
+        if (user) {
+          return res.render('app', {
+            site: site,
+            page_title: 'Apps',
+            canonical_url: canoncalUrl(req),
+            template: 'app',
+            errors: errors,
+            user: user,
+            app: app
+          });
+        } else {
+          return res.redirect('/admin');
+        }
+      });
     }
   });
 }
@@ -289,13 +325,18 @@ exports.postLogin = (req, res) => {
 
 exports.postCreateApp = (req, res) => {
   console.log('[route] POST /admin/apps/create'.cyan)
+  const site = req.app.get('site');
   const errors = [];
   const {
     name,
     email,
     themes
   } = req.body;
-
+  const form = {
+    name,
+    email,
+    themes
+  }
   if (!name) {
     errors.push({
       message: 'Please provide an app name',
@@ -313,16 +354,129 @@ exports.postCreateApp = (req, res) => {
       field: 'email'
     });
   }
-  if (themes !== 'none' || themes !== 'read' || themes !== 'readwrite') {
+  if (themes !== 'none' && themes !== 'read' && themes !== 'readwrite') {
     errors.push({
       message: 'Invalid permissions for themes',
       field: 'themes'
     })
   }
-  const key = crypto.createHash('MD5');
-  const password = crypto.createHash('MD5');
-  console.log(key.digest('hex'));
-  console.log(password.digest('hex'));
+  const key = uuidV4();
+  const password = uuidV4();
+  if (errors.length) {
+    Staff.findById(req.session.userId, (error, user) => {
+      setViews(req.app);
+      return res.render('apps', {
+        site: site,
+        page_title: 'Create a new app',
+        canonical_url: canoncalUrl(req),
+        template: 'create-app',
+        errors: errors,
+        user: user,
+        form: form
+      });
+    });
+  } else {
+    console.log('[status] Creating new app'.grey)
+    App.create({
+      name,
+      email,
+      key,
+      password,
+      themes
+    }, (error, app) => {
+      console.error(error)
+      if (error) {
+        errors.push({ message: error });
+        Staff.findById(req.session.userId, (error, user) => {
+          setViews(req.app);
+          return res.render('apps', {
+            site: site,
+            page_title: 'Create a new app',
+            canonical_url: canoncalUrl(req),
+            template: 'create-app',
+            errors: errors,
+            user: user,
+            form: form
+          });
+        });
+      } else {
+        return res.redirect('/admin/apps');
+      }
+    });
+  }
+}
+
+exports.postUpdateApp = (req, res) => {
+  const site = req.app.get('site');
+  const errors = [];
+  const {
+    name,
+    email,
+    themes
+  } = req.body;
+  const form = {
+    name,
+    email,
+    themes
+  }
+  if (!name) {
+    errors.push({
+      message: 'Please provide an app name',
+      field: 'name'
+    });
+  }
+  if (!email) {
+    errors.push({
+      message: 'Please provide an emergency developer email',
+      field: 'email'
+    });
+  } else if (!validator.isEmail(email)) {
+    errors.push({
+      message: 'Please provide a valid email address',
+      field: 'email'
+    });
+  }
+  if (themes !== 'none' && themes !== 'read' && themes !== 'readwrite') {
+    errors.push({
+      message: 'Invalid permissions for themes',
+      field: 'themes'
+    })
+  }
+  if (errors.length) {
+    App.findById(req.params.id, function(err, app) {
+      if (err) {
+        throw err;
+      } else {
+        Staff.findById(req.session.userId, (error, user) => {
+          if (user) {
+            setViews(req.app);
+            return res.render('app', {
+              site: site,
+              page_title: 'Apps',
+              canonical_url: canoncalUrl(req),
+              template: 'app',
+              errors: errors,
+              user: user,
+              app: app
+            });
+          } else {
+            return res.redirect('/admin');
+          }
+        });
+      }
+    });
+  } else {
+    console.log(req.params)
+    App.updateOne({ _id: req.params.id }, {
+      $set: {
+        name: req.body.name,
+        email: req.body.email,
+        themes: req.body.themes
+      }
+    }).then(result => {
+      return res.redirect('/admin/apps/' + req.params.id);
+    });
+  }
 }
 
 exports.get404 = (req, res) => {

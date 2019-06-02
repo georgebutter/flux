@@ -64,7 +64,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "16e8c32422b398a9cdfd";
+/******/ 	var hotCurrentHash = "bfd7fc244dc7966bc5bf";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -865,7 +865,8 @@ __webpack_require__.r(__webpack_exports__);
     name: String,
     value: String,
     placeholder: String,
-    disabled: Boolean
+    disabled: Boolean,
+    readonly: Boolean
   }
 });
 
@@ -906,7 +907,7 @@ __webpack_require__.r(__webpack_exports__);
     disabled: Boolean,
     loading: Boolean,
     href: {
-      type: String,
+      type: [String, Boolean],
       default: false
     }
   }
@@ -1003,7 +1004,8 @@ __webpack_require__.r(__webpack_exports__);
     placeholder: String,
     value: String,
     name: String,
-    error: Boolean
+    error: Boolean,
+    readonly: Boolean
   }
 });
 
@@ -3018,6 +3020,7 @@ var render = function() {
             disabled: _vm.disabled,
             placeholder: _vm.placeholder,
             name: _vm.name,
+            readonly: _vm.readonly,
             type: "checkbox"
           },
           domProps: {
@@ -3061,6 +3064,7 @@ var render = function() {
             disabled: _vm.disabled,
             placeholder: _vm.placeholder,
             name: _vm.name,
+            readonly: _vm.readonly,
             type: "radio"
           },
           domProps: { checked: _vm._q(_vm.value, null) },
@@ -3085,6 +3089,7 @@ var render = function() {
             disabled: _vm.disabled,
             placeholder: _vm.placeholder,
             name: _vm.name,
+            readonly: _vm.readonly,
             type: _vm.view ? "text" : "password"
           },
           domProps: { value: _vm.value },
@@ -3276,9 +3281,19 @@ var render = function() {
         "rounded p-2 w-full shadow-lg outline-none text-base border focus:border-grey-lighter",
         _vm.error ? "border-pink text-pink" : "border-transparent text-grey"
       ],
-      attrs: { name: _vm.name, placeholder: _vm.placeholder, type: "text" },
+      attrs: {
+        name: _vm.name,
+        placeholder: _vm.placeholder,
+        readonly: _vm.readonly,
+        type: "text"
+      },
       domProps: { value: _vm.value },
-      on: { focus: _vm.clearError }
+      on: {
+        focus: _vm.clearError,
+        input: function($event) {
+          _vm.$emit("onInput", $event)
+        }
+      }
     }),
     _vm._v(" "),
     _c(

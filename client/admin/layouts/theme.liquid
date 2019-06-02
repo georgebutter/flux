@@ -19,8 +19,10 @@
         template: '{{ template }}',
         suffix: '{{ suffix }}',
         site: {{ site }},
+        {% if errors %}errors: {{ errors }},{% endif %}
         {% if form %}form: {{ form }},{% endif %}
         {% if apps %}apps: {{ apps }},{% endif %}
+        {% if app %}app: {{ app }},{% endif %}
         {% if themes %}themes: {{ themes }},{% endif %}
         {% if theme %}theme: '{{ theme }}',{% endif %}
         {% if fileTree %}fileTree: {{ fileTree }},{% endif %}

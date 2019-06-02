@@ -9,6 +9,7 @@ module.exports = {
     'themes': './src/themes.js',
     'theme': './src/theme.js',
     'settings': './src/settings.js',
+    'app': './src/app.js',
     'apps': './src/apps.js',
     'create-app': './src/create-app.js',
     'users': './src/users.js',

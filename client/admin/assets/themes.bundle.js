@@ -64,7 +64,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "16e8c32422b398a9cdfd";
+/******/ 	var hotCurrentHash = "bfd7fc244dc7966bc5bf";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -877,7 +877,7 @@ __webpack_require__.r(__webpack_exports__);
     disabled: Boolean,
     loading: Boolean,
     href: {
-      type: String,
+      type: [String, Boolean],
       default: false
     }
   }

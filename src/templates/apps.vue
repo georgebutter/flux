@@ -1,19 +1,41 @@
 <template>
   <admin-container>
     <section class="p-6">
-      <div v-if="apps && apps.length" class="bg-white rounded shadow-lg p-4">
-        <div v-for="app in apps">
-          <div class="flex">
-            <div class="w-1/2">
-              <h2>{{ app.name }}</h2>
-            </div>
-            <div class="w-1/2 text-right">
-              <primary-button :href="'/admin/apps/' + app.id">
-                Edit
-              </primary-button>
-            </div>
+      <div v-if="apps && apps.length" class="bg-white rounded shadow-lg px-4">
+        <div class="flex -mx-4 border-b border-grey-lighter">
+          <div class="w-1/3 p-4">
+            <h4>
+              Private app name
+            </h4>
+          </div>
+          <div class="w-1/3 p-4">
+            <h4>
+              API key
+            </h4>
+          </div>
+          <div class="w-1/3 p-4">
+            <h4>
+              Contact email
+            </h4>
           </div>
         </div>
+        <a :href="'/admin/apps/' + app._id" class="flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black" v-for="app in apps">
+          <div class="w-1/3 p-4">
+            <p class="underline-none">
+              {{ app.name }}
+            </p>
+          </div>
+          <div class="w-1/3 p-4">
+            <p class="underline-none">
+              {{ app.key }}
+            </p>
+          </div>
+          <div class="w-1/3 p-4">
+            <p class="underline-none">
+              {{ app.email }}
+            </p>
+          </div>
+        </a>
       </div>
       <div class="p-4 text-center" v-else>
         <div class="text-grey mb-4">
