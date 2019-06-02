@@ -271,29 +271,6 @@ exports.deleteSite = (req, res, next) => {
   })
 }
 
-exports.getFileJson = (req, res, next) => {
-  const { theme, key, file } = req.params;
-  git.Repository.open(path.resolve(repoDir))
-  .then(function(repo) {
-    return repo.getMasterCommit();
-  })
-  .then(function(commit) {
-    return commit.getEntry(`${key}/${file}`);
-  })
-  .then(function(entry) {
-    _entry = entry;
-    return _entry.getBlob();
-  })
-  .then(function(blob) {
-    return res.json({
-      url: `${key}/${file}`,
-      format: `${file.split('.')[1]}`,
-      file: blob.toString()
-    });
-  })
-  .done();
-}
-
 exports.getFile = (req, res, next) => {
   const { theme, key, file } = req.params;
   git.Repository.open(path.resolve(repoDir))

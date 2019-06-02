@@ -106,7 +106,6 @@ app.get('/admin/themes/:theme', adminController.getTheme);
 app.get('/admin/logout', adminController.logout);
 app.get('/admin/delete', adminController.deleteSite);
 // Admin API
-app.get('/admin/themes/:theme/:key/:file.json', adminController.getFileJson);
 app.get('/admin/themes/:theme/:key/:file', adminController.getFile);
 // Admin POST
 app.post('/admin', adminController.postLogin);

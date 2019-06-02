@@ -115,7 +115,7 @@ export default {
       this.currentFile = this.currentFile;
     },
     getFile(parent, file) {
-      fetch(`/admin/themes/${this.theme}/${parent}/${file}.json`)
+      fetch(`/admin/themes/${this.theme}/${parent}/${file}`)
       .then(
         (response) => {
           if (response.status !== 200) {
@@ -125,13 +125,13 @@ export default {
           }
 
           // Examine the text in the response
-          response.json().then((data) => {
+          response.text().then((data) => {
             console.log(data);
-            this.currentFile = data.file;
-            this.currentFormat = data.format;
-            this.openFiles[data.url] = {
-              content: data.file,
-              url: data.url
+            this.currentFile = data;
+            this.currentFormat = file.split('.')[1];
+            this.openFiles[`${parent}/${file}`] = {
+              content: data,
+              url: `${parent}/${file}`
             }
           });
         }
