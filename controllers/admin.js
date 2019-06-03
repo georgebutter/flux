@@ -193,6 +193,27 @@ exports.getThemes = (req, res, next) => {
   })
 }
 
+exports.getThemesJson = (req, res, next) => {
+  setViews(req.app);
+  const errors = [];
+  const site = req.app.get('site');
+  const repo = req.app.get('repo');
+  // Get files list
+  repo.getReferenceNames(1).then(function(branchRefs) {
+    const themes = branchRefs.map((branchRef) => branchRef.replace('refs/heads/', ''))
+    console.log(`[status] ${themes.join(', ')}`.grey);
+    Staff.findById(req.session.userId, (error, user) => {
+      if (user) {
+        return res.json({
+          themes
+        });
+      } else {
+        return res.redirect('/admin');
+      }
+    });
+  })
+}
+
 exports.getTheme = (req, res, next) => {
   setViews(req.app);
   const errors = [];
@@ -270,6 +291,8 @@ exports.deleteSite = (req, res, next) => {
 
   })
 }
+
+
 
 exports.getFile = (req, res, next) => {
   const { theme, key, file } = req.params;
