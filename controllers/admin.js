@@ -198,17 +198,20 @@ exports.getThemesJson = (req, res, next) => {
   const errors = [];
   const site = req.app.get('site');
   const repo = req.app.get('repo');
-  // Get files list
+  // Get branch list
   repo.getReferenceNames(1).then(function(branchRefs) {
     const themes = branchRefs.map((branchRef) => branchRef.replace('refs/heads/', ''))
     console.log(`[status] ${themes.join(', ')}`.grey);
     Staff.findById(req.session.userId, (error, user) => {
       if (user) {
         return res.json({
+          status: 'success',
           themes
         });
       } else {
-        return res.redirect('/admin');
+        return res.json({
+          status: 'Error: No session found',
+        });
       }
     });
   })

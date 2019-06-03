@@ -23,6 +23,7 @@
     "dev": "concurrently \"browser-sync start --config bs-config.js\" \"npm-watch start\"  \"npm-watch reload\" \"npm-watch build\"",
     "start": "nodemon --inspect app.js",
     "log": "heroku logs -a georgebutter --tail",
+    "log-staging": "heroku logs -a georgebutter-staging --tail",
     "build": "webpack",
     "reload": "browser-sync reload --config bs-config.js"
   },
