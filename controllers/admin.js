@@ -202,15 +202,15 @@ exports.getThemesJson = (req, res, next) => {
   repo.getReferenceNames(1).then(function(branchRefs) {
     const themes = branchRefs.map((branchRef) => branchRef.replace('refs/heads/', ''))
     console.log(`[status] ${themes.join(', ')}`.grey);
-    Staff.findById(req.session.userId, (error, user) => {
-      if (user) {
+    App.authenticate(req.body.key, req.body.password, (error, user) => {
+      if (error || !user) {
         return res.json({
-          status: 'success',
-          themes
+          status: 'error: Could not establish a connection'
         });
       } else {
         return res.json({
-          status: 'Error: No session found',
+          status: 'success',
+          themes
         });
       }
     });
