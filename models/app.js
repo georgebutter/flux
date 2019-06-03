@@ -44,27 +44,25 @@ AppSchema.statics.authenticate = function (key, password, callback) {
         return callback(err);
       }
 
-      bcrypt.compare(password, app.password, function (err, result) {
-        if (result === true) {
-          return callback(null, app);
-        } else {
-          return callback();
-        }
-      })
+      if (app.password === password) {
+        return callback(null, app);
+      } else {
+        return callback();
+      }
     });
 }
 
 // Hashing a password before saving it to the database
-AppSchema.pre('save', function (next) {
-  var app = this;
-  bcrypt.hash(app.password, 10, function (err, hash) {
-    if (err) {
-      return next(err);
-    }
-    app.password = hash;
-    next();
-  })
-});
+// AppSchema.pre('save', function (next) {
+//   var app = this;
+//   bcrypt.hash(app.password, 10, function (err, hash) {
+//     if (err) {
+//       return next(err);
+//     }
+//     app.password = hash;
+//     next();
+//   })
+// });
 
 var App = mongoose.model('App', AppSchema);
 module.exports.App = App;
