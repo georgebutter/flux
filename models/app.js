@@ -36,7 +36,7 @@ AppSchema.statics.authenticate = function (key, password, callback) {
     .exec(function (err, app) {
       if (err) {
         return callback(err)
-      } else if (!user) {
+      } else if (!app) {
         var err = new Error('App not found.');
         err.status = 401;
         return callback(err);
@@ -44,7 +44,7 @@ AppSchema.statics.authenticate = function (key, password, callback) {
 
       bcrypt.compare(password, app.password, function (err, result) {
         if (result === true) {
-          return callback(null, user);
+          return callback(null, app);
         } else {
           return callback();
         }

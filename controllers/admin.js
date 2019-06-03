@@ -202,8 +202,8 @@ exports.getThemesJson = (req, res, next) => {
   repo.getReferenceNames(1).then(function(branchRefs) {
     const themes = branchRefs.map((branchRef) => branchRef.replace('refs/heads/', ''))
     console.log(`[status] ${themes.join(', ')}`.grey);
-    App.authenticate(req.body.key, req.body.password, (error, user) => {
-      if (error || !user) {
+    App.authenticate(req.body.key, req.body.password, (error, app) => {
+      if (error || !app) {
         return res.json({
           status: 'error: Could not establish a connection'
         });
