@@ -1,5 +1,7 @@
 // Data
 var mongoose = require('mongoose');
+// Encryption
+var bcrypt = require('bcrypt');
 
 // Data Models
 var AppSchema = new mongoose.Schema({
