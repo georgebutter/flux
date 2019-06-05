@@ -222,7 +222,7 @@ exports.getThemesJson = (req, res, next) => {
   })
 }
 
-export.getThemeFilesJson = (req, res) => {
+exports.getThemeFilesJson = (req, res) => {
   App.authenticate(req.body.key, req.body.password, (error, app) => {
     const errors = [];
     const site = req.app.get('site');
