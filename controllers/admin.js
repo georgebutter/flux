@@ -247,19 +247,28 @@ exports.getThemeFilesJson = (req, res) => {
         return firstCommitOnMaster.getTree();
       })
       .then(function(tree) {
-        // `walk()` returns an event.
-        var walker = tree.walk();
-        walker.on('entry', function(entry) {
-          const paths = entry.path().split('/')
-          if (paths.length === 2) {
-            const parent = paths[0];
-            const child = paths[1]
-            fileTree[parent].push(child);
-          }
-        });
-        walker.start();
+        return new Promise(resolve => {
+          // `walk()` returns an event.
+          var walker = tree.walk();
+          console.log(tree)
+          walker.on('entry', entry => {
+            console.log(entry)
+            const paths = entry.path().split('/')
+            if (paths.length === 2) {
+              const parent = paths[0];
+              const child = paths[1]
+              console.log('parent')
+              fileTree[parent].push(child);
+            }
+          });
+          walker.on('end', trees => {
+            resolve(fileTree)
+          })
+          walker.start();
+        })
       })
       .done(function() {
+        console.log('done')
         if (app.themes === 'none') {
           return res.json({
             status: 'error: This app does not have permission to read themes'
@@ -271,7 +280,7 @@ exports.getThemeFilesJson = (req, res) => {
           });
         }
       });
-    }  
+    }
   });
 }
 
