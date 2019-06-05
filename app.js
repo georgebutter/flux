@@ -95,7 +95,7 @@ Site.findOne()
 // Admin Routes
 
 // Admin API
-app.get('/admin/themes/:theme/:key/:file', adminController.getFile);
+app.get('/admin/themes/:theme/:key/:file.json', adminController.getFileJson);
 app.get('/admin/themes/:theme.json', adminController.getThemeFilesJson);
 app.get('/admin/themes.json', adminController.getThemesJson);
 // Admin GET
@@ -110,6 +110,7 @@ app.get('/admin/apps/:id', adminController.getApp);
 app.get('/admin/themes/:theme', adminController.getTheme);
 app.get('/admin/logout', adminController.logout);
 app.get('/admin/delete', adminController.deleteSite);
+app.get('/admin/themes/:theme/:key/:file', adminController.getFile);
 
 // Admin POST
 app.post('/admin', adminController.postLogin);

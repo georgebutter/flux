@@ -353,11 +353,38 @@ exports.deleteSite = (req, res, next) => {
         return res.redirect('/install');
       })
     })
-
   })
 }
 
-
+exports.getFileJson = (req, res, next) => {
+  App.authenticate(req.body.key, req.body.password, (error, app) => {
+    if (error || !app) {
+      return res.json({
+        status: 'error: Could not establish a connection'
+      });
+    } else {
+      const { theme, key, file } = req.params;
+      git.Repository.open(path.resolve(repoDir))
+      .then(function(repo) {
+        return repo.getMasterCommit();
+      })
+      .then(function(commit) {
+        return commit.getEntry(`${key}/${file}`);
+      })
+      .then(function(entry) {
+        _entry = entry;
+        return _entry.getBlob();
+      })
+      .then(function(blob) {
+        return res.json({
+          status: 'success',
+          file: blob.toString()
+        });
+      })
+      .done();
+    }
+  });
+}
 
 exports.getFile = (req, res, next) => {
   const { theme, key, file } = req.params;
