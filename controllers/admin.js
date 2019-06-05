@@ -194,7 +194,6 @@ exports.getThemes = (req, res, next) => {
 }
 
 exports.getThemesJson = (req, res, next) => {
-  setViews(req.app);
   const errors = [];
   const site = req.app.get('site');
   const repo = req.app.get('repo');
@@ -208,13 +207,70 @@ exports.getThemesJson = (req, res, next) => {
           status: 'error: Could not establish a connection'
         });
       } else {
-        return res.json({
-          status: 'success',
-          themes
-        });
+        if (app.themes === 'none') {
+          return res.json({
+            status: 'error: This app does not have permission to read themes'
+          });
+        } else {
+          return res.json({
+            status: 'success',
+            themes
+          });
+        }
       }
     });
   })
+}
+
+export.getThemeFilesJson = (req, res) => {
+  App.authenticate(req.body.key, req.body.password, (error, app) => {
+    const errors = [];
+    const site = req.app.get('site');
+    const fileTree = {
+      assets: [],
+      layouts: [],
+      templates: [],
+      snippets: [],
+    };
+    git.Repository.open(path.resolve(repoDir))
+    .then(function(repo) {
+      return repo.getMasterCommit();
+    })
+    .then(function(firstCommitOnMaster) {
+      return firstCommitOnMaster.getTree();
+    })
+    .then(function(tree) {
+      // `walk()` returns an event.
+      var walker = tree.walk();
+      walker.on('entry', function(entry) {
+        const paths = entry.path().split('/')
+        if (paths.length === 2) {
+          const parent = paths[0];
+          const child = paths[1]
+          fileTree[parent].push(child);
+        }
+      });
+      walker.start();
+    })
+    .done(function() {
+      if (error || !app) {
+        return res.json({
+          status: 'error: Could not establish a connection'
+        });
+      } else {
+        if (app.themes === 'none') {
+          return res.json({
+            status: 'error: This app does not have permission to read themes'
+          });
+        } else {
+          return res.json({
+            status: 'success',
+            theme: fileTree
+          });
+        }
+      }
+    });
+  });
 }
 
 exports.getTheme = (req, res, next) => {

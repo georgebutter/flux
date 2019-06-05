@@ -108,6 +108,8 @@ app.get('/admin/delete', adminController.deleteSite);
 // Admin API
 app.get('/admin/themes/:theme/:key/:file', adminController.getFile);
 app.get('/admin/themes.json', adminController.getThemesJson);
+app.get('admin/themes/:theme.json' adminController.getThemeFilesJson);
+
 // Admin POST
 app.post('/admin', adminController.postLogin);
 app.post('/admin/apps/create', adminController.postCreateApp);
