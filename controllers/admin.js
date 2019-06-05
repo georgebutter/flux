@@ -248,16 +248,12 @@ exports.getThemeFilesJson = (req, res) => {
       })
       .then(function(tree) {
         return new Promise(resolve => {
-          // `walk()` returns an event.
-          var walker = tree.walk();
-          console.log(tree)
+          const walker = tree.walk();
           walker.on('entry', entry => {
-            console.log(entry)
             const paths = entry.path().split('/')
             if (paths.length === 2) {
               const parent = paths[0];
               const child = paths[1]
-              console.log('parent')
               fileTree[parent].push(child);
             }
           });
@@ -268,7 +264,6 @@ exports.getThemeFilesJson = (req, res) => {
         })
       })
       .done(function() {
-        console.log('done')
         if (app.themes === 'none') {
           return res.json({
             status: 'error: This app does not have permission to read themes'
