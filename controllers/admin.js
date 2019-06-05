@@ -223,41 +223,43 @@ exports.getThemesJson = (req, res, next) => {
 }
 
 exports.getThemeFilesJson = (req, res) => {
+  console.log('[status] Getting theme json')
   App.authenticate(req.body.key, req.body.password, (error, app) => {
-    const errors = [];
-    const site = req.app.get('site');
-    const fileTree = {
-      assets: [],
-      layouts: [],
-      templates: [],
-      snippets: [],
-    };
-    git.Repository.open(path.resolve(repoDir))
-    .then(function(repo) {
-      return repo.getMasterCommit();
-    })
-    .then(function(firstCommitOnMaster) {
-      return firstCommitOnMaster.getTree();
-    })
-    .then(function(tree) {
-      // `walk()` returns an event.
-      var walker = tree.walk();
-      walker.on('entry', function(entry) {
-        const paths = entry.path().split('/')
-        if (paths.length === 2) {
-          const parent = paths[0];
-          const child = paths[1]
-          fileTree[parent].push(child);
-        }
+    if (error || !app) {
+      return res.json({
+        status: 'error: Could not establish a connection'
       });
-      walker.start();
-    })
-    .done(function() {
-      if (error || !app) {
-        return res.json({
-          status: 'error: Could not establish a connection'
+    } else {
+      console.log('[status] App authenticated')
+      const errors = [];
+      const site = req.app.get('site');
+      const fileTree = {
+        assets: [],
+        layouts: [],
+        templates: [],
+        snippets: [],
+      };
+      git.Repository.open(path.resolve(repoDir))
+      .then(function(repo) {
+        return repo.getMasterCommit();
+      })
+      .then(function(firstCommitOnMaster) {
+        return firstCommitOnMaster.getTree();
+      })
+      .then(function(tree) {
+        // `walk()` returns an event.
+        var walker = tree.walk();
+        walker.on('entry', function(entry) {
+          const paths = entry.path().split('/')
+          if (paths.length === 2) {
+            const parent = paths[0];
+            const child = paths[1]
+            fileTree[parent].push(child);
+          }
         });
-      } else {
+        walker.start();
+      })
+      .done(function() {
         if (app.themes === 'none') {
           return res.json({
             status: 'error: This app does not have permission to read themes'
@@ -268,8 +270,8 @@ exports.getThemeFilesJson = (req, res) => {
             theme: fileTree
           });
         }
-      }
-    });
+      });
+    }  
   });
 }
 

@@ -93,6 +93,11 @@ Site.findOne()
 });
 
 // Admin Routes
+
+// Admin API
+app.get('/admin/themes/:theme/:key/:file', adminController.getFile);
+app.get('/admin/themes/:theme.json', adminController.getThemeFilesJson);
+app.get('/admin/themes.json', adminController.getThemesJson);
 // Admin GET
 app.get('/admin/style-guide', adminController.getStyleGuide);
 app.get('/admin', adminController.getDashboard);
@@ -105,10 +110,6 @@ app.get('/admin/apps/:id', adminController.getApp);
 app.get('/admin/themes/:theme', adminController.getTheme);
 app.get('/admin/logout', adminController.logout);
 app.get('/admin/delete', adminController.deleteSite);
-// Admin API
-app.get('/admin/themes/:theme/:key/:file', adminController.getFile);
-app.get('/admin/themes.json', adminController.getThemesJson);
-app.get('/admin/themes/:theme.json', adminController.getThemeFilesJson);
 
 // Admin POST
 app.post('/admin', adminController.postLogin);
