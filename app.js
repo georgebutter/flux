@@ -97,7 +97,7 @@ Site.findOne()
 
 // Admin API
 // Themes
-app.get('/admin/themes/:theme/:dir/:file.json', adminApi.getFileJson);
+app.get('/admin/themes/:theme/:key/:file.json', adminApi.getFileJson);
 app.get('/admin/themes/:theme.json', adminApi.getThemeFilesJson);
 app.get('/admin/themes.json', adminApi.getThemesJson);
 app.put('/admin/themes/:theme/:dir/:file.json', adminApi.putThemeFileJson);

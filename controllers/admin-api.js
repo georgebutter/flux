@@ -6,6 +6,7 @@ const colors = require('colors');
 const repoDir = './client/theme';
 
 exports.putThemeFileJson = (req, res, next) => {
+  console.log(`[status] putThemeFileJson`.grey)
   const { key, password, content } = req.body;
   const { theme, dir, file } = req.params;
   const repo = req.app.get('repo');
