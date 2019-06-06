@@ -11,6 +11,8 @@ exports.putThemeFileJson = (req, res, next) => {
   const repo = req.app.get('repo');
 
   App.authenticate(key, password, (error, app) => {
+    console.log(error)
+    console.log(app)
     if (error || !app) {
       return res.json({
         status: 'error: Could not establish a connection'
