@@ -27,13 +27,13 @@ exports.putThemeFileJson = (req, res, next) => {
     let oid;
     let gitIndex;
     let repo;
-
+    const filePath = `${dir}/${file}`;
     git.Repository.open(path.resolve(repoDir))
     .then(function(repoResult) {
       repo = repoResult;
       return fs.ensureDir(path.resolve(repoDir));
     }).then(function(){
-      return fs.writeFile(path.join(repo.workdir(), `${dir}/${file}`), content);
+      return fs.writeFile(path.join(repo.workdir(), filePath), content);
     })
     .then(function() {
       return repo.refreshIndex();
@@ -41,7 +41,8 @@ exports.putThemeFileJson = (req, res, next) => {
     .then(function(idx) {
       gitIndex = idx;
       app.set('gitIndex', gitIndex);
-      gitIndex.addAll(['.'])
+      gitIndex.addByPath(filePath);
+
     })
     .then(() => {
       return gitIndex.write();
