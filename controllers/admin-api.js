@@ -8,7 +8,6 @@ const repoDir = './client/theme';
 exports.putThemeFileJson = (req, res, next) => {
   const { key, password, content } = req.body;
   const { theme, dir, file } = req.params;
-  const repo = req.app.get('repo');
   App.authenticate(key, password, (error, app) => {
     if (error || !app) {
       return res.json({
@@ -25,50 +24,53 @@ exports.putThemeFileJson = (req, res, next) => {
         status: 'error: Invalid file directory'
       })
     }
-    const filePath = path.join(repo.workdir(), `${dir}/${file}`);
     let oid;
     let gitIndex;
-    fs.writeFile(filePath, content, err => {
-      if (err) {
-        return res.json({
-          status: 'error: Could not save file'
-        })
-      }
+    let repo;
 
-      app.get('repo').refreshIndex()
-      .then(function(idx) {
-        gitIndex = idx;
-        app.set('gitIndex', gitIndex);
-        gitIndex.addAll(['.'])
-      })
-      .then(() => {
-        return gitIndex.write();
-      })
-      .then(() => {
-        return gitIndex.writeTree();
-      })
-      .then(oidResult => {
-        oid = oidResult;
-        return git.Reference.nameToId(repo, 'HEAD');
-      })
-      .then(head => {
-        return repo.getCommit(head);
-      })
-      .then(parent => {
-        const author = git.Signature.now('George Butter',
-          'threeninenineone@gmail.com');
-        const committer = git.Signature.now('George Butter',
-          'butsandcats@github.com');
+    git.Repository.open(path.resolve(repoDir))
+    .then(function(repoResult) {
+      repo = repoResult;
+      return fs.ensureDir(path.resolve(repoDir));
+    }).then(function(){
+      return fs.writeFile(path.join(repo.workdir(), `${dir}/${file}`), content);
+    })
+    .then(function() {
+      return repo.refreshIndex();
+    })
+    .then(function(idx) {
+      gitIndex = idx;
+      app.set('gitIndex', gitIndex);
+      gitIndex.addAll(['.'])
+    })
+    .then(() => {
+      return gitIndex.write();
+    })
+    .then(() => {
+      return gitIndex.writeTree();
+    })
+    .then(oidResult => {
+      oid = oidResult;
+      return git.Reference.nameToId(repo, 'HEAD');
+    })
+    .then(head => {
+      return repo.getCommit(head);
+    })
+    .then(parent => {
+      const author = git.Signature.now('George Butter',
+        'threeninenineone@gmail.com');
+      const committer = git.Signature.now('George Butter',
+        'butsandcats@github.com');
 
-        return repo.createCommit('HEAD', author, committer, 'API update', oid, [parent]);
-      })
-      .done(commitId => {
-        console.log(`[git] New Commit: ${commitId}`.blue);
-      })
-      return res.json({
-        status: 'success'
-      })
-    });
+      return repo.createCommit('HEAD', author, committer, 'API update', oid, [parent]);
+    })
+    .done(commitId => {
+      console.log(`[git] New Commit: ${commitId}`.blue);
+    })
+
+    return res.json({
+      status: 'success'
+    })
 
   });
 }
