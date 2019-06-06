@@ -75,7 +75,8 @@ app.engine('liquid', engine.express());
 app.set('view engine', 'liquid');
 
 // Import controllers
-const adminController = require('./controllers/admin');
+const adminViews = require('./controllers/admin-views');
+const adminApi = require('./controllers/admin-api');
 const themeController = require('./controllers/theme');
 const installController = require('./controllers/install');
 
@@ -95,27 +96,29 @@ Site.findOne()
 // Admin Routes
 
 // Admin API
-app.get('/admin/themes/:theme/:key/:file.json', adminController.getFileJson);
-app.get('/admin/themes/:theme.json', adminController.getThemeFilesJson);
-app.get('/admin/themes.json', adminController.getThemesJson);
+app.get('/admin/themes/:theme/:key/:file.json', adminApi.getFileJson);
+app.get('/admin/themes/:theme.json', adminApi.getThemeFilesJson);
+app.get('/admin/themes.json', adminApi.getThemesJson);
+app.put('/admin/themes/:theme/:key/:file.json', adminApi.putThemeFileJson);
+
 // Admin GET
-app.get('/admin/style-guide', adminController.getStyleGuide);
-app.get('/admin', adminController.getDashboard);
-app.get('/admin/themes', adminController.getThemes);
-app.get('/admin/users', adminController.getUsers);
-app.get('/admin/settings', adminController.getSettings);
-app.get('/admin/apps', adminController.getApps);
-app.get('/admin/apps/create', adminController.getAppsCreate);
-app.get('/admin/apps/:id', adminController.getApp);
-app.get('/admin/themes/:theme', adminController.getTheme);
-app.get('/admin/logout', adminController.logout);
-app.get('/admin/delete', adminController.deleteSite);
-app.get('/admin/themes/:theme/:key/:file', adminController.getFile);
+app.get('/admin/style-guide', adminViews.getStyleGuide);
+app.get('/admin', adminViews.getDashboard);
+app.get('/admin/themes', adminViews.getThemes);
+app.get('/admin/users', adminViews.getUsers);
+app.get('/admin/settings', adminViews.getSettings);
+app.get('/admin/apps', adminViews.getApps);
+app.get('/admin/apps/create', adminViews.getAppsCreate);
+app.get('/admin/apps/:id', adminViews.getApp);
+app.get('/admin/themes/:theme', adminViews.getTheme);
+app.get('/admin/logout', adminViews.logout);
+app.get('/admin/delete', adminViews.deleteSite);
+app.get('/admin/themes/:theme/:key/:file', adminViews.getFile);
 
 // Admin POST
-app.post('/admin', adminController.postLogin);
-app.post('/admin/apps/create', adminController.postCreateApp);
-app.post('/admin/apps/:id/update', adminController.postUpdateApp);
+app.post('/admin', adminViews.postLogin);
+app.post('/admin/apps/create', adminViews.postCreateApp);
+app.post('/admin/apps/:id/update', adminViews.postUpdateApp);
 
 
 // Theme Routes
