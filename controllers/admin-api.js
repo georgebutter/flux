@@ -27,14 +27,20 @@ exports.putThemeFileJson = (req, res, next) => {
     }
     const filePath = path.join(repo.workdir(), `${dir}/${file}`);
     let oid;
+    let gitIndex;
     fs.writeFile(filePath, content, err => {
       if (err) {
         return res.json({
           status: 'error: Could not save file'
         })
       }
-      const gitIndex = app.get('gitIndex')
-      gitIndex.addAll(['.'])
+
+      app.get('repo').refreshIndex()
+      .then(function(idx) {
+        gitIndex = idx;
+        app.set('gitIndex', gitIndex);
+        gitIndex.addAll(['.'])
+      })
       .then(() => {
         return gitIndex.write();
       })
