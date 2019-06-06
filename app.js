@@ -97,10 +97,10 @@ Site.findOne()
 
 // Admin API
 // Themes
-app.get('/admin/themes/:theme/:key/:file.json', adminApi.getFileJson);
+app.get('/admin/themes/:theme/:dir/:file.json', adminApi.getFileJson);
 app.get('/admin/themes/:theme.json', adminApi.getThemeFilesJson);
 app.get('/admin/themes.json', adminApi.getThemesJson);
-app.put('/admin/themes/:theme/:key/:file.json', adminApi.putThemeFileJson);
+app.put('/admin/themes/:theme/:dir/:file.json', adminApi.putThemeFileJson);
 
 // Admin GET
 app.get('/admin/style-guide', adminViews.getStyleGuide);
@@ -131,7 +131,7 @@ app.post('/install/site', installController.postSite);
 app.post('/install/admin', installController.postAdmin);
 
 // 404
-app.get('/admin/*', adminController.get404);
+app.get('/admin/*', adminViews.get404);
 app.get('*', themeController.get404);
 
 // Listen on port

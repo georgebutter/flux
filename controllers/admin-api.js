@@ -1,12 +1,43 @@
 const { App } = require('../models/app');
-
+const fs = require('fs-extra');
 const path = require('path');
 const git = require('nodegit');
 const colors = require('colors');
 const repoDir = './client/theme';
 
+exports.putThemeFileJson = (req, res, next) => {
+  const { key, password, content } = req.body;
+  const { theme, dir, file } = req.params;
+  const repo = req.app.get('repo');
+
+  App.authenticate(key, password, (error, app) => {
+    if (error || !app) {
+      return res.json({
+        status: 'error: Could not establish a connection'
+      });
+    }
+    console.log(`[status] Adding file to ${dir}`.grey)
+    if (dir !== 'layouts' && dir !== 'snippets' && dir !== 'templates' && dir !== 'assets') {
+      return res.json({
+        status: 'error: Invalid file directory'
+      })
+    }
+    const filePath = path.join(repo.workdir(), `${dir}/${file}`);
+    fs.writeFile(filePath, content, err => {
+      if (err) {
+        return res.json({
+          status: 'error: Could not save file'
+        })
+      }
+      return res.json({
+        status: 'success'
+      })
+    });
+
+  });
+}
+
 exports.getThemesJson = (req, res, next) => {
-  const errors = [];
   const site = req.app.get('site');
   const repo = req.app.get('repo');
   // Get branch list
@@ -42,8 +73,7 @@ exports.getThemeFilesJson = (req, res) => {
         status: 'error: Could not establish a connection'
       });
     } else {
-      console.log('[status] App authenticated')
-      const errors = [];
+      console.log('[status] App authenticated'.grey)
       const site = req.app.get('site');
       const fileTree = {
         assets: [],
