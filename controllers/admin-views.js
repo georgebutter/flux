@@ -1,4 +1,3 @@
-const { Staff } = require('../models/staff');
 const { Site } = require('../models/site');
 const { App } = require('../models/app');
 
@@ -9,7 +8,6 @@ const validator = require('validator');
 const colors = require('colors');
 
 const repoDir = './client/theme';
-
 
 exports.getStyleGuide = (req, res, next) => {
   setViews(req.app);

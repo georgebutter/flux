@@ -1,13 +1,8 @@
-const { Staff } = require('../models/staff');
-const { Site } = require('../models/site');
 const { App } = require('../models/app');
 
 const path = require('path');
 const git = require('nodegit');
-const uuidV4 = require('uuid/v4');
-const validator = require('validator');
 const colors = require('colors');
-
 const repoDir = './client/theme';
 
 exports.getThemesJson = (req, res, next) => {
