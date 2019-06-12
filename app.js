@@ -54,6 +54,8 @@ app.use(session({
   })
 }));
 
+// Allow large payloads for themes
+app.use(bodyParser({limit: '5mb'}));
 // Parse incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
