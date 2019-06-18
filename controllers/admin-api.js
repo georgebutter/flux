@@ -6,6 +6,7 @@ const colors = require('colors');
 const repoDir = './client/theme';
 
 exports.putThemeFileJson = (req, res, next) => {
+  console.log(`[route] PUT theme file json`.cyan)
   const { key, password, content } = req.body;
   const { theme, dir, file } = req.params;
   App.authenticate(key, password, (error, app) => {
@@ -24,55 +25,28 @@ exports.putThemeFileJson = (req, res, next) => {
         status: 'error: Invalid file directory'
       })
     }
-    let oid;
-    let gitIndex;
-    let repo;
-    const filePath = `${dir}/${file}`;
-    git.Repository.open(path.resolve(repoDir))
-    .then(function(repoResult) {
-      repo = repoResult;
-      return fs.ensureDir(path.resolve(repoDir));
-    }).then(function(){
-      return fs.writeFile(path.join(repo.workdir(), filePath), content);
-    })
-    .then(function() {
-      return repo.refreshIndex();
-    })
-    .then(function(idx) {
-      gitIndex = idx;
-      app.set('gitIndex', gitIndex);
-      gitIndex.addByPath(filePath);
-
+    const gfs = req.app.get('gfs');
+    const filePath = path.join(path.resolve(repoDir), `${dir}/${file}`);
+    fs.ensureDir(path.resolve(repoDir))
+    .then(() => {
+      console.log(`[status] confirmed directory at ${path.resolve(repoDir)}`.grey)
+      return fs.writeFile(filePath, content);
     })
     .then(() => {
-      return gitIndex.write();
-    })
-    .then(() => {
-      return gitIndex.writeTree();
-    })
-    .then(oidResult => {
-      oid = oidResult;
-      return git.Reference.nameToId(repo, 'HEAD');
-    })
-    .then(head => {
-      return repo.getCommit(head);
-    })
-    .then(parent => {
-      const author = git.Signature.now('George Butter',
-        'threeninenineone@gmail.com');
-      const committer = git.Signature.now('George Butter',
-        'butsandcats@github.com');
+      console.log(`[status] written file at ${filePath}`.grey)
+      const writestream = gfs.createWriteStream({
+        filename: `${dir}/${file}`
+      });
+      fs.createReadStream(filePath).pipe(writestream);
+      writestream.on('close', file => {
+        console.log(`[status] ${file.filename} written to db`);
+        console.log(`[files] New file uploaded`.blue);
 
-      return repo.createCommit('HEAD', author, committer, 'API update', oid, [parent]);
-    })
-    .done(commitId => {
-      console.log(`[git] New Commit: ${commitId}`.blue);
-    })
-
-    return res.json({
-      status: 'success'
-    })
-
+        return res.json({
+          status: 'success'
+        })
+      })
+    });
   });
 }
 

@@ -20,8 +20,8 @@
   "scripts": {
     "test": "eslint",
     "watch": "npm-watch",
-    "dev": "concurrently \"browser-sync start --config bs-config.js\" \"npm-watch start\"  \"npm-watch reload\" \"npm-watch build\"",
-    "start": "nodemon --inspect app.js",
+    "dev": "concurrently \"npm-watch start\" \"npm-watch build\"",
+    "start": "nodemon app.js",
     "log": "heroku logs -a georgebutter --tail",
     "log-staging": "heroku logs -a georgebutter-staging --tail",
     "build": "webpack",
@@ -30,6 +30,7 @@
   "author": "George Butter",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.474.0",
     "bcrypt": "^3.0.3",
     "body-parser": "^1.18.3",
     "browser-sync": "^2.26.3",
@@ -41,6 +42,7 @@
     "express-session": "^1.15.6",
     "extract-text-webpack-plugin": "^3.0.2",
     "fs-extra": "^8.0.1",
+    "gridfs-stream": "^1.1.1",
     "helmet": "^3.18.0",
     "liquidjs": "^6.2.0",
     "monaco-editor-webpack-plugin": "^1.7.0",

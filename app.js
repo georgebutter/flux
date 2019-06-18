@@ -18,10 +18,9 @@ const Site = require('./models/site').Site;
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/cms';
 mongoose.connect(mongoURI);
 const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', () => {
-  console.log('[db] Connected to database'.green);
-});
+const Grid = require('gridfs-stream');
+Grid.mongo = mongoose.mongo;
+const fs = require('fs-extra');
 
 // Middleware
 const bodyParser = require('body-parser');
@@ -82,9 +81,11 @@ const adminApi = require('./controllers/admin-api');
 const themeController = require('./controllers/theme');
 const installController = require('./controllers/install');
 
-const git = require('./git');
-git.init(app);
-
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+  console.log('[db] Connected to database'.green);
+  app.set('gfs', Grid(db.db));
+});
 // Get site data on server reboot
 Site.findOne()
 .then(site => {
