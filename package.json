@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "My website",
   "private": true,
+  "engines": {
+    "node": "10.13.0"
+  },
   "watch": {
     "build": {
       "patterns": [
