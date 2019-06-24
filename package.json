@@ -5,7 +5,8 @@
   "private": true,
   "engines": {
     "node": "10.13.0",
-    "npm": "6.7.0"
+    "npm": "6.7.0",
+    "yarn": "1.5.1"
   },
   "watch": {
     "build": {
