@@ -21,6 +21,7 @@ const db = mongoose.connection;
 const Grid = require('gridfs-stream');
 Grid.mongo = mongoose.mongo;
 const fs = require('fs-extra');
+const path = require('path');
 
 // Middleware
 const bodyParser = require('body-parser');
@@ -82,9 +83,32 @@ const themeController = require('./controllers/theme');
 const installController = require('./controllers/install');
 
 db.on('error', console.error.bind(console, 'connection error:'));
+//Get theme files from Grid fs on connection and store in normal fs
 db.once('open', () => {
   console.log('[db] Connected to database'.green);
-  app.set('gfs', Grid(db.db));
+  const gfs = Grid(db.db)
+  app.set('gfs', gfs);
+  gfs.files.find().toArray(function (err, files) {
+    for (let i = 0; i < files.length; i++) {
+      var readstream = gfs.createReadStream({
+        filename: files[i].filename
+      });
+      let file = [];
+      readstream.on('data', function (chunk) {
+        file.push(chunk);
+      });
+      readstream.on('error', e => {
+        console.log(e);
+        reject(e);
+      });
+      readstream.on('end', function () {
+        const repoDir = './client/theme';
+        const filepath = path.join(path.resolve(repoDir), files[i].filename)
+        file = Buffer.concat(file);
+        fs.outputFile(filepath, file)
+      });
+    }
+  })
 });
 // Get site data on server reboot
 Site.findOne()

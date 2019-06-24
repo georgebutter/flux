@@ -30,7 +30,7 @@ exports.putThemeFileJson = (req, res, next) => {
     fs.ensureDir(path.resolve(repoDir))
     .then(() => {
       console.log(`[status] confirmed directory at ${path.resolve(repoDir)}`.grey)
-      return fs.writeFile(filePath, content);
+      return fs.outputFile(filePath, content);
     })
     .then(() => {
       console.log(`[status] written file at ${filePath}`.grey)
@@ -46,6 +46,10 @@ exports.putThemeFileJson = (req, res, next) => {
           status: 'success'
         })
       })
+    })
+    .catch(err => {
+      console.error(`[files] Could not write to file ${filePath}`.red)
+      console.error(err);
     });
   });
 }
