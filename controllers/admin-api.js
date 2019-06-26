@@ -34,6 +34,9 @@ exports.putThemeFileJson = (req, res, next) => {
     })
     .then(() => {
       console.log(`[status] written file at ${filePath}`.grey)
+      gfs.remove({ filename: `${dir}/${file}`}, function (err, gridStore) {
+        if (err) return console.log(err);
+      });
       const writestream = gfs.createWriteStream({
         filename: `${dir}/${file}`
       });

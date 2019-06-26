@@ -90,9 +90,7 @@ db.once('open', () => {
   app.set('gfs', gfs);
   gfs.files.find().toArray(function (err, files) {
     for (let i = 0; i < files.length; i++) {
-      gfs.remove({ filename: files[i].filename }, function (err, gridStore) {
-        if (err) return console.log(err);
-      });
+
       var readstream = gfs.createReadStream({
         filename: files[i].filename
       });
