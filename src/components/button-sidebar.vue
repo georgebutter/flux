@@ -11,6 +11,7 @@
 
 <script>
 import IconHouse from '../components/icon-house.vue';
+import IconCollection from '../components/icon-collection.vue';
 import IconCog from '../components/icon-cog.vue';
 import IconDevices from '../components/icon-devices.vue';
 import IconUsers from '../components/icon-users.vue';
@@ -18,6 +19,7 @@ import IconApps from '../components/icon-apps.vue';
 
 export default {
   components: {
+    "icon-collection": IconCollection,
     "icon-house": IconHouse,
     "icon-cog": IconCog,
     "icon-apps": IconApps,

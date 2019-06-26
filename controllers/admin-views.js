@@ -49,6 +49,26 @@ exports.getDashboard = (req, res, next) => {
   });
 }
 
+exports.getCollections = (req, res, next) => {
+  setViews(req.app);
+  const site = req.app.get('site');
+  const errors = [];
+  Staff.findById(req.session.userId, (error, user) => {
+    if (user) {
+      return res.render('collections', {
+        site: site,
+        page_title: 'Collections',
+        canonical_url: canoncalUrl(req),
+        template: 'collections',
+        errors: errors,
+        user: user,
+      });
+    } else {
+      return res.redirect('/admin');
+    }
+  });
+}
+
 exports.getUsers = (req, res, next) => {
   setViews(req.app);
   const site = req.app.get('site');

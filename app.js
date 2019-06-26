@@ -134,6 +134,7 @@ app.get('/admin/style-guide', adminViews.getStyleGuide);
 app.get('/admin', adminViews.getDashboard);
 app.get('/admin/themes', adminViews.getThemes);
 app.get('/admin/users', adminViews.getUsers);
+app.get('/admin/collections', adminViews.getCollections);
 app.get('/admin/settings', adminViews.getSettings);
 app.get('/admin/apps', adminViews.getApps);
 app.get('/admin/apps/create', adminViews.getAppsCreate);

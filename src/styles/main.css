@@ -28,6 +28,10 @@ input::placeholder {
   transition: width ease-in-out 0.3s;
   will-change: width;
 }
+.transition-padding-left {
+  transition: padding-left ease-in-out 0.3s;
+  will-change: padding-left;
+}
 
 .visually-hidden {
   border: 0;

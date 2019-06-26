@@ -8,6 +8,7 @@ module.exports = {
     'style-guide': './src/style-guide.js',
     'themes': './src/themes.js',
     'theme': './src/theme.js',
+    'collections': './src/collections.js',
     'settings': './src/settings.js',
     'app': './src/app.js',
     'apps': './src/apps.js',

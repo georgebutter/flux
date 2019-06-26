@@ -32,7 +32,7 @@ export default {
   data () {
     const { themes } = window.siteData;
     return {
-      themes: themes
+      themes: themes,
     }
   }
 }

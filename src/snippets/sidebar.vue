@@ -13,6 +13,12 @@
       :active="pageTitle === 'Users'"
     />
     <button-sidebar
+      icon="icon-collection"
+      text="Collections"
+      href="/admin/collections"
+      :active="pageTitle === 'Collections'"
+    />
+    <button-sidebar
       icon="icon-devices"
       text="Themes"
       href="/admin/themes"
@@ -31,7 +37,7 @@
       :active="pageTitle === 'Settings'"
     />
     <button class="focus:outline-none active:outline-none hover:text-grey text-grey-light py-4 px-6 flex whitespace-no-wrap overflow-hidden"
-    @click="sidebarOpen = !sidebarOpen"
+    @click="$emit('toggleSideBar', $event)"
     >
       <span>
         <icon-close-menu v-if="sidebarOpen" width="20" height="20"/>
@@ -56,13 +62,9 @@ export default {
     "icon-close-menu": IconCloseMenu,
     "icon-open-menu": IconOpenMenu,
   },
-  data () {
-    return {
-      sidebarOpen: true,
-    }
-  },
   props: {
-    pageTitle: String
+    pageTitle: String,
+    sidebarOpen: Boolean
   }
 }
 </script>
