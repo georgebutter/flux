@@ -2,6 +2,7 @@ const { Site } = require('../models/site');
 const { Staff } = require('../models/staff');
 const { App } = require('../models/app');
 const { Collection } = require('../models/collection');
+const { Navigation } = require('../models/navigation');
 
 const path = require('path');
 const git = require('nodegit');
@@ -96,6 +97,33 @@ exports.getCollectionsCreate = (req, res, next) => {
       });
     } else {
       return res.redirect('/admin');
+    }
+  });
+}
+
+exports.getNavigation = (req, res, next) => {
+  setViews(req.app);
+  const site = req.app.get('site');
+  const errors = [];
+  Navigation.find({}, function(err, navigation) {
+    if (err) {
+      throw err;
+    } else {
+      Staff.findById(req.session.userId, (error, user) => {
+        if (user) {
+          return res.render('navigation', {
+            site: site,
+            page_title: 'Navigation',
+            canonical_url: canoncalUrl(req),
+            template: 'navigation',
+            errors: errors,
+            user: user,
+            navigation: navigation
+          });
+        } else {
+          return res.redirect('/admin');
+        }
+      });
     }
   });
 }

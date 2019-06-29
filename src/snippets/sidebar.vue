@@ -7,16 +7,16 @@
       :active="pageTitle === 'Dashboard'"
     />
     <button-sidebar
-      icon="icon-users"
-      text="Users"
-      href="/admin/users"
-      :active="pageTitle === 'Users'"
-    />
-    <button-sidebar
       icon="icon-collection"
       text="Collections"
       href="/admin/collections"
       :active="pageTitle === 'Collections' || pageTitle === 'Create a new collection'"
+    />
+    <button-sidebar
+      icon="icon-navigation"
+      text="Navigation"
+      href="/admin/navigation"
+      :active="pageTitle === 'Navigation' || pageTitle === 'Create a new menu'"
     />
     <button-sidebar
       icon="icon-devices"
@@ -35,6 +35,12 @@
       text="Settings"
       href="/admin/settings"
       :active="pageTitle === 'Settings'"
+    />
+    <button-sidebar
+      icon="icon-users"
+      text="Users"
+      href="/admin/users"
+      :active="pageTitle === 'Users'"
     />
     <button class="focus:outline-none active:outline-none hover:text-grey text-grey-light py-4 px-6 flex whitespace-no-wrap overflow-hidden"
     @click="$emit('toggleSideBar', $event)"
