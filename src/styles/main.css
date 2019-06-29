@@ -32,6 +32,10 @@ input::placeholder {
   transition: padding-left ease-in-out 0.3s;
   will-change: padding-left;
 }
+.transition-background-color {
+  transition: background-color ease-in-out 0.3s;
+  will-change: background-color;
+}
 
 .visually-hidden {
   border: 0;

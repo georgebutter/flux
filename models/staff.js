@@ -1,10 +1,10 @@
 // Data
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 // Encryption
-var bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 
 // Data Models
-var StaffSchema = new mongoose.Schema({
+const StaffSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,

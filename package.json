@@ -25,12 +25,16 @@
   "scripts": {
     "test": "eslint",
     "watch": "npm-watch",
-    "dev": "concurrently \"npm-watch start\" \"npm-watch build\"",
+    "dev": "concurrently \"npm-watch start:nodemon\" \"npm-watch build\"",
+    "start:nodemon": "nodemon app.js",
     "start": "node app.js",
     "log": "heroku logs -a georgebutter --tail",
     "log-staging": "heroku logs -a georgebutter-staging --tail",
     "build": "webpack",
     "reload": "browser-sync reload --config bs-config.js"
+  },
+   "nodemonConfig": {
+    "ignore": ["client/theme/", "client/admin/"]
   },
   "author": "George Butter",
   "license": "ISC",

@@ -216,13 +216,19 @@
               Inputs
             </h3>
           </div>
-          <div class="w-full -mx-4">
+          <div class="w-full -mx-4 flex">
             <div class="w-1/3 flex flex-wrap px-4">
               <form class="w-full" autocomplete="off">
+                <form-label :show="true">
+                  Input field
+                </form-label>
                 <text-field placeholder="Placeholder"/>
               </form>
             </div>
             <div class="w-1/3 flex flex-wrap px-4">
+              <form-label :show="true">
+                Password field
+              </form-label>
               <password-field/>
             </div>
           </div>
@@ -231,6 +237,14 @@
             <h3 class="uppercase text-black mb-4">
               Other Components
             </h3>
+          </div>
+          <div class="w-full">
+            <h4 class="uppercase text-black mb-4">
+              Switch
+            </h4>
+            <div class="mb-4">
+              <toggle :toggleOn="toggleOn" @toggleSwitch="toggleOn = !toggleOn"/>
+            </div>
           </div>
           <div class="w-full">
             <h4 class="uppercase text-black mb-4">
@@ -266,22 +280,27 @@
 import PrimaryButton from '../components/primary-button.vue';
 import SecondaryButton from '../components/secondary-button.vue';
 import PasswordField from '../components/password-field.vue';
+import FormLabel from '../components/form-label.vue';
 import TextField from '../components/text-field.vue';
 import Swatch from '../components/swatch.vue';
+import Toggle from '../components/toggle.vue';
 import Note from '../components/note.vue';
 
 export default {
-  name: 'app',
+  name: 'style-guide',
   components: {
     "swatch": Swatch,
+    "toggle": Toggle,
     "note": Note,
     "primary-button": PrimaryButton,
     "secondary-button": SecondaryButton,
     "password-field": PasswordField,
+    "form-label": FormLabel,
     "text-field": TextField,
   },
   data () {
     return {
+      toggleOn: false,
       primary: [
         {
           hex: '#BE52F2',

@@ -1,8 +1,8 @@
 // Data
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 // Data Models
-var SiteSchema = new mongoose.Schema({
+const SiteSchema = new mongoose.Schema({
   name: 'string',
   handle: 'string',
   email: 'string',
@@ -13,5 +13,5 @@ var SiteSchema = new mongoose.Schema({
   }
 });
 
-var Site = mongoose.model('Site', SiteSchema);
+const Site = mongoose.model('Site', SiteSchema);
 module.exports.Site = Site;

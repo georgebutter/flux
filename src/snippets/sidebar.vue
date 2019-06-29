@@ -16,7 +16,7 @@
       icon="icon-collection"
       text="Collections"
       href="/admin/collections"
-      :active="pageTitle === 'Collections'"
+      :active="pageTitle === 'Collections' || pageTitle === 'Create a new collection'"
     />
     <button-sidebar
       icon="icon-devices"
