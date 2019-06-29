@@ -64,7 +64,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "8323e3b9599ad70db682";
+/******/ 	var hotCurrentHash = "1690a633f278ae989f05";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1014,7 +1014,8 @@ __webpack_require__.r(__webpack_exports__);
     value: String,
     name: String,
     error: Boolean,
-    readonly: Boolean
+    readonly: Boolean,
+    disabled: Boolean
   }
 });
 
@@ -3973,13 +3974,15 @@ var render = function() {
     _c("input", {
       class: [
         "rounded p-2 w-full shadow-lg outline-none text-base border focus:border-accent",
-        _vm.error ? "border-pink text-pink" : "border-grey-lighter text-grey"
+        _vm.error ? "border-pink text-pink" : "border-grey-lighter text-grey",
+        _vm.disabled ? "bg-grey-light" : ""
       ],
       attrs: {
         name: _vm.name,
         placeholder: _vm.placeholder,
         readonly: _vm.readonly,
-        type: "text"
+        type: "text",
+        disabled: _vm.disabled
       },
       domProps: { value: _vm.value },
       on: {

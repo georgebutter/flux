@@ -22,31 +22,41 @@
                 <form-label :show="true" for="Handle">
                   Handle
                 </form-label>
-                <text-field id="Handle" type="text" name="handle" :value="handle" :error="fields.includes('handle')" :disabled="true"/>
+                <text-field id="Handle" type="text" name="handle" :value="handle" :error="fields.includes('handle')" :readonly="true"/>
               </div>
-              <div v-for="field in additionalFields" class="mb-4">
-                <form-label :show="true" :for="field.id">
-                  {{ field.title }}
+              <div class="mb-4">
+                <form-label :show="true" for="Permalink">
+                  Permalink
                 </form-label>
-                <text-field v-if="field.type === 'text'" :id="field.id" type="text" :name="field.id"/>
-                <select-field
-                  v-else-if="field.type === 'select'"
-                  :name="field.id"
-                  :options="[
-                    {
-                      value: 'none',
-                      text: 'No access'
-                    },
-                    {
-                      value: 'read',
-                      text: 'Read access'
-                    },
-                    {
-                      value: 'readwrite',
-                      text: 'Read and write'
-                    }
-                  ]"
-                />
+                <text-field id="Permalink" type="text" name="permalink" :value="permalink" :error="fields.includes('permalink')" :readonly="true"/>
+              </div>
+              <div v-for="field in additionalFields" class="mb-4 border-t py-4 border-1 border-grey-lighter">
+                <div v-if="field.type === 'text'">
+                  <heading-3>
+                    Text
+                  </heading-3>
+                  <div class="mb-4">
+                    <form-label :show="true" :for="`${field.id}-title`">
+                      Title
+                    </form-label>
+                    <text-field :id="`${field.id}-title`" type="text" :name="`${field.id}-title`"/>
+                  </div>
+                  <div class="mb-4">
+                    <form-label :show="true" :for="`${field.id}-handle`">
+                      Handle
+                    </form-label>
+                    <text-field :id="`${field.id}-handle`" type="text" :name="`${field.id}-handle`"/>
+                  </div>
+                  <div class="mb-4">
+                    <form-label :show="true" :for="`${field.id}-value`">
+                      Value
+                    </form-label>
+                    <text-field :id="`${field.id}-value`" type="text" :name="`${field.id}-value`"/>
+                  </div>
+                </div>
+                <div v-else-if="field.type === 'select'">
+
+                </div>
               </div>
               <div class="px-2">
                 <primary-button type="submit">
@@ -104,6 +114,7 @@ import EmailField from '../components/email-field.vue';
 import FormLabel from '../components/form-label.vue';
 import SelectField from '../components/select-field.vue';
 import IconAddItem from '../components/icon-add-item.vue';
+import Heading3 from '../components/heading-3.vue';
 
 export default {
   name: 'create-collection',
@@ -116,14 +127,16 @@ export default {
     "form-label": FormLabel,
     "select-field": SelectField,
     "icon-add-item": IconAddItem,
+    "heading-3": Heading3,
   },
   data () {
-    const { form, errors, handle } = window.siteData;
+    const { form, errors, handle, permalink } = window.siteData;
     return {
       form: form,
       errors, errors,
       fields: errors ? errors.map(error => error.field) : [],
       handle: handle || '',
+      permalink: permalink || '',
       additionalFields: []
     }
   },
@@ -144,6 +157,7 @@ export default {
     },
     createHandle: function (e) {
       this.handle = this.handleize(e.target.value);
+      this.permalink = `/${this.handle}`;
     },
     handleize: function (str) {
       return str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, "-").replace(/^-+|-+$/g, "");

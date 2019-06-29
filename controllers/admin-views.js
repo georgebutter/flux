@@ -1,6 +1,7 @@
 const { Site } = require('../models/site');
 const { Staff } = require('../models/staff');
 const { App } = require('../models/app');
+const { Collection } = require('../models/collection');
 
 const path = require('path');
 const git = require('nodegit');
@@ -53,18 +54,25 @@ exports.getCollections = (req, res, next) => {
   setViews(req.app);
   const site = req.app.get('site');
   const errors = [];
-  Staff.findById(req.session.userId, (error, user) => {
-    if (user) {
-      return res.render('collections', {
-        site: site,
-        page_title: 'Collections',
-        canonical_url: canoncalUrl(req),
-        template: 'collections',
-        errors: errors,
-        user: user,
-      });
+  Collection.find({}, function(err, collections) {
+    if (err) {
+      throw err;
     } else {
-      return res.redirect('/admin');
+      Staff.findById(req.session.userId, (error, user) => {
+        if (user) {
+          return res.render('collections', {
+            site: site,
+            page_title: 'Collections',
+            canonical_url: canoncalUrl(req),
+            template: 'collections',
+            errors: errors,
+            user: user,
+            collections: collections
+          });
+        } else {
+          return res.redirect('/admin');
+        }
+      });
     }
   });
 }
@@ -438,6 +446,65 @@ exports.postCreateApp = (req, res) => {
         });
       } else {
         return res.redirect('/admin/apps');
+      }
+    });
+  }
+}
+
+exports.postCreateCollection = (req, res) => {
+  console.log('[route] POST /admin/collecions/create'.cyan)
+  console.log(req.body)
+  const site = req.app.get('site');
+  const errors = [];
+  const {
+    name,
+    handle,
+    permalink
+  } = req.body;
+  const form = {
+    name,
+    handle,
+    permalink
+  }
+  if (!name) {
+    errors.push({
+      message: 'Please provide an app name',
+      field: 'name'
+    });
+  }
+  if (errors.length) {
+    Staff.findById(req.session.userId, (error, user) => {
+      setViews(req.app);
+      return res.render('create-collection', {
+        site: site,
+        page_title: 'Create a new collection',
+        canonical_url: canoncalUrl(req),
+        template: 'create-collection',
+        errors: errors,
+        user: user,
+        form: form
+      });
+    });
+  } else {
+    console.log('[status] Creating new collection'.grey)
+    Collection.create(req.body, (error, app) => {
+      console.error(error)
+      if (error) {
+        errors.push({ message: error });
+        Staff.findById(req.session.userId, (error, user) => {
+          setViews(req.app);
+          return res.render('create-collection', {
+            site: site,
+            page_title: 'Create a new collection',
+            canonical_url: canoncalUrl(req),
+            template: 'create-collection',
+            errors: errors,
+            user: user,
+            form: form
+          });
+        });
+      } else {
+        return res.redirect('/admin/collections');
       }
     });
   }

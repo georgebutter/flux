@@ -47,5 +47,11 @@ export default {
     "primary-button": PrimaryButton,
     "icon-collection": IconCollection,
   },
+  data () {
+    const { collections } = window.siteData;
+    return {
+      collections: collections
+    }
+  }
 }
 </script>

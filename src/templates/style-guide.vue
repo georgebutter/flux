@@ -155,9 +155,9 @@
             </h2>
           </div>
           <div class="w-full md:w-1/4 p-2">
-            <h3 class="mb-4 text-xl">
+            <heading-3>
               Heading 3
-            </h3>
+            </heading-3>
           </div>
           <div class="w-full md:w-1/4 p-2">
             <h4 class="mb-4 text-lg font-normal">
@@ -285,6 +285,7 @@ import TextField from '../components/text-field.vue';
 import Swatch from '../components/swatch.vue';
 import Toggle from '../components/toggle.vue';
 import Note from '../components/note.vue';
+import Heading3 from '../components/heading-3.vue';
 
 export default {
   name: 'style-guide',
@@ -297,6 +298,7 @@ export default {
     "password-field": PasswordField,
     "form-label": FormLabel,
     "text-field": TextField,
+    "heading-3": Heading3,
   },
   data () {
     return {
