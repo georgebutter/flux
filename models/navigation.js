@@ -13,8 +13,8 @@ const LinkSchema = new Schema({
 })
 
 const NavigationSchema = new Schema({
-  name: {
-    required: 'Please enter a name',
+  title: {
+    required: 'Please enter a title',
     trim: true,
     type: String
   },

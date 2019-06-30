@@ -151,6 +151,64 @@ exports.getNavigationCreate = (req, res, next) => {
   });
 }
 
+
+exports.postCreateNavigation = (req, res) => {
+  console.log('[route] POST /admin/navigation/create'.cyan)
+  const site = req.app.get('site');
+  const errors = [];
+  const {
+    title,
+    handle
+  } = req.body;
+  const form = {
+    title,
+    handle
+  }
+  if (!title) {
+    errors.push({
+      message: 'Please provide an navigation title',
+      field: 'title'
+    });
+  }
+  if (errors.length) {
+    Staff.findById(req.session.userId, (error, user) => {
+      setViews(req.app);
+      return res.render('create-navigation', {
+        site: site,
+        page_title: 'Create a new navigation',
+        canonical_url: canoncalUrl(req),
+        template: 'create-navigation',
+        errors: errors,
+        user: user,
+        form: form
+      });
+    });
+  } else {
+    console.log('[status] Creating new navigation'.grey)
+    Navigation.create(req.body, (error, navigation) => {
+      console.error(error)
+      if (error) {
+        errors.push({ message: error });
+        Staff.findById(req.session.userId, (error, user) => {
+          setViews(req.app);
+          return res.render('create-navigation', {
+            site: site,
+            page_title: 'Create a new navigation',
+            canonical_url: canoncalUrl(req),
+            template: 'create-navigation',
+            errors: errors,
+            user: user,
+            form: form
+          });
+        });
+      } else {
+        return res.redirect('/admin/navigation');
+      }
+    });
+  }
+}
+
+
 exports.getUsers = (req, res, next) => {
   setViews(req.app);
   const site = req.app.get('site');
