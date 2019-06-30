@@ -152,6 +152,7 @@ app.get('/admin/themes/:theme/:key/:file', adminViews.getFile);
 app.post('/admin', adminViews.postLogin);
 app.post('/admin/collections/create', adminViews.postCreateCollection);
 app.post('/admin/navigation/create', adminViews.postCreateNavigation);
+app.post('/admin/navigation/:id/update', adminViews.postUpdateNavigation);
 app.post('/admin/apps/create', adminViews.postCreateApp);
 app.post('/admin/apps/:id/update', adminViews.postUpdateApp);
 

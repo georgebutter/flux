@@ -1,7 +1,7 @@
 <template>
   <admin-container>
     <section class="p-6">
-      <form action="/admin/navigation/update" method="post" autocomplete="off" novalidate>
+      <form :action="`/admin/navigation/${navigation._id}/update`" method="post" autocomplete="off" novalidate>
         <div class="mb-4" v-if="errors">
           <ul class="list-reset">
             <li v-for="error in errors">
@@ -49,7 +49,7 @@
               </button>
               <div class="px-2">
                 <primary-button type="submit">
-                  Create navigation
+                  Update navigation
                 </primary-button>
               </div>
             </div>
