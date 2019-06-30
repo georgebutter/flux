@@ -4,16 +4,26 @@
       <div class="max-w-lg mx-auto">
         <div v-if="navigation && navigation.length" class="bg-white rounded shadow-lg px-4">
           <div class="flex -mx-4 border-b border-grey-lighter">
-            <div class="w-full p-4">
+            <div class="w-1/3 p-4">
               <h4>
-                Navigation name
+                Title
+              </h4>
+            </div>
+            <div class="w-1/3 p-4">
+              <h4>
+                Handle
               </h4>
             </div>
           </div>
           <a :href="'/admin/navigation/' + navigation._id" class="flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black" v-for="navigation in navigation">
             <div class="w-1/3 p-4">
               <p class="underline-none">
-                {{ navigation.name }}
+                {{ navigation.title }}
+              </p>
+            </div>
+            <div class="w-1/3 p-4">
+              <p class="underline-none">
+                {{ navigation.handle }}
               </p>
             </div>
           </a>
