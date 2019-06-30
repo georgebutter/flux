@@ -16,7 +16,7 @@
       icon="icon-navigation"
       text="Navigation"
       href="/admin/navigation"
-      :active="pageTitle === 'Navigation' || pageTitle === 'Create a new menu'"
+      :active="pageTitle === 'Navigation' || pageTitle === 'Create a new navigation'"
     />
     <button-sidebar
       icon="icon-devices"

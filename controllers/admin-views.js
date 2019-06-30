@@ -128,6 +128,29 @@ exports.getNavigation = (req, res, next) => {
   });
 }
 
+exports.getNavigationCreate = (req, res, next) => {
+  setViews(req.app);
+  const site = req.app.get('site');
+  const errors = [];
+  const form = {};
+  console.log(`[status] GET navigation create`)
+  Staff.findById(req.session.userId, (error, user) => {
+    if (user) {
+      return res.render('create-navigation', {
+        site: site,
+        page_title: 'Create a new navigation',
+        canonical_url: canoncalUrl(req),
+        template: 'create-navigation',
+        errors: errors,
+        user: user,
+        form: form
+      });
+    } else {
+      return res.redirect('/admin');
+    }
+  });
+}
+
 exports.getUsers = (req, res, next) => {
   setViews(req.app);
   const site = req.app.get('site');

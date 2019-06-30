@@ -34,7 +34,7 @@
     "reload": "browser-sync reload --config bs-config.js"
   },
    "nodemonConfig": {
-    "ignore": ["client/theme/"]
+    "ignore": ["client/theme/", "client/admin/assets/"]
   },
   "author": "George Butter",
   "license": "ISC",
