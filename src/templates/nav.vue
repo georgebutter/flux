@@ -28,13 +28,13 @@
                       <form-label :show="true" :for="`title-${index}`">
                         Title
                       </form-label>
-                      <text-field :id="`title-${index}`" type="text" :name="`title-${index}`"/>
+                      <text-field :id="`title-${index}`" type="text" :name="`title-${index}`" :value="link.title"/>
                     </div>
                     <div class="mb-4">
-                      <form-label :show="true" :for="`link-${index}`">
+                      <form-label :show="true" :for="`url-${index}`">
                         Link
                       </form-label>
-                      <text-field :id="`link-${index}`" type="text" :name="`link-${index}`"/>
+                      <text-field :id="`url-${index}`" type="text" :name="`url-${index}`" :value="link.url"/>
                     </div>
                   </div>
                 </div>
@@ -99,7 +99,7 @@ export default {
       errors, errors,
       fields: errors ? errors.map(error => error.field) : [],
       handle: navigation.handle || '',
-      links: []
+      links: navigation.links || []
     }
   },
   methods: {

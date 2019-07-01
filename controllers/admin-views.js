@@ -254,6 +254,7 @@ exports.postUpdateNavigation = (req, res) => {
       field: 'title'
     });
   }
+
   if (errors.length) {
     Staff.findById(req.session.userId, (error, user) => {
       setViews(req.app);
@@ -268,14 +269,24 @@ exports.postUpdateNavigation = (req, res) => {
       });
     });
   } else {
-    console.log('[status] Creating new navigation'.grey)
+    console.log('[status] Updating navigation'.grey)
+    const links = [];
+    for (let [key, value] of Object.entries(req.body)) {
+      if (key !== 'title' && key !== 'handle') {
+        const [linkKey, i] = key.split('-');
+        const index = Number(i);
+        links[index] = links[index] || {};
+        links[index][linkKey] = value;
+      }
+    }
     Navigation.updateOne({ _id: req.params.id }, {
       $set: {
         title: req.body.title,
         handle: req.body.handle,
+        links: links
       }
     }).then(result => {
-      return res.redirect('/admin/navigation');
+      return res.redirect(`/admin/navigation/${req.params.id}`);
     });
   }
 }
