@@ -31,10 +31,10 @@
                       <text-field :id="`title-${index}`" type="text" :name="`title-${index}`"/>
                     </div>
                     <div class="mb-4">
-                      <form-label :show="true" :for="`link-${index}`">
+                      <form-label :show="true" :for="`url-${index}`">
                         Link
                       </form-label>
-                      <text-field :id="`link-${index}`" type="text" :name="`link-${index}`"/>
+                      <text-field :id="`url-${index}`" type="text" :name="`url-${index}`"/>
                     </div>
                   </div>
                 </div>

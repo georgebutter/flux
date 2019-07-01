@@ -213,7 +213,21 @@ exports.postCreateNavigation = (req, res) => {
     });
   } else {
     console.log('[status] Creating new navigation'.grey)
-    Navigation.create(req.body, (error, navigation) => {
+    const links = [];
+    for (let [key, value] of Object.entries(req.body)) {
+      if (key !== 'title' && key !== 'handle') {
+        const [linkKey, i] = key.split('-');
+        const index = Number(i);
+        links[index] = links[index] || {};
+        links[index][linkKey] = value;
+      }
+    }
+    console.log(links)
+    Navigation.create({
+      title,
+      handle,
+      links
+    }, (error, navigation) => {
       console.error(error)
       if (error) {
         errors.push({ message: error });
