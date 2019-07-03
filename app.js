@@ -59,8 +59,8 @@ app.use(bodyParser({limit: '5mb'}));
 // Parse incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/assets', express.static(`${__dirname}/client/theme/assets`));
-app.use('/admin/assets', express.static(`${__dirname}/client/admin/assets`));
+app.use('/admin/assets', express.static(path.join(__dirname, `/client/admin/assets`)));
+app.use('/assets', express.static(path.join(__dirname, `/client/theme/assets`)));
 
 // enabling CORS for all requests
 // app.use(cors({ credentials: true,
