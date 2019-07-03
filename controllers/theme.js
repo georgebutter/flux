@@ -1,18 +1,26 @@
 const path = require('path');
+const { Navigation } = require('../models/navigation');
 
 exports.getHome = (req, res) => {
   setViews(req.app);
   console.log('[route] /'.orange);
-  if (req.app.get('installed')) {
-    return res.render('index', {
-      site: req.app.get('site'),
-      page_title: 'Index',
-      canonical_url: canoncalUrl(req),
-      template: 'index'
-    });
-  } else {
-    return res.redirect('/install');
-  }
+  Navigation.find({}, function(err, navigation) {
+    const linklists = {};
+    for (var i = 0; i < navigation.length; i++) {
+      linklists[navigation[i].handle] = navigation[i];
+    }
+    if (req.app.get('installed')) {
+      return res.render('index', {
+        site: req.app.get('site'),
+        page_title: 'Index',
+        canonical_url: canoncalUrl(req),
+        template: 'index',
+        linklists: linklists
+      });
+    } else {
+      return res.redirect('/install');
+    }
+  });
 }
 
 exports.get404 = (req, res) => {
