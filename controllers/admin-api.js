@@ -7,8 +7,9 @@ const repoDir = './client/theme';
 
 exports.putThemeFileJson = (req, res, next) => {
   console.log(`[route] PUT theme file json`.cyan)
-  const { key, password, content } = req.body;
+  const { key, password, content, attachment } = req.body;
   const { theme, dir, file } = req.params;
+
   App.authenticate(key, password, (error, app) => {
     if (error || !app) {
       return res.json({
@@ -27,10 +28,24 @@ exports.putThemeFileJson = (req, res, next) => {
     }
     const gfs = req.app.get('gfs');
     const filePath = path.join(path.resolve(repoDir), `${dir}/${file}`);
+    const split = file.split('.');
+    const format = split[split.length - 1];
+    let data;
+    if (format === 'jpg' || format === 'png' || format === 'ico') {
+      if (attachment) {
+        data = new Buffer.from(attachment, 'base64');
+      } else {
+        return res.json({
+          status: 'error: No attachment provided'
+        })
+      }
+    } else {
+      data = content;
+    }
     fs.ensureDir(path.resolve(repoDir))
     .then(() => {
       console.log(`[status] confirmed directory at ${path.resolve(repoDir)}`.grey)
-      return fs.outputFile(filePath, content);
+      return fs.outputFile(filePath, data);
     })
     .then(() => {
       console.log(`[status] written file at ${filePath}`.grey)
