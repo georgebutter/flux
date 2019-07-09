@@ -31,7 +31,7 @@ exports.putThemeFileJson = (req, res, next) => {
     const split = file.split('.');
     const format = split[split.length - 1];
     let data;
-    if (format === 'jpg' || format === 'png' || format === 'ico') {
+    if (format === 'png' || format === 'jpg' || format === 'ico' || format === 'woff' || format === 'woff2' || format === 'eot' || format === 'ttf') {
       if (attachment) {
         data = new Buffer.from(attachment, 'base64');
       } else {

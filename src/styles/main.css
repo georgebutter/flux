@@ -28,6 +28,11 @@ input::placeholder {
   transition: width ease-in-out 0.3s;
   will-change: width;
 }
+.transition-max-width {
+  transition: max-width ease-in-out 5s;
+  transition-delay: 0.5s;
+  will-change: max-width;
+}
 .transition-padding-left {
   transition: padding-left ease-in-out 0.3s;
   will-change: padding-left;

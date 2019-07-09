@@ -55,7 +55,7 @@ app.use(session({
 }));
 
 // Allow large payloads for themes
-app.use(bodyParser({limit: '5mb'}));
+app.use(bodyParser({limit: '10mb'}));
 // Parse incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -73,6 +73,8 @@ const engine = Liquid({
   root: __dirname,
   extname: '.liquid'
 });
+engine.registerFilter('handle', (str) => str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, '-').replace(/^-+|-+$/g, ''))
+engine.registerFilter('handleize', (str) => str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, '-').replace(/^-+|-+$/g, ''))
 app.engine('liquid', engine.express());
 app.set('view engine', 'liquid');
 

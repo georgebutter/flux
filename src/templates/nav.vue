@@ -10,14 +10,14 @@
           </ul>
         </div>
         <div class="flex mb-4">
-          <div class="w-2/3 px-2">
-            <div class="bg-white rounded shadow-lg p-4 mb-4">
+          <div class="w-3/5 px-2">
+            <div class="bg-white rounded-lg shadow-lg p-4 mb-4">
               <form-label :show="true" for="Title">
                 Title
               </form-label>
               <text-field id="Title" type="text" name="title" :value="navigation.title" :error="fields.includes('title')" @onInput="createHandle"/>
             </div>
-            <div class="bg-white rounded shadow-lg p-4 mb-4">
+            <div class="bg-white rounded-lg shadow-lg px-4 pt-4 mb-4">
               <heading-3>
                 Menu items
               </heading-3>
@@ -44,22 +44,39 @@
                   <p class="text-grey-light">This menu has no links</p>
                 </div>
               </div>
-              <button type="button" role="button" class="bg-grey-lightest block w-full outline-none focus:outline-none -mx-4 p-4 mb-4 hover:text-accent flex justify-center" @click="createLink">
-                <icon-add-item width="20" height="20"/><span class="ml-4">Add menu item</span>
-              </button>
-              <div class="px-2">
+              <div class="-mx-4">
+                <button type="button" role="button" class="bg-green text-white block w-full outline-none focus:outline-none py-6 px-4 mb-4 hover:bg-green-lighter hover:text-green rounded-b-lg transition-background-color flex justify-center" @click="createLink">
+                  <icon-add-item width="20" height="20"/><span class="ml-4">Add menu item</span>
+                </button>
+              </div>
+            </div>
+            <div class="px-2 flex">
+              <div class="w-1/2 ">
                 <primary-button type="submit">
                   Update navigation
                 </primary-button>
               </div>
+              <div class="w-1/2 text-right">
+                <warning-button type="button">
+                  Delete navigation
+                </warning-button>
+              </div>
             </div>
           </div>
-          <div class="w-1/3 px-2">
+          <div class="w-2/5 px-2">
             <div class="bg-white shadow-lg rounded p-4">
-              <form-label :show="true" for="Handle">
-                Handle
-              </form-label>
-              <text-field id="Handle" type="text" name="handle" :value="handle" :error="fields.includes('handle')" :readonly="true"/>
+              <div class="mb-4">
+                <form-label :show="true" for="Handle">
+                  Handle
+                </form-label>
+                <text-field id="Handle" type="text" name="handle" :value="handle" :error="fields.includes('handle')" :readonly="true"/>
+              </div>
+              <p class="mb-4 text-grey-light">The handle is used to access the navigation in your website</p>
+              <code class="whitespace-pre-wrap text-grey-light text-sm">
+{% for link in linklists.{{ handle }}.links %}
+  <span v-pre>{{ link.title }}</span>
+{% endfor %}
+              </code>
             </div>
           </div>
         </div>
@@ -71,6 +88,7 @@
 <script>
 import Note from '../components/note.vue';
 import PrimaryButton from '../components/primary-button.vue';
+import WarningButton from '../components/warning-button.vue';
 import AdminContainer from '../snippets/admin-container.vue';
 import TextField from '../components/text-field.vue';
 import EmailField from '../components/email-field.vue';
@@ -84,6 +102,7 @@ export default {
   components: {
     "note": Note,
     "primary-button": PrimaryButton,
+    "warning-button": WarningButton,
     "admin-container": AdminContainer,
     "text-field": TextField,
     "email-field": EmailField,
