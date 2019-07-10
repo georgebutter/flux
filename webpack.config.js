@@ -33,8 +33,23 @@ module.exports = {
   mode: 'development',
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'client/admin/assets/'),
-    publicPath: '/'
+    path: path.join(__dirname, '/client/admin/assets/'),
+    publicPath: '/admin/assets/'
+  },
+  devServer: {
+    contentBase: path.join(__dirname, '/client/admin/assets'),
+    watchContentBase: true,
+    proxy: [
+      {
+        context: ['/', '/admin'],
+        target: 'http://localhost:3000', //server and port to redirect to
+        secure: false //don't use https
+      }
+    ],
+    overlay: {
+      warnings: true, // default false
+      errors: true, //default false
+    },
   },
   module: {
     rules: [

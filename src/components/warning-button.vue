@@ -1,5 +1,5 @@
 <template>
-  <button v-else :disabled="disabled" :class="['py-2 px-10 inline-block rounded-full focus:outline-none active:outline-none border-2 transition-background-color relative', disabled ? 'bg-grey-lighter text-grey-light cursor-not-allowed border-grey-lighter' : 'bg-pink text-white hover:bg-pink-lighter hover:border-pink-lighter hover:text-pink border-pink']" @mousedown="startInitializing" @mouseup="stopInitializing" @mouseleave="stopInitializing">
+  <button v-else :disabled="disabled" :class="['py-2 px-10 inline-block rounded-full focus:outline-none active:outline-none border-2 transition-background-color relative', disabled ? 'bg-grey-lighter text-grey-light cursor-not-allowed border-grey-lighter' : 'bg-pink text-white hover:bg-pink-lighter hover:border-pink-lighter hover:text-pink border-pink', loading ? 'pointer-events-none' : '']" @mousedown="startInitializing" @mouseup="stopInitializing" @mouseleave="stopInitializing">
     <slot v-if="!loading && !initializing"></slot>
     <loader v-if="loading && !initializing"/>
     <span class="block" v-if="!loading && initializing">
@@ -21,6 +21,7 @@ export default {
     startInitializing() {
       this.initializing = true;
       this.timeout = setTimeout(() => {
+        this.initializing = false;
         this.loading = true;
         this.action();
       }, 5500)

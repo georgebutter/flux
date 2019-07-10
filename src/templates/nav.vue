@@ -86,6 +86,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import Note from '../components/note.vue';
 import PrimaryButton from '../components/primary-button.vue';
 import WarningButton from '../components/warning-button.vue';
@@ -135,7 +136,8 @@ export default {
       return str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, "-").replace(/^-+|-+$/g, "");
     },
     deleteNavigation () {
-      console.log(this.navigaton)
+      console.log(this.navigation);
+      axios.delete(`/admin/navigation/${this.navigation._id}`)
     }
   }
 }
