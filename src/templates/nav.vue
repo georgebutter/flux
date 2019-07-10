@@ -50,14 +50,14 @@
                 </button>
               </div>
             </div>
-            <div class="px-2 flex">
+            <div class="flex">
               <div class="w-1/2 ">
                 <primary-button type="submit">
                   Update navigation
                 </primary-button>
               </div>
               <div class="w-1/2 text-right">
-                <warning-button type="button">
+                <warning-button type="button" initializingText="Hold to delete" :action="deleteNavigation">
                   Delete navigation
                 </warning-button>
               </div>
@@ -122,17 +122,20 @@ export default {
     }
   },
   methods: {
-    createLink: function () {
+    createLink () {
       this.links.push({
         title: '',
         url: ''
       })
     },
-    createHandle: function (e) {
+    createHandle (e) {
       this.handle = this.handleize(e.target.value);
     },
-    handleize: function (str) {
+    handleize (str) {
       return str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, "-").replace(/^-+|-+$/g, "");
+    },
+    deleteNavigation () {
+      console.log(this.navigaton)
     }
   }
 }

@@ -3,10 +3,10 @@
     <slot v-if="!loading && !initializing"></slot>
     <loader v-if="loading && !initializing"/>
     <span class="block" v-if="!loading && initializing">
-      Hold to complete
+      {{ initializingText }}
     </span>
     <span :class="['pointer-events-none block absolute bg-pink text-white rounded-full overflow-hidden max-w-0 py-2 whitespace-no-wrap pin', initializing ? 'max-w-full transition-max-width' : 'invisible']">
-      <span class="block px-10">Hold to complete</span>
+      <span class="block px-10">{{ initializingText }}</span>
     </span>
   </button>
 </template>
@@ -20,19 +20,30 @@ export default {
   methods: {
     startInitializing() {
       this.initializing = true;
+      this.timeout = setTimeout(() => {
+        this.loading = true;
+        this.action();
+      }, 5500)
     },
     stopInitializing() {
       this.initializing = false;
+      clearTimeout(this.timeout);
     }
   },
   data () {
     return {
-      initializing: false
+      initializing: false,
+      loading: false,
+      timeout: null
     }
   },
   props: {
     disabled: Boolean,
-    loading: Boolean,
+    initializingText: {
+      type: String,
+      default: 'Hold to complete'
+    },
+    action: Function,
     href: {
       type: [String, Boolean],
       default: false,
