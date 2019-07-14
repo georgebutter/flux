@@ -24,7 +24,7 @@ export default {
         this.initializing = false;
         this.loading = true;
         this.action();
-      }, 5500)
+      }, 2500)
     },
     stopInitializing() {
       this.initializing = false;
