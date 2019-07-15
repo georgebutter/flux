@@ -10,7 +10,7 @@
       icon="icon-collection"
       text="Collections"
       href="/admin/collections"
-      :active="pageTitle === 'Collections' || pageTitle === 'Create a new collection'"
+      :active="pageTitle === 'Collections' || pageTitle === 'Create a new collection' || pageTitle === 'Collection'"
     />
     <button-sidebar
       icon="icon-navigation"

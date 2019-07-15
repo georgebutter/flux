@@ -6,14 +6,14 @@
           <div class="flex -mx-4 border-b border-grey-lighter">
             <div class="w-full p-4">
               <h4>
-                Collection name
+                Collection title
               </h4>
             </div>
           </div>
           <a :href="'/admin/collections/' + collection._id" class="flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black" v-for="collection in collections">
             <div class="w-1/3 p-4">
               <p class="underline-none">
-                {{ collection.name }}
+                {{ collection.title }}
               </p>
             </div>
           </a>

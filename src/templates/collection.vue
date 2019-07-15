@@ -1,7 +1,7 @@
 <template>
   <admin-container>
     <section class="p-6">
-      <form action="/admin/collections/create" method="post" autocomplete="off" novalidate>
+      <form :action="`/admin/collections/${collection._id}/update`" method="post" autocomplete="off" novalidate>
         <errors-block :errors="errors"/>
         <div class="flex mb-4">
           <div class="w-2/3 px-2">
@@ -55,7 +55,7 @@
             </div>
             <div class="px-2">
               <primary-button type="submit">
-                Create collection
+                Update collection
               </primary-button>
             </div>
           </div>
@@ -124,14 +124,17 @@ export default {
     "heading-3": Heading3,
   },
   data () {
-    const { form, errors, handle, permalink } = window.siteData;
+    const { errors, handle, permalink, collection } = window.siteData;
     return {
-      form: form,
       errors, errors,
       fields: errors ? errors.map(error => error.field) : [],
-      handle: form.handle,
-      permalink: form.permalink,
-      additionalFields: []
+      handle: handle || '',
+      permalink: permalink || '',
+      additionalFields: [],
+      collection: collection,
+      title: collection.title || '',
+      handle: collection.handle || '',
+      permalink: collection.permalink || '',
     }
   },
   methods: {

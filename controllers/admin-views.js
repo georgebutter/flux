@@ -78,6 +78,35 @@ exports.getCollections = (req, res, next) => {
   });
 }
 
+exports.getCollection = (req, res, next) => {
+  setViews(req.app);
+  const site = req.app.get('site');
+  const errors = [];
+  console.log(`[status] GET collection`)
+
+  Collection.findById({ _id: req.params.id}, function(err, collection) {
+    if (err) {
+      throw err;
+    } else {
+      Staff.findById(req.session.userId, (error, user) => {
+        if (user) {
+          return res.render('admin', {
+            site,
+            page_title: 'Collection',
+            canonical_url: canoncalUrl(req),
+            template: 'collection',
+            errors,
+            user,
+            collection
+          });
+        } else {
+          return res.redirect('/admin');
+        }
+      });
+    }
+  });
+}
+
 exports.getCollectionsCreate = (req, res, next) => {
   setViews(req.app);
   const site = req.app.get('site');
@@ -99,6 +128,75 @@ exports.getCollectionsCreate = (req, res, next) => {
       return res.redirect('/admin');
     }
   });
+}
+
+exports.postUpdateCollection = (req, res) => {
+  const site = req.app.get('site');
+  const errors = [];
+  const {
+    title,
+    handle,
+    permalink
+  } = req.body;
+  const form = {
+    title,
+    handle,
+    permalink
+  }
+  if (!title) {
+    errors.push({
+      message: 'Please provide a collection title',
+      field: 'title'
+    });
+  }
+  if (!handle) {
+    errors.push({
+      message: 'Handle cannot be blank',
+      field: 'handle'
+    });
+  }
+  if (!permalink) {
+    errors.push({
+      message: 'Permalink cannot be blank',
+      field: 'permalink'
+    });
+  }
+
+  if (errors.length) {
+    setViews(req.app);
+    Collection.findById({ _id: req.params.id}, function(err, collection) {
+      if (err) {
+        throw err;
+      } else {
+        Staff.findById(req.session.userId, (error, user) => {
+          if (user) {
+            return res.render('admin', {
+              site,
+              page_title: 'Collection',
+              canonical_url: canoncalUrl(req),
+              template: 'collection',
+              errors,
+              user,
+              collection
+            });
+          } else {
+            return res.redirect('/admin');
+          }
+        });
+      }
+    });
+  } else {
+    Collection.updateOne({ _id: req.params.id }, {
+      $set: {
+        title: req.body.title,
+        handle: req.body.handle,
+        permalink: req.body.permalink
+      }
+    }).then(result => {
+      return res.redirect('/admin/collections');
+    });
+
+  }
 }
 
 exports.getNavigations = (req, res, next) => {
@@ -192,6 +290,22 @@ exports.postCreateNavigation = (req, res) => {
     title,
     handle
   }
+  const links = [];
+  for (let [key, value] of Object.entries(req.body)) {
+    if (key !== 'title' && key !== 'handle') {
+      const [linkKey, i] = key.split('-');
+      const index = Number(i);
+      links[index] = links[index] || {};
+      links[index][linkKey] = value;
+      if (value === '') {
+        errors.push({
+          message: `${linkKey.charAt(0).toUpperCase() + linkKey.slice(1)} cannot be blank`,
+          field: key
+        });
+      }
+    }
+  }
+  form.links = links;
   if (!title) {
     errors.push({
       message: 'Please provide an navigation title',
@@ -212,23 +326,11 @@ exports.postCreateNavigation = (req, res) => {
       });
     });
   } else {
-    console.log('[status] Creating new navigation'.grey)
-    const links = [];
-    for (let [key, value] of Object.entries(req.body)) {
-      if (key !== 'title' && key !== 'handle') {
-        const [linkKey, i] = key.split('-');
-        const index = Number(i);
-        links[index] = links[index] || {};
-        links[index][linkKey] = value;
-      }
-    }
-    console.log(links)
     Navigation.create({
       title,
       handle,
       links
     }, (error, navigation) => {
-      console.error(error)
       if (error) {
         errors.push({ message: error });
         Staff.findById(req.session.userId, (error, user) => {
@@ -250,8 +352,24 @@ exports.postCreateNavigation = (req, res) => {
   }
 }
 
+exports.deleteNavigation = (req, res) => {
+  Staff.findById(req.session.userId, (error, user) => {
+    setViews(req.app);
+    if (user) {
+      Navigation.deleteOne({ _id: req.params.id}, (err) => {
+        if (err) {
+          res.sendStatus(500)
+        } else {
+          res.sendStatus(200)
+        }
+      })
+    } else {
+      return res.redirect('/admin');
+    }
+  })
+}
+
 exports.postUpdateNavigation = (req, res) => {
-  console.log('[route] POST /admin/navigation/create'.cyan)
   const site = req.app.get('site');
   const errors = [];
   const {
@@ -662,18 +780,19 @@ exports.postCreateCollection = (req, res) => {
   const site = req.app.get('site');
   const errors = [];
   const {
-    name,
+    title,
     handle,
     permalink
   } = req.body;
+  console.log(req.body)
   const form = {
-    name,
+    title,
     handle,
     permalink
   }
-  if (!name) {
+  if (!title) {
     errors.push({
-      message: 'Please provide an app name',
+      message: 'Please provide an collection name',
       field: 'name'
     });
   }

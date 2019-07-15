@@ -70,7 +70,8 @@
     "tailwindcss-gradients": "^1.1.0",
     "uuid": "^3.3.2",
     "validator": "^10.11.0",
-    "vue-monaco": "^0.3.2"
+    "vue-monaco": "^0.3.2",
+    "vuedraggable": "^2.23.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
