@@ -142,6 +142,8 @@ app.get('/admin/navigation/:id', adminViews.getNavigation);
 app.get('/admin/collections', adminViews.getCollections);
 app.get('/admin/collections/create', adminViews.getCollectionsCreate);
 app.get('/admin/collections/:id', adminViews.getCollection);
+app.get('/admin/items', adminViews.getItems);
+app.get('/admin/items/create', adminViews.getItemsCreate);
 app.get('/admin/settings', adminViews.getSettings);
 app.get('/admin/apps', adminViews.getApps);
 app.get('/admin/apps/create', adminViews.getAppsCreate);

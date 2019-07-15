@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const CollectionSchema = new Schema({
+const ItemSchema = new Schema({
   title: {
     required: 'Please enter a name',
     trim: true,
@@ -13,12 +13,6 @@ const CollectionSchema = new Schema({
     type: String,
     unique: true
   },
-  permalink: {
-    required: 'Please enter a permalink',
-    trim: true,
-    type: String,
-    unique: true
-  }
 },
 {
   collection: 'collections',
@@ -26,5 +20,5 @@ const CollectionSchema = new Schema({
   strict: false
 });
 
-const Collection = mongoose.model('Collection', CollectionSchema);
-module.exports.Collection = Collection;
+const Item = mongoose.model('Item', ItemSchema);
+module.exports.Item = Item;

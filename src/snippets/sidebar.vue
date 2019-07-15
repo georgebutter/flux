@@ -13,6 +13,12 @@
       :active="pageTitle === 'Collections' || pageTitle === 'Create a new collection' || pageTitle === 'Collection'"
     />
     <button-sidebar
+      icon="icon-item"
+      text="Items"
+      href="/admin/items"
+      :active="pageTitle === 'Items' || pageTitle === 'Create a new item' || pageTitle === 'Item'"
+    />
+    <button-sidebar
       icon="icon-navigation"
       text="Navigation"
       href="/admin/navigation"

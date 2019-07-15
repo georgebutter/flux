@@ -17,6 +17,7 @@ import IconCog from '../components/icon-cog.vue';
 import IconDevices from '../components/icon-devices.vue';
 import IconUsers from '../components/icon-users.vue';
 import IconApps from '../components/icon-apps.vue';
+import IconItem from '../components/icon-item.vue';
 
 export default {
   components: {
@@ -27,6 +28,7 @@ export default {
     "icon-apps": IconApps,
     "icon-devices": IconDevices,
     "icon-users": IconUsers,
+    "icon-item": IconItem,
   },
   props: {
     text: String,

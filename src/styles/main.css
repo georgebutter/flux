@@ -41,6 +41,10 @@ input::placeholder {
   will-change: background-color;
 }
 
+.translate-y-full {
+  transform: translateY(100%);
+}
+
 .visually-hidden {
   border: 0;
   clip: rect(0 0 0 0);

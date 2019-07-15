@@ -3,6 +3,7 @@ const { Staff } = require('../models/staff');
 const { App } = require('../models/app');
 const { Collection } = require('../models/collection');
 const { Navigation } = require('../models/navigation');
+const { Item } = require('../models/item');
 
 const path = require('path');
 const git = require('nodegit');
@@ -47,6 +48,56 @@ exports.getDashboard = (req, res, next) => {
         errors: errors,
         user: false
       });
+    }
+  });
+}
+
+exports.getItems = (req, res) => {
+  setViews(req.app);
+  const site = req.app.get('site');
+  const errors = [];
+  Item.find({}, function(err, items) {
+    if (err) {
+      throw err;
+    } else {
+      Staff.findById(req.session.userId, (error, user) => {
+        if (user) {
+          return res.render('admin', {
+            site: site,
+            page_title: 'Items',
+            canonical_url: canoncalUrl(req),
+            template: 'items',
+            errors: errors,
+            user: user,
+            items: items
+          });
+        } else {
+          return res.redirect('/admin');
+        }
+      });
+    }
+  })
+}
+
+exports.getItemsCreate = (req, res, next) => {
+  setViews(req.app);
+  const site = req.app.get('site');
+  const errors = [];
+  const form = {};
+  console.log(`[status] GET item create`)
+  Staff.findById(req.session.userId, (error, user) => {
+    if (user) {
+      return res.render('admin', {
+        site: site,
+        page_title: 'Create a new item',
+        canonical_url: canoncalUrl(req),
+        template: 'create-item',
+        errors: errors,
+        user: user,
+        form: form
+      });
+    } else {
+      return res.redirect('/admin');
     }
   });
 }
@@ -276,7 +327,6 @@ exports.getNavigationCreate = (req, res, next) => {
     }
   });
 }
-
 
 exports.postCreateNavigation = (req, res) => {
   console.log('[route] POST /admin/navigation/create'.cyan)

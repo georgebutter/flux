@@ -207,7 +207,6 @@
             </div>
           </div>
           <div class="w-1/3 flex">
-
           </div>
           <div class="w-1/3">
           </div>
@@ -238,12 +237,23 @@
               Other Components
             </h3>
           </div>
-          <div class="w-full">
+          <div class="w-1/2">
             <h4 class="uppercase text-black mb-4">
               Switch
             </h4>
             <div class="mb-4">
               <toggle :toggleOn="toggleOn" @toggleSwitch="toggleOn = !toggleOn"/>
+            </div>
+          </div>
+          <div class="w-1/2">
+            <h4 class="uppercase text-black mb-4">
+              Multi select
+            </h4>
+            <div class="mb-4">
+              <multi-select
+                :list="[{ title: 'Home', value: 'home' }, { title: 'Blog', value: 'blog' }, { title: 'Article', value: 'article'}, { title: 'Item', value: 'item' }]"
+              >
+              </multi-select>
             </div>
           </div>
           <div class="w-full">
@@ -286,6 +296,7 @@ import Swatch from '../components/swatch.vue';
 import Toggle from '../components/toggle.vue';
 import Note from '../components/note.vue';
 import Heading3 from '../components/heading-3.vue';
+import MultiSelect from '../components/multi-select.vue';
 
 export default {
   name: 'style-guide',
@@ -299,6 +310,7 @@ export default {
     "form-label": FormLabel,
     "text-field": TextField,
     "heading-3": Heading3,
+    "multi-select": MultiSelect,
   },
   data () {
     return {
