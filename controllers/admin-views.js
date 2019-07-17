@@ -57,6 +57,7 @@ exports.getItems = (req, res) => {
   const site = req.app.get('site');
   const errors = [];
   Item.find({}, function(err, items) {
+    console.log(items)
     if (err) {
       throw err;
     } else {
@@ -100,6 +101,79 @@ exports.getItemsCreate = (req, res, next) => {
       return res.redirect('/admin');
     }
   });
+}
+
+exports.postCreateItem = (req, res) => {
+  const site = req.app.get('site');
+  const errors = [];
+  const {
+    title,
+    handle,
+  } = req.body;
+  const form = {
+    title,
+    handle
+  }
+  const collections = [];
+  for (let [key, value] of Object.entries(req.body)) {
+    if (key !== 'title' && key !== 'handle') {
+      const [colKey, i] = key.split('-');
+      const index = Number(i);
+      collections[index] = collections[index] || {};
+      collections[index][colKey] = value;
+      if (value === '') {
+        errors.push({
+          message: `${colKey.charAt(0).toUpperCase() + colKey.slice(1)} cannot be blank`,
+          field: key
+        });
+      }
+    }
+  }
+  form.collections = collections;
+  if (!title) {
+    errors.push({
+      message: 'Please provide an item title',
+      field: 'title'
+    });
+  }
+  if (errors.length) {
+    Staff.findById(req.session.userId, (error, user) => {
+      setViews(req.app);
+      return res.render('admin', {
+        site: site,
+        page_title: 'Create a new item',
+        canonical_url: canoncalUrl(req),
+        template: 'create-item',
+        errors: errors,
+        user: user,
+        form: form
+      });
+    });
+  } else {
+    Item.create({
+      title,
+      handle,
+      collections
+    }, (error, item) => {
+      if (error) {
+        errors.push({ message: error.errmsg });
+        Staff.findById(req.session.userId, (error, user) => {
+          setViews(req.app);
+          return res.render('admin', {
+            site: site,
+            page_title: 'Create a new item',
+            canonical_url: canoncalUrl(req),
+            template: 'create-item',
+            errors: errors,
+            user: user,
+            form: form
+          });
+        });
+      } else {
+        return res.redirect('/admin/items');
+      }
+    });
+  }
 }
 
 exports.getCollections = (req, res, next) => {

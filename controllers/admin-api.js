@@ -1,4 +1,6 @@
 const { App } = require('../models/app');
+const { Staff } = require('../models/staff');
+const { Collection } = require('../models/collection');
 const fs = require('fs-extra');
 const path = require('path');
 const git = require('nodegit');
@@ -182,6 +184,32 @@ exports.getFileJson = (req, res, next) => {
         });
       })
       .done();
+    }
+  });
+}
+
+exports.getCollectionJson = (req, res) => {
+  Staff.findById(req.session.userId, (error, user) => {
+    if (user) {
+      const limit = 50;
+      Collection.find({}).limit(limit).exec(function(err, collections) {
+        if (err) {
+          return res.json({
+            status: 'error',
+            message: 'Query error',
+            error: err
+          });
+        }
+        return res.json({
+          status: 'success',
+          collections
+        });
+      });
+    } else {
+      return res.json({
+        status: 'error',
+        message: 'Inactive session'
+      });
     }
   });
 }

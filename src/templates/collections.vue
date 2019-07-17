@@ -2,21 +2,28 @@
   <admin-container>
     <section class="p-6">
       <div class="max-w-lg mx-auto">
-        <div v-if="collections && collections.length" class="bg-white rounded shadow-lg px-4">
-          <div class="flex -mx-4 border-b border-grey-lighter">
-            <div class="w-full p-4">
-              <h4>
-                Collection title
-              </h4>
+        <div  v-if="collections && collections.length">
+          <div class="bg-white rounded shadow-lg px-4">
+            <div class="flex -mx-4 border-b border-grey-lighter">
+              <div class="w-full p-4">
+                <h4>
+                  Collection title
+                </h4>
+              </div>
             </div>
+            <a :href="'/admin/collections/' + collection._id" class="flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black" v-for="collection in collections">
+              <div class="w-1/3 p-4">
+                <p class="underline-none">
+                  {{ collection.title }}
+                </p>
+              </div>
+            </a>
           </div>
-          <a :href="'/admin/collections/' + collection._id" class="flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black" v-for="collection in collections">
-            <div class="w-1/3 p-4">
-              <p class="underline-none">
-                {{ collection.title }}
-              </p>
-            </div>
-          </a>
+          <div class="w-full text-right py-4">
+            <primary-button href="/admin/collections/create">
+              Create a new collection
+            </primary-button>
+          </div>
         </div>
         <div class="p-4 text-center" v-else>
           <div class="text-grey mb-4">

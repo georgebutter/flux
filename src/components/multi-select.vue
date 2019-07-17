@@ -2,7 +2,7 @@
 <div>
   <div class="inline-block relative w-full z-20">
     <div class="inline-block relative w-full">
-      <input :disabled="disabled" class="rounded p-2 pl-8 shadow-lg outline-none text-base border border-grey-lighter focus:border-accent text-grey w-full" type="text" :placeholder="placeholder" :name="name" @focus="onFocus">
+      <input :disabled="disabled" class="rounded p-2 pl-8 shadow-lg outline-none text-base border border-grey-lighter focus:border-accent text-grey w-full" type="text" :placeholder="placeholder" @focus="onFocus">
       <div class="absolute pin-y pin-l flex items-center px-2 text-grey-light pointer-events-none">
         <icon-search width="20" height="20"/>
       </div>
@@ -67,11 +67,16 @@ export default {
     }
   },
   props: {
-    name: String,
     placeholder: String,
     disabled: Boolean,
-    list: Array,
-    namePrefix: String,
+    list: {
+      type: Array,
+      required: true
+    },
+    namePrefix: {
+      type: String,
+      required: true
+    }
   }
 }
 </script>

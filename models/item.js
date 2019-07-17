@@ -13,11 +13,9 @@ const ItemSchema = new Schema({
     type: String,
     unique: true
   },
-},
-{
-  collection: 'collections',
-  timestamps: false,
-  strict: false
+  collections: {
+    type: Array,
+  },
 });
 
 const Item = mongoose.model('Item', ItemSchema);

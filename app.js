@@ -130,6 +130,8 @@ app.get('/admin/themes/:theme/:key/:file.json', adminApi.getFileJson);
 app.get('/admin/themes/:theme.json', adminApi.getThemeFilesJson);
 app.get('/admin/themes.json', adminApi.getThemesJson);
 app.put('/admin/themes/:theme/:dir/:file.json', adminApi.putThemeFileJson);
+// Collections
+app.get('/admin/collections.json', adminApi.getCollectionJson);
 
 // Admin GET
 app.get('/admin/style-guide', adminViews.getStyleGuide);
@@ -161,6 +163,7 @@ app.post('/admin/navigation/create', adminViews.postCreateNavigation);
 app.post('/admin/navigation/:id/update', adminViews.postUpdateNavigation);
 app.post('/admin/apps/create', adminViews.postCreateApp);
 app.post('/admin/apps/:id/update', adminViews.postUpdateApp);
+app.post('/admin/items/create', adminViews.postCreateItem);
 
 // Admin DELETE
 app.delete('/admin/navigation/:id', adminViews.deleteNavigation);

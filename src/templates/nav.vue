@@ -8,7 +8,7 @@
             <title-block :fields="fields" :value="navigation.title" :createHandle="createHandle"/>
             <linklist-form :fields="fields"/>
             <div class="flex">
-              <div class="w-1/2 ">
+              <div class="w-1/2">
                 <primary-button type="submit">
                   Update navigation
                 </primary-button>

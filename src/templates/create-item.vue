@@ -50,7 +50,8 @@
             <div class="bg-white rounded shadow-lg p-4 mb-4">
               <form-label :show="true" :for="`collections`">
                 Collections
-              </form-label>              
+              </form-label>
+              <asset-select namePrefix="collections" asset="collections"/>
             </div>
             <div class="px-2">
               <primary-button type="submit">
@@ -108,6 +109,7 @@ import FormLabel from '../components/form-label.vue';
 import SelectField from '../components/select-field.vue';
 import IconAddItem from '../components/icon-add-item.vue';
 import Heading3 from '../components/heading-3.vue';
+import AssetSelect from '../components/asset-select.vue';
 
 export default {
   name: 'create-item',
@@ -121,6 +123,7 @@ export default {
     "select-field": SelectField,
     "icon-add-item": IconAddItem,
     "heading-3": Heading3,
+    "asset-select": AssetSelect,
   },
   data () {
     const { form, errors } = window.siteData;

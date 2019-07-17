@@ -53,10 +53,17 @@
                 </div>
               </div>
             </div>
-            <div class="px-2">
-              <primary-button type="submit">
-                Update collection
-              </primary-button>
+            <div class="flex">
+              <div class="w-1/2">
+                <primary-button type="submit">
+                  Update collection
+                </primary-button>
+              </div>
+              <div class="w-1/2 text-right">
+                <warning-button type="button" initializingText="Hold to delete" :action="deleteCollection">
+                  Delete collection
+                </warning-button>
+              </div>
             </div>
           </div>
           <div class="w-1/3 px-2">
@@ -100,8 +107,10 @@
 </template>
 
 <script>
+import axios from 'axios';
 import ErrorsBlock from '../snippets/errors-block.vue';
 import PrimaryButton from '../components/primary-button.vue';
+import WarningButton from '../components/warning-button.vue';
 import AdminContainer from '../snippets/admin-container.vue';
 import TextField from '../components/text-field.vue';
 import EmailField from '../components/email-field.vue';
@@ -115,6 +124,7 @@ export default {
   components: {
     "errors-block": ErrorsBlock,
     "primary-button": PrimaryButton,
+    "warning-button": WarningButton,
     "admin-container": AdminContainer,
     "text-field": TextField,
     "email-field": EmailField,
@@ -138,26 +148,32 @@ export default {
     }
   },
   methods: {
-    addTextItem: function () {
+    addTextItem () {
       this.additionalFields.push({
         type: 'text',
         id: 'test',
         title: 'Test',
       });
     },
-    addSelectItem: function () {
+    addSelectItem () {
       this.additionalFields.push({
         type: 'select',
         id: 'test-select',
         title: 'Select',
       });
     },
-    createHandle: function (e) {
+    createHandle (e) {
       this.handle = this.handleize(e.target.value);
       this.permalink = `/${this.handle}`;
     },
-    handleize: function (str) {
+    handleize (str) {
       return str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, "-").replace(/^-+|-+$/g, "");
+    },
+    deleteCollection () {
+      const url = `/admin/collections/${this.collection._id}`;
+      axios.delete(url).then(res => {
+        window.location.href = '/admin/collections';
+      })
     }
   }
 }
