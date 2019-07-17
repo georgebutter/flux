@@ -192,13 +192,21 @@
               Buttons
             </h3>
           </div>
-          <div class="w-1/3 flex flex-wrap">
+          <div class="w-1/2 flex flex-wrap">
+            <h4 class="uppercase text-black mb-4 w-full">
+              Primary Button
+            </h4>
             <div class="w-1/2 mb-8">
               <primary-button>Default</primary-button>
             </div>
             <div class="w-1/2 mb-8">
               <primary-button disabled>Disabled</primary-button>
             </div>
+          </div>
+          <div class="w-1/2 flex flex-wrap">
+            <h4 class="uppercase text-black mb-4 w-full">
+              Secondary Button
+            </h4>
             <div class="w-1/2 mb-8">
               <secondary-button>Default</secondary-button>
             </div>
@@ -206,9 +214,16 @@
               <secondary-button disabled>Disabled</secondary-button>
             </div>
           </div>
-          <div class="w-1/3 flex">
-          </div>
-          <div class="w-1/3">
+          <div class="w-1/2 flex flex-wrap">
+            <h4 class="uppercase text-black mb-4 w-full">
+              Warning Button
+            </h4>
+            <div class="w-1/2 mb-8">
+              <warning-button>Default</warning-button>
+            </div>
+            <div class="w-1/2 mb-8">
+              <warning-button disabled>Disabled</warning-button>
+            </div>
           </div>
           <div class="w-full p-2">
             <h3 class="uppercase text-black mb-4">
@@ -289,6 +304,7 @@
 <script>
 import PrimaryButton from '../components/primary-button.vue';
 import SecondaryButton from '../components/secondary-button.vue';
+import WarningButton from '../components/warning-button.vue';
 import PasswordField from '../components/password-field.vue';
 import FormLabel from '../components/form-label.vue';
 import TextField from '../components/text-field.vue';
@@ -306,6 +322,7 @@ export default {
     "note": Note,
     "primary-button": PrimaryButton,
     "secondary-button": SecondaryButton,
+    "warning-button": WarningButton,
     "password-field": PasswordField,
     "form-label": FormLabel,
     "text-field": TextField,
