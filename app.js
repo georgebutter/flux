@@ -146,6 +146,7 @@ app.get('/admin/collections/create', adminViews.getCollectionsCreate);
 app.get('/admin/collections/:id', adminViews.getCollection);
 app.get('/admin/items', adminViews.getItems);
 app.get('/admin/items/create', adminViews.getItemsCreate);
+app.get('/admin/items/:id', adminViews.getItem);
 app.get('/admin/settings', adminViews.getSettings);
 app.get('/admin/apps', adminViews.getApps);
 app.get('/admin/apps/create', adminViews.getAppsCreate);
@@ -167,6 +168,7 @@ app.post('/admin/items/create', adminViews.postCreateItem);
 
 // Admin DELETE
 app.delete('/admin/navigation/:id', adminViews.deleteNavigation);
+app.delete('/admin/collections/:id', adminViews.deleteCollection);
 
 // Theme Routes
 app.get('/', themeController.getHome);

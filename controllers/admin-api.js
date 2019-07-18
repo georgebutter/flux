@@ -192,7 +192,19 @@ exports.getCollectionJson = (req, res) => {
   Staff.findById(req.session.userId, (error, user) => {
     if (user) {
       const limit = 50;
-      Collection.find({}).limit(limit).exec(function(err, collections) {
+      const ids = req.params.ids;
+      const query = {}
+      if (ids) {
+        const idarr = ids.split(',');
+        const objectIds = [];
+        for (var i = 0; i < idarr.length; i++) {
+          objectIds.push(ObjectId(idarr[i]))
+        }
+        query._id = {
+          $in: objectIds
+        }
+      }
+      Collection.find(query).limit(limit).exec(function(err, collections) {
         if (err) {
           return res.json({
             status: 'error',

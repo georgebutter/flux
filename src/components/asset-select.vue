@@ -9,9 +9,9 @@
     </div>
     <div :class="['absolute pin-b pt-2 translate-y-full w-full', showList ? '' : 'hidden']">
       <ul class="list-reset shadow-lg bg-white rounded overflow-hidden">
-        <li :class="['cursor-pointer p-2 pl-8 relative', selectedValues.includes(item.handle) ? 'bg-accent text-accent-lighter hover:bg-accent-lighter hover:text-accent' : 'hover:bg-grey-lightest']" v-for="item in computedList" @click="toggleItem(item)">
+        <li :class="['cursor-pointer p-2 pl-8 relative', selectedValues.includes(item._id) ? 'bg-accent text-accent-lighter hover:bg-accent-lighter hover:text-accent' : 'hover:bg-grey-lightest']" v-for="item in computedList" @click="toggleItem(item)">
           <div class="absolute pin-y pin-l flex items-center px-2 pointer-events-none">
-            <icon-tick width="20" height="20" v-if="selectedValues.includes(item.handle)"/>
+            <icon-tick width="20" height="20" v-if="selectedValues.includes(item._id)"/>
           </div>
           {{ item.title }}
         </li>
@@ -19,9 +19,9 @@
     </div>
   </div>
   <ul class="list-reset mt-1 text-grey" v-if="selectedValues.length">
-    <li class="flex items-center p-2 hover:bg-grey-lighter cursor-pointer" v-for="(handle, index) in selectedValues" :key="handle" :aria-title="`Remove ${selectedTitles[index]}`" @click="toggleItem({handle: handle, title: selectedTitles[index] })">
+    <li class="flex items-center p-2 hover:bg-grey-lighter cursor-pointer" v-for="(_id, index) in selectedValues" :key="_id" :aria-title="`Remove ${selectedTitles[index]}`" @click="toggleItem({_id: _id, title: selectedTitles[index] })">
       <icon-close width="20" height="20"/><span class="ml-1">{{ selectedTitles[index] }}</span>
-      <input type="hidden" :name="`${namePrefix}-${index}`" :value="handle"
+      <input type="hidden" :name="`${namePrefix}-${index}`" :value="_id"/>
     </li>
   </ul>
   <div v-if="showList" class="fixed pin z-10" @click="showList = false"/>
@@ -50,23 +50,36 @@ export default {
       this.showList = false;
     },
     toggleItem (item) {
-      if (this.selectedValues.includes(item.handle)) {
-        this.selectedTitles.splice(this.selectedValues.indexOf(item.handle), 1);
-        this.selectedValues.splice(this.selectedValues.indexOf(item.handle), 1);
+      if (this.selectedValues.includes(item._id)) {
+        this.selectedTitles.splice(this.selectedValues.indexOf(item._id), 1);
+        this.selectedValues.splice(this.selectedValues.indexOf(item._id), 1);
       } else {
         this.selectedTitles.push(item.title);
-        this.selectedValues.push(item.handle);
+        this.selectedValues.push(item._id);
       }
       this.showList = false;
     },
     getAssetList () {
-      axios.get(`/admin/${this.asset}.json`).then(res => {
-        console.log(res)
+      axios.get(`/admin/${this.asset}.json`)
+      .then(res => {
         if (res.data.status === 'success') {
-          console.log(res.data[this.asset])
           this.computedList = res.data[this.asset];
         }
       })
+    },
+    getSelectedItems () {
+      if (this.selectedIds.length) {
+        axios.get(`/admin/${this.asset}.json?ids=${this.selectedIds.join(',')}`)
+        .then(res => {
+          console.log(res.data)
+          if (res.data.status === 'success') {
+            for (var i = 0; i < res.data.collections.length; i++) {
+              this.selectedTitles.push(res.data.collections[i].title);
+              this.selectedValues.push(res.data.collections[i]._id);
+            }
+          }
+        })
+      }
     }
   },
   data () {
@@ -79,6 +92,7 @@ export default {
   },
   mounted () {
     this.getAssetList();
+    this.getSelectedItems();
   },
   props: {
     name: String,
@@ -93,8 +107,11 @@ export default {
       required: true,
       validator: function (asset) {
         // The asset must match one of these strings
-        return ['collections'].indexOf(asset) !== -1
+        return ['collections'].indexOf(asset) !== -1;
       }
+    },
+    selectedIds: {
+      type: Array,
     }
   }
 }

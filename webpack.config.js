@@ -10,6 +10,7 @@ module.exports = {
     'theme': './src/theme.js',
     'collection': './src/collection.js',
     'collections': './src/collections.js',
+    'item': './src/item.js',
     'items': './src/items.js',
     'create-item': './src/create-item.js',
     'navigation': './src/navigation.js',
