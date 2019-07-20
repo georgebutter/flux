@@ -211,7 +211,6 @@ exports.postUpdateNavigation = (req, res) => {
 
 exports.deleteNavigation = (req, res) => {
   Staff.findById(req.session.userId, (error, user) => {
-    setAdminViews(req.app);
     if (user) {
       Navigation.deleteOne({ _id: req.params.id}, (err) => {
         if (err) {

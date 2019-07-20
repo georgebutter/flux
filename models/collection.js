@@ -18,12 +18,8 @@ const CollectionSchema = new Schema({
     trim: true,
     type: String,
     unique: true
-  }
-},
-{
-  collection: 'collections',
-  timestamps: false,
-  strict: false
+  },
+  items: [{ type: Schema.Types.ObjectId, ref: 'Item' }]
 });
 
 const Collection = mongoose.model('Collection', CollectionSchema);

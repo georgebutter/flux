@@ -165,10 +165,12 @@ app.post('/admin/navigation/:id/update', adminViews.postUpdateNavigation);
 app.post('/admin/apps/create', adminViews.postCreateApp);
 app.post('/admin/apps/:id/update', adminViews.postUpdateApp);
 app.post('/admin/items/create', adminViews.postCreateItem);
+app.post('/admin/items/:id/update', adminViews.postUpdateItem);
 
 // Admin DELETE
 app.delete('/admin/navigation/:id', adminViews.deleteNavigation);
 app.delete('/admin/collections/:id', adminViews.deleteCollection);
+app.delete('/admin/items/:id', adminViews.deleteItem);
 
 // Theme Routes
 app.get('/', themeController.getHome);

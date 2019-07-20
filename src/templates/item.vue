@@ -1,7 +1,7 @@
 <template>
   <admin-container>
     <section class="p-6">
-      <form :action="`/admin/items/${item._id}`" method="post" autocomplete="off" novalidate>
+      <form :action="`/admin/items/${item._id}/update`" method="post" autocomplete="off" novalidate>
         <errors-block :errors="errors"/>
         <div class="flex mb-4">
           <div class="w-2/3 px-2">
@@ -107,6 +107,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import ErrorsBlock from '../snippets/errors-block.vue';
 import PrimaryButton from '../components/primary-button.vue';
 import WarningButton from '../components/warning-button.vue';
@@ -168,9 +169,9 @@ export default {
       return str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, "-").replace(/^-+|-+$/g, "");
     },
     deleteItem () {
-      const url = `/admin/item/${this.item._id}`;
+      const url = `/admin/items/${this.item._id}`;
       axios.delete(url).then(res => {
-        window.location.href = '/admin/item';
+        window.location.href = '/admin/items';
       })
     }
   }

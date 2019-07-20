@@ -20,7 +20,8 @@ const {
   getItem,
   getItemsCreate,
   postCreateItem,
-  postUpdateItem
+  postUpdateItem,
+  deleteItem
 } = require('../routes/item');
 
 const {
@@ -58,6 +59,7 @@ exports.getItem = getItem;
 exports.getItemsCreate = getItemsCreate;
 exports.postCreateItem = postCreateItem;
 exports.postUpdateItem = postUpdateItem;
+exports.deleteItem = deleteItem;
 
 exports.getNavigations = getNavigations;
 exports.getNavigation = getNavigation;

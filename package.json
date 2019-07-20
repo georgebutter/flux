@@ -26,7 +26,7 @@
     "test": "eslint",
     "watch": "npm-watch",
     "dev": "concurrently \"npm-watch start:nodemon\" \"npm-watch build\"",
-    "start:nodemon": "nodemon app.js",
+    "start:nodemon": "nodemon --inspect app.js",
     "WDS": "yarn start:nodemon && webpack-dev-server --hot",
     "start": "node app.js",
     "fed:dev": "webpack-dev-server --hot",

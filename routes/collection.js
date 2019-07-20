@@ -212,7 +212,6 @@ exports.postUpdateCollection = (req, res) => {
 
 exports.deleteCollection = (req, res) => {
   Staff.findById(req.session.userId, (error, user) => {
-    setAdminViews(req.app);
     if (user) {
       Collection.deleteOne({ _id: req.params.id}, (err) => {
         if (err) {

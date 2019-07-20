@@ -13,9 +13,7 @@ const ItemSchema = new Schema({
     type: String,
     unique: true
   },
-  collections: {
-    type: Array,
-  },
+  collections: [{ type: Schema.Types.ObjectId, ref: 'Item' }],
 });
 
 const Item = mongoose.model('Item', ItemSchema);
