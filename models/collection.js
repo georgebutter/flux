@@ -22,5 +22,17 @@ const CollectionSchema = new Schema({
   items: [{ type: Schema.Types.ObjectId, ref: 'Item' }]
 });
 
+CollectionSchema.statics.getFullCollection = function ( callback) {
+  Collection
+  .find()
+  .populate('items')
+  .exec(function (err, collections) {
+    if (err) {
+      return callback(err)
+    }
+    return callback(null, collections);
+  });
+}
+
 const Collection = mongoose.model('Collection', CollectionSchema);
 module.exports.Collection = Collection;

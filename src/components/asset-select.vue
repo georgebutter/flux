@@ -92,7 +92,9 @@ export default {
   },
   mounted () {
     this.getAssetList();
-    this.getSelectedItems();
+    if (this.selectedIds) {
+      this.getSelectedItems();
+    }
   },
   props: {
     name: String,

@@ -97,14 +97,7 @@ exports.postCreateItem = (req, res) => {
     if (key !== 'title' && key !== 'handle') {
       const [colKey, i] = key.split('-');
       const index = Number(i);
-      collections[index] = collections[index] || {};
-      collections[index][colKey] = value;
-      if (value === '') {
-        errors.push({
-          message: `${colKey.charAt(0).toUpperCase() + colKey.slice(1)} cannot be blank`,
-          field: key
-        });
-      }
+      collections[index] = value;
     }
   }
   form.collections = collections;
@@ -114,6 +107,8 @@ exports.postCreateItem = (req, res) => {
       field: 'title'
     });
   }
+  console.log(errors)
+  console.log(errors.length)
   if (errors.length) {
     Staff.findById(req.session.userId, (error, user) => {
       setAdminViews(req.app);
@@ -148,6 +143,21 @@ exports.postCreateItem = (req, res) => {
           });
         });
       } else {
+        for (var i = 0; i < collections.length; i++) {
+          console.log(collections[i])
+          Collection.updateOne({ _id: collections[i] }, {
+            $push: {
+              items: item._id
+            },
+          },
+          {
+            new: true,
+            upsert: true
+          },
+          function (err, result) {
+            console.log(result)
+          })
+        }
         return res.redirect('/admin/items');
       }
     });
@@ -215,18 +225,21 @@ exports.postUpdateItem = (req, res) => {
     }).then(result => {
       for (var i = 0; i < collections.length; i++) {
         console.log(collections[i])
-        Collection.updateOne({ _id: collections[i] }, {
-          $push: {
-            items: req.params.id
+        Collection.updateOne(
+          { _id: collections[i] },
+          {
+            $push: {
+              items: req.params.id
+            },
           },
-        },
-        {
-          new: true,
-          upsert: true
-        },
-        function (err, result) {
-          console.log(result)
-        })
+          {
+            new: true,
+            upsert: true
+          },
+          function (err, result) {
+            console.log(result)
+          }
+        )
       }
       return res.redirect('/admin/items');
     });

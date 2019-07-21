@@ -58,7 +58,7 @@
                 <div class="w-1/4 items-end">
                   <select-field
                     name="themes"
-                    error="fields.includes('themes')"
+                    :error="fields.includes('themes')"
                     :options="[
                       {
                         value: 'none',
