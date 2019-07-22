@@ -43,6 +43,7 @@
               <form-label :show="true">
                 Tags
               </form-label>
+              <tag-select namePrefix="tag"/>
             </div>
           </div>
         </div>
@@ -64,6 +65,7 @@ import SelectField from '../components/select-field.vue';
 import IconAddItem from '../components/icon-add-item.vue';
 import Heading3 from '../components/heading-3.vue';
 import AssetSelect from '../components/asset-select.vue';
+import TagSelect from '../components/tag-select.vue';
 
 export default {
   name: 'create-item',
@@ -78,6 +80,7 @@ export default {
     "select-field": SelectField,
     "icon-add-item": IconAddItem,
     "heading-3": Heading3,
+    "tag-select": TagSelect,
     "asset-select": AssetSelect,
   },
   data () {

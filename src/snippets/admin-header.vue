@@ -1,5 +1,5 @@
 <template>
-  <header class="pin-x pin-t fixed w-full flex bg-grey text-grey-light py-4 z-10">
+  <header class="pin-x pin-t fixed w-full flex bg-grey text-grey-light py-4 z-60">
     <div class="w-1/2 px-4">
       <a href="/" class="no-underline text-grey-light">{{ site.name }}</a>
     </div>

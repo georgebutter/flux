@@ -1,5 +1,5 @@
 <template>
-  <aside :class="['sidebar bg-white pin-b z-10 fixed overflow-y-auto transition-width', sidebarOpen  ? 'w-64' : 'w-14']">
+  <aside :class="['sidebar bg-white pin-b z-60 fixed overflow-y-auto transition-width', sidebarOpen  ? 'w-64' : 'w-14']">
     <button-sidebar
       icon="icon-house"
       text="Dashboard"

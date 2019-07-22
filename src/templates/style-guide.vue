@@ -1,7 +1,7 @@
 
 <template>
   <section>
-    <div class="bg-white shadow py-2 fixed pin-t pin-x py-2 shadow z-20">
+    <div class="bg-white shadow py-2 fixed pin-t pin-x py-2 shadow z-60">
       <div class="container mx-auto">
         <div class="-mx-4">
           <a href="#colours" class="no-underline text-uppercase text-black">Colours</a>
@@ -252,7 +252,7 @@
               Other Components
             </h3>
           </div>
-          <div class="w-1/2">
+          <div class="w-1/2 p-2">
             <h4 class="uppercase text-black mb-4">
               Switch
             </h4>
@@ -260,15 +260,51 @@
               <toggle :toggleOn="toggleOn" @toggleSwitch="toggleOn = !toggleOn"/>
             </div>
           </div>
-          <div class="w-1/2">
+          <div class="w-1/2 p-2">
             <h4 class="uppercase text-black mb-4">
               Multi select
             </h4>
             <div class="mb-4">
               <multi-select
+                namePrefix="test"
                 :list="[{ title: 'Home', value: 'home' }, { title: 'Blog', value: 'blog' }, { title: 'Article', value: 'article'}, { title: 'Item', value: 'item' }]"
               >
               </multi-select>
+            </div>
+          </div>
+          <div class="w-1/2 p-2">
+            <h4 class="uppercase text-black mb-4">
+              Asset select
+            </h4>
+            <div class="mb-4">
+              <asset-select namePrefix="collections" asset="collections"/>
+            </div>
+          </div>
+          <div class="w-1/2 p-2">
+            <h4 class="uppercase text-black mb-4">
+              Tag select
+            </h4>
+            <div class="mb-4">
+              <tag-select namePrefix="tag"/>
+            </div>
+          </div>
+          <div class="w-full">
+            <h4 class="uppercase text-black mb-4">
+              Tooltips
+            </h4>
+            <div>
+              <div class="p-2 inline-block">
+                <tooltip colour="pink">Error</tooltip>
+              </div>
+              <div class="p-2 inline-block">
+                <tooltip colour="pink" position="bottom">Error</tooltip>
+              </div>
+              <div class="p-2 inline-block">
+                <tooltip colour="pink" position="left">Error</tooltip>
+              </div>
+              <div class="p-2 inline-block">
+                <tooltip colour="pink" position="right">Error</tooltip>
+              </div>
             </div>
           </div>
           <div class="w-full">
@@ -309,15 +345,19 @@ import PasswordField from '../components/password-field.vue';
 import FormLabel from '../components/form-label.vue';
 import TextField from '../components/text-field.vue';
 import Swatch from '../components/swatch.vue';
+import Tooltip from '../components/tooltip.vue';
 import Toggle from '../components/toggle.vue';
 import Note from '../components/note.vue';
 import Heading3 from '../components/heading-3.vue';
 import MultiSelect from '../components/multi-select.vue';
+import AssetSelect from '../components/asset-select.vue';
+import TagSelect from '../components/tag-select.vue';
 
 export default {
   name: 'style-guide',
   components: {
     "swatch": Swatch,
+    "tooltip": Tooltip,
     "toggle": Toggle,
     "note": Note,
     "primary-button": PrimaryButton,
@@ -327,6 +367,8 @@ export default {
     "form-label": FormLabel,
     "text-field": TextField,
     "heading-3": Heading3,
+    "tag-select": TagSelect,
+    "asset-select": AssetSelect,
     "multi-select": MultiSelect,
   },
   data () {
