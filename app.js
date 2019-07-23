@@ -29,7 +29,6 @@ const bodyParser = require('body-parser');
 // General
 const env = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 3000;
-const siteHandle = process.env.SITE_HANDLE || 'georgebutter';
 
 // Setup dev webpack compiling
 console.log(`[status] Environment: ${env}`.grey)
@@ -54,7 +53,7 @@ app.use(session({
   })
 }));
 
-// Allow large payloads for themes
+// Allow large payloads for theme files and images and fonts
 app.use(bodyParser({limit: '10mb'}));
 // Parse incoming requests
 app.use(bodyParser.json());

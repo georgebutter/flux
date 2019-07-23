@@ -43,7 +43,7 @@
               <form-label :show="true">
                 Tags
               </form-label>
-              <tag-select namePrefix="tag"/>
+              <tag-select namePrefix="tags" :selectedTags="tags"/>
             </div>
           </div>
         </div>
@@ -91,6 +91,7 @@ export default {
       fields: errors ? errors.map(error => error.field) : [],
       handle: item.handle || '',
       title: item.title || '',
+      tags: item.tags || []
     }
   },
   methods: {

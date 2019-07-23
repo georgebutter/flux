@@ -14,6 +14,9 @@ const ItemSchema = new Schema({
     unique: true
   },
   collections: [{ type: Schema.Types.ObjectId, ref: 'Item' }],
+  tags: {
+    type: Array
+  }
 });
 
 const Item = mongoose.model('Item', ItemSchema);

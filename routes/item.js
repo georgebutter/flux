@@ -184,14 +184,19 @@ exports.postUpdateItem = (req, res) => {
     });
   }
   const collections = [];
+  const tags = [];
+
   for (let [key, value] of Object.entries(req.body)) {
     if (key !== 'title' && key !== 'handle') {
       const [colKey, i] = key.split('-');
       const index = Number(i);
-      collections[index] = value;
+      if (colKey === 'collections') {
+        collections[index] = value;
+      } else if (colKey === 'tags') {
+        tags[index] = value;
+      }
     }
   }
-
   if (errors.length) {
     setAdminViews(req.app);
     Item.findById({ _id: req.params.id}, function(err, item) {
@@ -220,7 +225,8 @@ exports.postUpdateItem = (req, res) => {
       $set: {
         title: req.body.title,
         handle: req.body.handle,
-        collections: collections
+        collections: collections,
+        tags: tags
       }
     }).then(result => {
       for (var i = 0; i < collections.length; i++) {
@@ -228,7 +234,7 @@ exports.postUpdateItem = (req, res) => {
         Collection.updateOne(
           { _id: collections[i] },
           {
-            $push: {
+            $addToSet: {
               items: req.params.id
             },
           },

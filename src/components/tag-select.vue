@@ -40,7 +40,6 @@ export default {
   methods: {
     onInput (event) {
       this.error = '';
-      console.log(event.data)
       if (event.data === ',') {
         const tag = event.target.value.replace(',', '');
         event.target.value = tag;
@@ -64,7 +63,7 @@ export default {
     return {
       showList: false,
       inputText: '',
-      tagList: [],
+      tagList: this.selectedTags || [],
       error: ''
     }
   },
@@ -72,6 +71,7 @@ export default {
     name: String,
     placeholder: String,
     disabled: Boolean,
+    selectedTags: Array,
     namePrefix: {
       type: String,
       required: true
