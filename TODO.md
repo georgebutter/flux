@@ -8,6 +8,7 @@
  - [ ] Current user context menu in header with gravatar image
  - [ ] Toggle sidebar cookie
  - [ ] Make component for the white rounded box containers
+ - [ ] Don't redirect to parent template on saving asset, show success on same page.
 
 ##### Collections
  - [ ] Collection type schema and selection
@@ -47,6 +48,7 @@
 #### General
  - [x] Use tailwind
  - [x] Refactor routes into separate files
+ - [ ] Add linting
  - [ ] Dynamic routes based on permalinks
  - [ ] Template selection based on current theme
  - [ ] Setup template caching
