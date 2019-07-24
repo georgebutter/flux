@@ -288,11 +288,11 @@
               <tag-select namePrefix="tag"/>
             </div>
           </div>
-          <div class="w-full">
+          <div class="w-1/2">
             <h4 class="uppercase text-black mb-4">
               Tooltips
             </h4>
-            <div>
+            <div class="mb-4">
               <div class="p-2 inline-block">
                 <tooltip colour="pink">Error</tooltip>
               </div>
@@ -305,6 +305,14 @@
               <div class="p-2 inline-block">
                 <tooltip colour="pink" position="right">Error</tooltip>
               </div>
+            </div>
+          </div>
+          <div class="w-1/2">
+            <h4 class="uppercase text-black mb-4">
+              Markdown editor
+            </h4>
+            <div class="mb-4">
+              <markdown-editor name="description"/>
             </div>
           </div>
           <div class="w-full">
@@ -352,6 +360,7 @@ import Heading3 from '../components/heading-3.vue';
 import MultiSelect from '../components/multi-select.vue';
 import AssetSelect from '../components/asset-select.vue';
 import TagSelect from '../components/tag-select.vue';
+import MarkdownEditor from '../components/markdown-editor.vue';
 
 export default {
   name: 'style-guide',
@@ -367,6 +376,7 @@ export default {
     "form-label": FormLabel,
     "text-field": TextField,
     "heading-3": Heading3,
+    "markdown-editor": MarkdownEditor,
     "tag-select": TagSelect,
     "asset-select": AssetSelect,
     "multi-select": MultiSelect,

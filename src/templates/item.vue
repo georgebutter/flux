@@ -19,11 +19,18 @@
                 <text-field id="Handle" type="text" name="handle" :value="handle" :error="fields.includes('handle')" :readonly="true"/>
               </div>
             </div>
+
             <div class="bg-white rounded shadow-lg p-4 mb-4">
-              <form-label :show="true" :for="`collections`">
-                Collections
+              <form-label :show="true" for="description">
+                Description
               </form-label>
-              <asset-select namePrefix="collections" asset="collections" :selectedIds="item.collections"/>
+              <markdown-editor name="description" :value="item.description"/>
+            </div>
+            <div class="bg-white rounded shadow-lg p-4 mb-4">
+              <form-label :show="true" for="excerpt">
+                Excerpt
+              </form-label>
+              <markdown-editor name="excerpt" :value="item.excerpt" height="32"/>
             </div>
             <div class="flex">
               <div class="w-1/2">
@@ -44,6 +51,12 @@
                 Tags
               </form-label>
               <tag-select namePrefix="tags" :selectedTags="tags"/>
+            </div>
+            <div class="bg-white rounded shadow-lg p-4 mb-4">
+              <form-label :show="true" :for="`collections`">
+                Collections
+              </form-label>
+              <asset-select namePrefix="collections" asset="collections" :selectedIds="item.collections"/>
             </div>
           </div>
         </div>
@@ -66,6 +79,7 @@ import IconAddItem from '../components/icon-add-item.vue';
 import Heading3 from '../components/heading-3.vue';
 import AssetSelect from '../components/asset-select.vue';
 import TagSelect from '../components/tag-select.vue';
+import MarkdownEditor from '../components/markdown-editor.vue';
 
 export default {
   name: 'create-item',
@@ -80,6 +94,7 @@ export default {
     "select-field": SelectField,
     "icon-add-item": IconAddItem,
     "heading-3": Heading3,
+    "markdown-editor": MarkdownEditor,
     "tag-select": TagSelect,
     "asset-select": AssetSelect,
   },
@@ -91,7 +106,7 @@ export default {
       fields: errors ? errors.map(error => error.field) : [],
       handle: item.handle || '',
       title: item.title || '',
-      tags: item.tags || []
+      tags: item.tags || [],
     }
   },
   methods: {

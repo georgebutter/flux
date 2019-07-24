@@ -60,6 +60,7 @@
     "gridfs-stream": "^1.1.1",
     "helmet": "^3.18.0",
     "liquidjs": "^6.2.0",
+    "marked": "^0.7.0",
     "monaco-editor-webpack-plugin": "^1.7.0",
     "mongoose": "^5.4.1",
     "nodegit": "^0.24.3",
