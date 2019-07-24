@@ -1,7 +1,7 @@
 <template>
 <span :class="`relative text-sm p-2 bg-${colour}${inverse ? '-lighter' : ''} rounded text-${colour}${inverse ? '' : '-lighter'} inline-block`">
   <slot></slot>
-  <span :class="`rounded bg-${colour}${inverse ? '-lighter' : ''} inline-block absolute tooltip-${position}`"></span>
+  <span :class="`rounded-sm bg-${colour}${inverse ? '-lighter' : ''} inline-block absolute tooltip-${position}`"></span>
 </span>
 </template>
 
