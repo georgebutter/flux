@@ -170,6 +170,8 @@ exports.postUpdateItem = (req, res) => {
   const {
     title,
     handle,
+    excerpt,
+    description
   } = req.body;
   if (!title) {
     errors.push({
@@ -225,8 +227,10 @@ exports.postUpdateItem = (req, res) => {
       $set: {
         title: req.body.title,
         handle: req.body.handle,
-        collections: collections,
-        tags: tags
+        excerpt,
+        description,
+        collections,
+        tags
       }
     }).then(result => {
       for (var i = 0; i < collections.length; i++) {

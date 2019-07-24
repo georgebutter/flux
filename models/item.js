@@ -13,6 +13,12 @@ const ItemSchema = new Schema({
     type: String,
     unique: true
   },
+  description: {
+    type: String
+  },
+  excerpt: {
+    type: String
+  },
   collections: [{ type: Schema.Types.ObjectId, ref: 'Item' }],
   tags: {
     type: Array
