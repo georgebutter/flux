@@ -16,7 +16,7 @@ exports.getApps = (req, res, next) => {
     } else {
       Staff.findById(req.session.userId, (error, user) => {
         if (user) {
-          return res.render('apps', {
+          return res.render('admin', {
             site: site,
             page_title: 'Apps',
             canonical_url: canonicalUrl(req),
@@ -43,7 +43,7 @@ exports.getApp = (req, res, next) => {
     } else {
       Staff.findById(req.session.userId, (error, user) => {
         if (user) {
-          return res.render('app', {
+          return res.render('admin', {
             site: site,
             page_title: 'Apps',
             canonical_url: canonicalUrl(req),
@@ -67,7 +67,7 @@ exports.getAppsCreate = (req, res, next) => {
   const form = {};
   Staff.findById(req.session.userId, (error, user) => {
     if (user) {
-      return res.render('apps', {
+      return res.render('admin', {
         site: site,
         page_title: 'Create a new app',
         canonical_url: canonicalUrl(req),
@@ -124,7 +124,7 @@ exports.postCreateApp = (req, res) => {
   if (errors.length) {
     Staff.findById(req.session.userId, (error, user) => {
       setAdminViews(req.app);
-      return res.render('apps', {
+      return res.render('admin', {
         site: site,
         page_title: 'Create a new app',
         canonical_url: canonicalUrl(req),
@@ -148,7 +148,7 @@ exports.postCreateApp = (req, res) => {
         errors.push({ message: error });
         Staff.findById(req.session.userId, (error, user) => {
           setAdminViews(req.app);
-          return res.render('apps', {
+          return res.render('admin', {
             site: site,
             page_title: 'Create a new app',
             canonical_url: canonicalUrl(req),
@@ -209,7 +209,7 @@ exports.postUpdateApp = (req, res) => {
         Staff.findById(req.session.userId, (error, user) => {
           if (user) {
             setAdminViews(req.app);
-            return res.render('app', {
+            return res.render('admin', {
               site: site,
               page_title: 'Apps',
               canonical_url: canonicalUrl(req),
