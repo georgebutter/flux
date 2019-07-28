@@ -184,4 +184,4 @@ app.get('/admin/*', adminViews.get404);
 app.get('*', themeController.get404);
 
 // Listen on port
-app.listen(port, () => console.log(`[status] Site is live! 🚀`.grey));
+app.listen(port, () => console.log(`[status] Express is listening on port ${port} 🚀`.grey));
