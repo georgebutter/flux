@@ -45,6 +45,9 @@
  - [ ] Setup Unit tests
  - [ ] Switch from using this list to using github with issues and project boards.
 
+#### API
+ - [ ] Make items api available for local markdown editing
+
 #### General
  - [x] Use tailwind
  - [x] Refactor routes into separate files

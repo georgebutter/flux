@@ -24,13 +24,13 @@
               <form-label :show="true" for="description">
                 Description
               </form-label>
-              <markdown-editor name="description" :value="item.description"/>
+              <markdown-editor name="description" :value="item.description || ''"/>
             </div>
             <div class="bg-white rounded shadow-lg p-4 mb-4">
               <form-label :show="true" for="excerpt">
                 Excerpt
               </form-label>
-              <markdown-editor name="excerpt" :value="item.excerpt" height="32"/>
+              <markdown-editor name="excerpt" :value="item.excerpt || ''" height="32"/>
             </div>
             <div class="flex">
               <div class="w-1/2">

@@ -31,7 +31,7 @@ export default {
   },
   data () {
     return {
-      markdown: '',
+      markdown: this.value || '',
       preview: false,
       h: this.height || '64'
     }
