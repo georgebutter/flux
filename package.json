@@ -6,33 +6,17 @@
   "engines": {
     "node": "10.13.0",
     "npm": "6.7.0",
-    "yarn": "1.5.1"
-  },
-  "watch": {
-    "build": {
-      "patterns": [
-        "src"
-      ],
-      "extensions": "js,vue"
-    },
-    "reload": {
-      "patterns": [
-        "src"
-      ],
-      "extensions": "js,vue"
-    }
+    "yarn": "1.17.3"
   },
   "scripts": {
     "test": "eslint",
-    "watch": "npm-watch",
     "start:nodemon": "nodemon --inspect app.js",
     "dev": "yarn start:nodemon && yarn fed:dev",
     "start": "node app.js",
     "fed:dev": "webpack-dev-server --hot",
     "log": "heroku logs -a georgebutter --tail",
-    "log-staging": "heroku logs -a georgebutter-staging --tail",
-    "build": "webpack",
-    "reload": "browser-sync reload --config bs-config.js"
+    "log:staging": "heroku logs -a georgebutter-staging --tail",
+    "build": "webpack"
   },
   "nodemonConfig": {
     "ignore": [
@@ -47,7 +31,6 @@
     "bcrypt": "^3.0.3",
     "body-parser": "^1.18.3",
     "colors": "^1.3.3",
-    "concurrently": "^4.1.0",
     "connect-mongo": "^2.0.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",

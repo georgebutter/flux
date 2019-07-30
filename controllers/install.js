@@ -107,6 +107,13 @@ exports.postSite = (req, res, next) => {
           errors: errors
         });
       } else {
+        const { installed, name, handle, description, email } = site;
+        app.set('site', {
+          name,
+          handle,
+          description,
+          email
+        });
         req.app.set('site', site)
         return res.redirect('/install');
       }

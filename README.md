@@ -1,5 +1,6 @@
 # Directory structure
 
+```
 |- app.js - Main server file
 |- webpack.config.js - Configuration for admin front end
 |
@@ -11,10 +12,10 @@
 |     |_ theme - Website front end
 |
 |_ src - Admin build files
+```
 
 # Scripts
 
-Command  |  Description                 |  
----------|------------------------------|--
-`yarn dev`    |  Start development server |  
-`yarn build`  |  Build admin webpack bundles  |  
+`yarn dev`: Start development server
+
+`yarn build`: Build admin webpack bundles

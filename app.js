@@ -114,9 +114,15 @@ db.once('open', () => {
 // Get site data on server reboot
 Site.findOne()
 .then(site => {
-  app.set('site', site);
-  app.set('installed', site.installed);
-  console.log(`[status] Installed: ${site.installed}`.grey)
+  const { installed, name, handle, description, email } = site;
+  app.set('site', {
+    name,
+    handle,
+    description,
+    email
+  });
+  app.set('installed', installed);
+  console.log(`[status] Installed: ${installed}`.grey)
 }).catch(err => {
   console.log(`[status] No site found`.grey)
 });
