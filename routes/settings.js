@@ -7,7 +7,7 @@ exports.getSettings = (req, res, next) => {
   const errors = [];
   Staff.findById(req.session.userId, (error, user) => {
     if (user) {
-      return res.render('settings', {
+      return res.render('admin', {
         site: site,
         page_title: 'Settings',
         canonical_url: canonicalUrl(req),

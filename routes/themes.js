@@ -9,7 +9,7 @@ exports.getThemes = (req, res, next) => {
   const themes = ['master']
   Staff.findById(req.session.userId, (error, user) => {
     if (user) {
-      return res.render('themes', {
+      return res.render('admin', {
         site: site,
         page_title: 'Themes',
         canonical_url: canonicalUrl(req),
@@ -40,7 +40,7 @@ exports.getTheme = (req, res, next) => {
       return next(error);
     } else {
       if (user) {
-        return res.render('theme', {
+        return res.render('admin', {
           site: site,
           page_title: 'Theme',
           canonical_url: canonicalUrl(req),

@@ -9,7 +9,7 @@
  - [ ] Toggle sidebar cookie
  - [ ] Make component for the white rounded box containers
  - [ ] Don't redirect to parent template on saving asset, show success on same page.
- - [ ] Reduce number of liquid templates down to one admin file.
+ - [x] Reduce number of liquid templates down to one admin file.
 ##### Collections
  - [ ] Collection type schema and selection
 ##### Navigation

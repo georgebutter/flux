@@ -9,7 +9,7 @@ exports.getDashboard = (req, res, next) => {
   const errors = [];
   Staff.findById(req.session.userId, (error, user) => {
     if (user) {
-      return res.render('dashboard', {
+      return res.render('admin', {
         site: req.app.get('site'),
         page_title: 'Dashboard',
         canonical_url: canonicalUrl(req),
@@ -18,14 +18,7 @@ exports.getDashboard = (req, res, next) => {
         user: user
       });
     } else {
-      return res.render('login', {
-        site: req.app.get('site'),
-        page_title: 'Admin',
-        canonical_url: canonicalUrl(req),
-        template: 'login',
-        errors: errors,
-        user: false
-      });
+      return res.redirect('/admin');
     }
   });
 }

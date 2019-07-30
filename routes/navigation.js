@@ -13,7 +13,7 @@ exports.getNavigations = (req, res, next) => {
     } else {
       Staff.findById(req.session.userId, (error, user) => {
         if (user) {
-          return res.render('navigation', {
+          return res.render('admin', {
             site: site,
             page_title: 'Navigation',
             canonical_url: canonicalUrl(req),
@@ -41,7 +41,7 @@ exports.getNavigation = (req, res, next) => {
     } else {
       Staff.findById(req.session.userId, (error, user) => {
         if (user) {
-          return res.render('navigation', {
+          return res.render('admin', {
             site: site,
             page_title: 'Navigation',
             canonical_url: canonicalUrl(req),
@@ -66,7 +66,7 @@ exports.getNavigationCreate = (req, res, next) => {
   console.log(`[status] GET navigation create`)
   Staff.findById(req.session.userId, (error, user) => {
     if (user) {
-      return res.render('create-navigation', {
+      return res.render('admin', {
         site: site,
         page_title: 'Create a new navigation',
         canonical_url: canonicalUrl(req),
@@ -118,7 +118,7 @@ exports.postCreateNavigation = (req, res) => {
   if (errors.length) {
     Staff.findById(req.session.userId, (error, user) => {
       setAdminViews(req.app);
-      return res.render('create-navigation', {
+      return res.render('admin', {
         site: site,
         page_title: 'Create a new navigation',
         canonical_url: canonicalUrl(req),
@@ -138,7 +138,7 @@ exports.postCreateNavigation = (req, res) => {
         errors.push({ message: error });
         Staff.findById(req.session.userId, (error, user) => {
           setAdminViews(req.app);
-          return res.render('create-navigation', {
+          return res.render('admin', {
             site: site,
             page_title: 'Create a new navigation',
             canonical_url: canonicalUrl(req),
@@ -176,7 +176,7 @@ exports.postUpdateNavigation = (req, res) => {
   if (errors.length) {
     Staff.findById(req.session.userId, (error, user) => {
       setAdminViews(req.app);
-      return res.render('create-navigation', {
+      return res.render('admin', {
         site: site,
         page_title: 'Create a new navigation',
         canonical_url: canonicalUrl(req),

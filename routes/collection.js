@@ -13,7 +13,7 @@ exports.getCollections = (req, res, next) => {
     } else {
       Staff.findById(req.session.userId, (error, user) => {
         if (user) {
-          return res.render('collections', {
+          return res.render('admin', {
             site: site,
             page_title: 'Collections',
             canonical_url: canonicalUrl(req),
@@ -63,10 +63,9 @@ exports.getCollectionsCreate = (req, res, next) => {
   const site = req.app.get('site');
   const errors = [];
   const form = {};
-  console.log(`[status] GET collection create`)
   Staff.findById(req.session.userId, (error, user) => {
     if (user) {
-      return res.render('create-collection', {
+      return res.render('admin', {
         site: site,
         page_title: 'Create a new collection',
         canonical_url: canonicalUrl(req),
@@ -82,8 +81,6 @@ exports.getCollectionsCreate = (req, res, next) => {
 }
 
 exports.postCreateCollection = (req, res) => {
-  console.log('[route] POST /admin/collecions/create'.cyan)
-  console.log(req.body)
   const site = req.app.get('site');
   const errors = [];
   const {
@@ -106,7 +103,7 @@ exports.postCreateCollection = (req, res) => {
   if (errors.length) {
     Staff.findById(req.session.userId, (error, user) => {
       setAdminViews(req.app);
-      return res.render('create-collection', {
+      return res.render('admin', {
         site: site,
         page_title: 'Create a new collection',
         canonical_url: canonicalUrl(req),
@@ -124,7 +121,7 @@ exports.postCreateCollection = (req, res) => {
         errors.push({ message: error });
         Staff.findById(req.session.userId, (error, user) => {
           setAdminViews(req.app);
-          return res.render('create-collection', {
+          return res.render('admin', {
             site: site,
             page_title: 'Create a new collection',
             canonical_url: canonicalUrl(req),
