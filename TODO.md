@@ -5,8 +5,9 @@
 #### Admin
 ##### General
  - [ ] Current user context menu in header with gravatar image
- - [ ] Toggle sidebar cookie
- - [ ] Make component for the white rounded box containers
+ - [x] Toggle sidebar cookie
+ - [x] Make component for the white rounded box containers
+ - [ ] Make resource list component
  - [ ] Don't redirect to parent template on saving asset, show success on same page.
  - [x] Reduce number of liquid templates down to one admin file.
 ##### Collections
