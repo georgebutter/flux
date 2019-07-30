@@ -4,7 +4,6 @@
 
 #### Admin
 ##### General
- - [ ] Code split sidebar and admin header because they appear on every page.
  - [ ] Current user context menu in header with gravatar image
  - [ ] Toggle sidebar cookie
  - [ ] Make component for the white rounded box containers

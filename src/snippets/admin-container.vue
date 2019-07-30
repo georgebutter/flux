@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="w-full flex flex-row">
     <admin-header :site="site"/>
-    <sidebar :pageTitle="pageTitle" :sidebarOpen="sidebarOpen" v-on:toggleSideBar="sidebarOpen = !sidebarOpen"/>
+    <sidebar :pageTitle="pageTitle" :sidebarOpen="sidebarOpen" v-on:toggleSideBar="toggleSideBar"/>
     <main :class="['pt-12 w-full transition-padding-left', sidebarOpen ? 'pl-64' : 'pl-16']">
       <section class="p-6">
         <h1>{{ pageTitle }}</h1>
@@ -22,12 +22,19 @@ export default {
   },
   data () {
     const { site, template, suffix, page_title } = window.siteData;
+    const storage = localStorage.getItem('sidebarOpen');
     return {
       suffix: suffix,
       template: template,
       site: site,
-      sidebarOpen: true,
+      sidebarOpen: storage === 'true' || storage === null,
       pageTitle: page_title
+    }
+  },
+  methods: {
+    toggleSideBar() {
+      this.sidebarOpen = !this.sidebarOpen;
+      localStorage.setItem('sidebarOpen', this.sidebarOpen);
     }
   }
 }
