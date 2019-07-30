@@ -19,7 +19,7 @@
             </p>
           </div>
           <div class="w-2/3 px-2">
-            <div class="bg-white rounded shadow-lg p-4">
+            <brick>
               <div class="mb-4">
                 <form-label for="Name">
                   App name
@@ -32,7 +32,7 @@
                 </form-label>
                 <email-field id="Email" name="email"  :value="app.email" placeholder="Developer email" @onInput="update" :error="fields.includes('email')"/>
               </div>
-            </div>
+            </brick>
           </div>
         </div>
         <div class="flex mb-4">
@@ -45,7 +45,7 @@
             </p>
           </div>
           <div class="w-2/3 px-2">
-            <div class="bg-white rounded shadow-lg p-4">
+            <brick>
               <div class="flex">
                 <div class="w-full mb-4">
                   <label class="mb-2" for="Key">
@@ -94,7 +94,7 @@
                   />
                 </div>
               </div>
-            </div>
+            </brick>
           </div>
         </div>
         <div class="flex mb-4 justify-end">
@@ -112,6 +112,7 @@
 <script>
 import Note from '../components/note.vue';
 import PrimaryButton from '../components/primary-button.vue';
+import Brick from '../components/brick.vue';
 import AdminContainer from '../snippets/admin-container.vue';
 import TextField from '../components/text-field.vue';
 import PasswordField from '../components/password-field.vue';
@@ -124,6 +125,7 @@ export default {
   components: {
     "note": Note,
     "primary-button": PrimaryButton,
+    "brick": Brick,
     "admin-container": AdminContainer,
     "password-field": PasswordField,
     "text-field": TextField,

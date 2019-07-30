@@ -19,7 +19,7 @@
             </p>
           </div>
           <div class="w-2/3 px-2">
-            <div class="bg-white rounded shadow-lg p-4">
+            <brick>
               <div class="mb-4">
                 <form-label for="Name">
                   App name
@@ -32,7 +32,7 @@
                 </form-label>
                 <email-field id="Email" name="email"  :value="form.email" placeholder="Developer email" :error="fields.includes('email')"/>
               </div>
-            </div>
+            </brick>
           </div>
         </div>
         <div class="flex mb-4">
@@ -45,7 +45,7 @@
             </p>
           </div>
           <div class="w-2/3 px-2">
-            <div class="bg-white rounded shadow-lg p-4">
+            <brick>
               <div class="flex">
                 <div class="w-3/4">
                   <h4 class="mb-4 text-grey">
@@ -76,7 +76,7 @@
                   />
                 </div>
               </div>
-            </div>
+            </brick>
           </div>
         </div>
         <div class="flex mb-4 items-end">
@@ -99,6 +99,7 @@ import TextField from '../components/text-field.vue';
 import EmailField from '../components/email-field.vue';
 import FormLabel from '../components/form-label.vue';
 import SelectField from '../components/select-field.vue';
+import Brick from '../components/brick.vue';
 
 export default {
   name: 'create-app',
@@ -109,7 +110,8 @@ export default {
     "text-field": TextField,
     "email-field": EmailField,
     "form-label": FormLabel,
-    "select-field": SelectField
+    "select-field": SelectField,
+    "brick": Brick,
   },
   data () {
     const { form, errors } = window.siteData;

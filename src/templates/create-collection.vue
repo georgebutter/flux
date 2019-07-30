@@ -5,7 +5,7 @@
         <errors-block :errors="errors"/>
         <div class="flex mb-4">
           <div class="w-2/3 px-2">
-            <div class="bg-white rounded shadow-lg p-4 mb-4">
+            <brick>
               <div class="mb-4">
                 <form-label :show="true" for="Title">
                   Title
@@ -52,7 +52,7 @@
 
                 </div>
               </div>
-            </div>
+            </brick>
             <div class="px-2">
               <primary-button type="submit">
                 Create collection
@@ -102,6 +102,7 @@
 <script>
 import ErrorsBlock from '../snippets/errors-block.vue';
 import PrimaryButton from '../components/primary-button.vue';
+import Brick from '../components/brick.vue';
 import AdminContainer from '../snippets/admin-container.vue';
 import TextField from '../components/text-field.vue';
 import EmailField from '../components/email-field.vue';
@@ -115,6 +116,7 @@ export default {
   components: {
     "errors-block": ErrorsBlock,
     "primary-button": PrimaryButton,
+    "brick": Brick,
     "admin-container": AdminContainer,
     "text-field": TextField,
     "email-field": EmailField,

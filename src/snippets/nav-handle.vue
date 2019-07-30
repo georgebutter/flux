@@ -1,5 +1,5 @@
 <template>
-<div class="bg-white shadow-lg rounded p-4">
+<brick>
   <div class="mb-4">
     <form-label :show="true" for="Handle">
       Handle
@@ -12,18 +12,19 @@
 <span v-pre>{{ link.title }}</span>
 {% endfor %}
   </code>
-</div>
+</brick>
 </template>
 
 <script>
 import TextField from '../components/text-field.vue';
 import FormLabel from '../components/form-label.vue';
-
+import Brick from '../components/brick.vue';
 export default {
   name: 'nav-handle',
   components: {
     "text-field": TextField,
     "form-label": FormLabel,
+    "brick": Brick,
   },
   props: {
     fields: Array,

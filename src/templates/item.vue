@@ -5,7 +5,7 @@
         <errors-block :errors="errors"/>
         <div class="flex mb-4">
           <div class="w-3/5 px-2">
-            <div class="bg-white rounded shadow-lg p-4 mb-4">
+            <brick>
               <div class="mb-4">
                 <form-label :show="true" for="Title">
                   Title
@@ -18,20 +18,20 @@
                 </form-label>
                 <text-field id="Handle" type="text" name="handle" :value="handle" :error="fields.includes('handle')" :readonly="true"/>
               </div>
-            </div>
+            </brick>
 
-            <div class="bg-white rounded shadow-lg p-4 mb-4">
+            <brick>
               <form-label :show="true" for="description">
                 Description
               </form-label>
               <markdown-editor name="description" :value="item.description || ''"/>
-            </div>
-            <div class="bg-white rounded shadow-lg p-4 mb-4">
+            </brick>
+            <brick>
               <form-label :show="true" for="excerpt">
                 Excerpt
               </form-label>
               <markdown-editor name="excerpt" :value="item.excerpt || ''" height="32"/>
-            </div>
+            </brick>
             <div class="flex">
               <div class="w-1/2">
                 <primary-button type="submit">
@@ -46,18 +46,18 @@
             </div>
           </div>
           <div class="w-2/5 px-2">
-            <div class="bg-white rounded shadow-lg p-4 mb-4">
+            <brick>
               <form-label :show="true">
                 Tags
               </form-label>
               <tag-select namePrefix="tags" :selectedTags="tags"/>
-            </div>
-            <div class="bg-white rounded shadow-lg p-4 mb-4">
+            </brick>
+            <brick>
               <form-label :show="true" :for="`collections`">
                 Collections
               </form-label>
               <asset-select namePrefix="collections" asset="collections" :selectedIds="item.collections"/>
-            </div>
+            </brick>
           </div>
         </div>
       </form>
@@ -68,6 +68,7 @@
 <script>
 import axios from 'axios';
 import ErrorsBlock from '../snippets/errors-block.vue';
+import Brick from '../components/brick.vue';
 import PrimaryButton from '../components/primary-button.vue';
 import WarningButton from '../components/warning-button.vue';
 import AdminContainer from '../snippets/admin-container.vue';
@@ -82,9 +83,10 @@ import TagSelect from '../components/tag-select.vue';
 import MarkdownEditor from '../components/markdown-editor.vue';
 
 export default {
-  name: 'create-item',
+  name: 'item',
   components: {
     "errors-block": ErrorsBlock,
+    "brick": Brick,
     "primary-button": PrimaryButton,
     "warning-button": WarningButton,
     "admin-container": AdminContainer,

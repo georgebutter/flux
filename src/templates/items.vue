@@ -3,7 +3,7 @@
     <section class="p-6">
       <div class="max-w-lg mx-auto">
         <div v-if="items && items.length">
-          <div class="bg-white rounded shadow-lg px-4">
+          <brick>
             <div class="flex -mx-4 border-b border-grey-lighter">
               <div class="w-full p-4">
                 <h4>
@@ -18,7 +18,7 @@
                 </p>
               </div>
             </a>
-          </div>
+          </brick>
           <div class="w-full text-right py-4">
             <primary-button href="/admin/items/create">
               Create a new item
@@ -46,13 +46,14 @@
 import AdminContainer from '../snippets/admin-container.vue';
 import PrimaryButton from '../components/primary-button.vue';
 import IconItem from '../components/icon-item.vue';
-
+import Brick from '../components/brick.vue';
 export default {
   name: 'items',
   components: {
     "admin-container": AdminContainer,
     "primary-button": PrimaryButton,
     "icon-item": IconItem,
+    "brick": Brick,
   },
   data () {
     const { items } = window.siteData;

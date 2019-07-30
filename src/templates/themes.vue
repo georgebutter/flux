@@ -1,7 +1,7 @@
 <template>
   <admin-container>
     <section class="p-6">
-      <div class="bg-white rounded shadow-lg p-4">
+      <brick>
         <div v-for="theme in themes">
           <div class="flex">
             <div class="w-1/2">
@@ -14,19 +14,21 @@
             </div>
           </div>
         </div>
-      </div>
+      </brick>
     </section>
   </admin-container>
 </template>
 
 <script>
 import PrimaryButton from '../components/primary-button.vue';
+import Brick from '../components/brick.vue';
 import AdminContainer from '../snippets/admin-container.vue';
 
 export default {
   name: 'themes',
   components: {
     "primary-button": PrimaryButton,
+    "brick": Brick,
     "admin-container": AdminContainer,
   },
   data () {

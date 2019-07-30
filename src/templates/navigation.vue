@@ -3,7 +3,7 @@
     <section class="p-6">
       <div class="max-w-lg mx-auto">
         <div v-if="navigation && navigation.length">
-          <div class="bg-white rounded shadow-lg px-4">
+          <brick>
             <div class="flex -mx-4 border-b border-grey-lighter">
               <div class="w-1/3 p-4">
                 <h4>
@@ -28,7 +28,7 @@
                 </p>
               </div>
             </a>
-          </div>
+          </brick>
           <div class="max-w-lg mx-auto text-right py-4">
             <primary-button href="/admin/navigation/create">
               Create a new navigation
@@ -55,6 +55,7 @@
 <script>
 import AdminContainer from '../snippets/admin-container.vue';
 import PrimaryButton from '../components/primary-button.vue';
+import Brick from '../components/brick.vue';
 import IconNavigation from '../components/icon-navigation.vue';
 
 export default {
@@ -62,6 +63,7 @@ export default {
   components: {
     "admin-container": AdminContainer,
     "primary-button": PrimaryButton,
+    "brick": Brick,
     "icon-navigation": IconNavigation,
   },
   data () {
