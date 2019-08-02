@@ -22,7 +22,7 @@
                 <form-label :show="true" for="Permalink">
                   Permalink
                 </form-label>
-                <text-field id="Permalink" type="text" name="permalink" :value="permalink" :error="fields.includes('permalink')" :readonly="true"/>
+                <text-field id="Permalink" type="text" name="permalink" :value="permalink" :error="fields.includes('permalink')"/>
               </div>
               <div v-for="field in additionalFields" class="mb-4 border-t py-4 border-1 border-grey-lighter">
                 <div v-if="field.type === 'text'">
@@ -131,6 +131,7 @@ export default {
       form: form,
       errors, errors,
       fields: errors ? errors.map(error => error.field) : [],
+      title: form.title,
       handle: form.handle,
       permalink: form.permalink,
       additionalFields: []

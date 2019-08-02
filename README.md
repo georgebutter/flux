@@ -21,7 +21,7 @@
 |     |- admin - Admin front end
 |     |_ theme - Website front end
 |
-|_ src - Admin build files
+|_ src - Admin build files built in vue
 ```
 
 # Scripts

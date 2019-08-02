@@ -10,7 +10,7 @@ exports.getHome = (req, res) => {
       for (var i = 0; i < navigation.length; i++) {
         linklists[navigation[i].handle] = navigation[i];
       }
-      Collection.getFullCollection((err, collection) => {
+      Collection.getFullCollections({}, (err, collection) => {
         if (err) {
           return console.error(err);
         }

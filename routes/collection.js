@@ -1,4 +1,5 @@
 const { Collection } = require('../models/collection');
+const { Permalink } = require('../models/permalink');
 const { Staff } = require('../models/staff');
 
 const { setAdminViews, canonicalUrl } = require('../helpers');
@@ -35,7 +36,7 @@ exports.getCollection = (req, res, next) => {
   const site = req.app.get('site');
   const errors = [];
 
-  Collection.findById({ _id: req.params.id}, function(err, collection) {
+  Collection.getFullCollection({ _id: req.params.id}, function(err, collection) {
     if (err) {
       throw err;
     } else {
@@ -97,7 +98,19 @@ exports.postCreateCollection = (req, res) => {
   if (!title) {
     errors.push({
       message: 'Please provide an collection name',
-      field: 'name'
+      field: 'title'
+    });
+  }
+  if (!handle) {
+    errors.push({
+      message: 'Please provide an collection handle',
+      field: 'handle'
+    });
+  }
+  if (!permalink) {
+    errors.push({
+      message: 'Please provide an collection permalink',
+      field: 'permalink'
     });
   }
   if (errors.length) {
@@ -114,27 +127,47 @@ exports.postCreateCollection = (req, res) => {
       });
     });
   } else {
-    console.log('[status] Creating new collection'.grey)
-    Collection.create(req.body, (error, app) => {
-      console.error(error)
+    console.log('[status] Creating new permalink'.grey)
+    Permalink.create({
+      permalink: permalink,
+      objectModel: 'Collection',
+    }, (error, link) => {
       if (error) {
-        errors.push({ message: error });
-        Staff.findById(req.session.userId, (error, user) => {
-          setAdminViews(req.app);
-          return res.render('admin', {
-            site: site,
-            page_title: 'Create a new collection',
-            canonical_url: canonicalUrl(req),
-            template: 'create-collection',
-            errors: errors,
-            user: user,
-            form: form
-          });
-        });
-      } else {
-        return res.redirect('/admin/collections');
+        console.log(error);
       }
-    });
+      console.log('[status] Creating new collection'.grey)
+      Collection.create({
+        title: title,
+        handle: handle,
+        permalink: link._id
+      }, (error, collection) => {
+        Permalink.updateOne({
+          _id: link._id
+        }, {
+          $set: {
+            object: collection._id,
+          }
+        }).then(result => {
+          if (error) {
+            errors.push({ message: error.message });
+            Staff.findById(req.session.userId, (error, user) => {
+              setAdminViews(req.app);
+              return res.render('admin', {
+                site: site,
+                page_title: 'Create a new collection',
+                canonical_url: canonicalUrl(req),
+                template: 'create-collection',
+                errors: errors,
+                user: user,
+                form: form
+              });
+            });
+          } else {
+            return res.redirect('/admin/collections');
+          }
+        });
+      });
+    })
   }
 }
 
@@ -172,7 +205,7 @@ exports.postUpdateCollection = (req, res) => {
 
   if (errors.length) {
     setAdminViews(req.app);
-    Collection.findById({ _id: req.params.id}, function(err, collection) {
+    Collection.getFullCollection({ _id: req.params.id}, function(err, collection) {
       if (err) {
         throw err;
       } else {
@@ -194,28 +227,37 @@ exports.postUpdateCollection = (req, res) => {
       }
     });
   } else {
-    Collection.updateOne({ _id: req.params.id }, {
+    Permalink.updateOne({ object: req.params.id }, {
       $set: {
-        title: req.body.title,
-        handle: req.body.handle,
         permalink: req.body.permalink
       }
-    }).then(result => {
-      return res.redirect('/admin/collections');
-    });
-
+    }).then(linkResult => {
+      Collection.updateOne({ _id: req.params.id }, {
+        $set: {
+          title: req.body.title,
+          handle: req.body.handle,
+        }
+      }).then(collectionResult => {
+        return res.redirect('/admin/collections');
+      });
+    })
   }
 }
 
 exports.deleteCollection = (req, res) => {
   Staff.findById(req.session.userId, (error, user) => {
     if (user) {
-      Collection.deleteOne({ _id: req.params.id}, (err) => {
+      Permalink.deleteOne({ object: req.params.id }, err => {
         if (err) {
-          res.sendStatus(500)
-        } else {
-          res.sendStatus(200)
+          return res.sendStatus(500)
         }
+        Collection.deleteOne({ _id: req.params.id}, (err) => {
+          if (err) {
+            return res.sendStatus(500)
+          } else {
+            return res.sendStatus(200)
+          }
+        })
       })
     } else {
       return res.redirect('/admin');

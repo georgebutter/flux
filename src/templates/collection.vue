@@ -1,7 +1,7 @@
 <template>
   <admin-container>
     <section class="p-6">
-      <form :action="`/admin/collections/${collection._id}/update`" method="post" autocomplete="off" novalidate>
+      <form :action="`/admin/collections/${collection.id}/update`" method="post" autocomplete="off" novalidate>
         <errors-block :errors="errors"/>
         <div class="flex mb-4">
           <div class="w-2/3 px-2">
@@ -22,7 +22,7 @@
                 <form-label :show="true" for="Permalink">
                   Permalink
                 </form-label>
-                <text-field id="Permalink" type="text" name="permalink" :value="permalink" :error="fields.includes('permalink')" :readonly="true"/>
+                <text-field id="Permalink" type="text" name="permalink" :value="permalink" :error="fields.includes('permalink')"/>
               </div>
               <div v-for="field in additionalFields" class="mb-4 border-t py-4 border-1 border-grey-lighter">
                 <div v-if="field.type === 'text'">
@@ -172,7 +172,7 @@ export default {
       return str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, "-").replace(/^-+|-+$/g, "");
     },
     deleteCollection () {
-      const url = `/admin/collections/${this.collection._id}`;
+      const url = `/admin/collections/${this.collection.id}`;
       axios.delete(url).then(res => {
         window.location.href = '/admin/collections';
       })

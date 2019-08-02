@@ -14,18 +14,38 @@ const CollectionSchema = new Schema({
     unique: true
   },
   permalink: {
-    required: 'Please enter a permalink',
-    trim: true,
-    type: String,
-    unique: true
+    type: Schema.Types.ObjectId,
+    ref: 'Permalink',
+    required: true,
   },
   items: [{ type: Schema.Types.ObjectId, ref: 'Item' }]
 });
 
-CollectionSchema.statics.getFullCollection = function ( callback) {
+CollectionSchema.statics.getFullCollection = function (find, callback) {
   Collection
-  .find()
+  .findOne(find)
   .populate('items')
+  .populate('permalink')
+  .exec(function (err, collection) {
+    if (err) {
+      return callback(err)
+    }
+    const returnCollection = {
+      title: collection.title,
+      handle: collection.handle,
+      id: collection.id,
+      permalink: collection.permalink.permalink,
+      items: collection.items
+    }
+    return callback(null, returnCollection);
+  });
+}
+
+CollectionSchema.statics.getFullCollections = function (find, callback) {
+  Collection
+  .find(find)
+  .populate('items')
+  .populate('permalink')
   .exec(function (err, collections) {
     if (err) {
       return callback(err)
