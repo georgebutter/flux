@@ -1,7 +1,7 @@
 <template>
   <admin-container>
     <section class="p-6">
-      <form :action="`/admin/items/${item._id}/update`" method="post" autocomplete="off" novalidate>
+      <form :action="`/admin/items/${item.id}/update`" method="post" autocomplete="off" novalidate>
         <errors-block :errors="errors"/>
         <div class="flex mb-4">
           <div class="w-3/5 px-2">
@@ -120,7 +120,7 @@ export default {
       return str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, "-").replace(/^-+|-+$/g, "");
     },
     deleteItem () {
-      const url = `/admin/items/${this.item._id}`;
+      const url = `/admin/items/${this.item.id}`;
       axios.delete(url).then(res => {
         window.location.href = '/admin/items';
       })

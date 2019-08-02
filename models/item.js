@@ -19,11 +19,31 @@ const ItemSchema = new Schema({
   excerpt: {
     type: String
   },
-  collections: [{ type: Schema.Types.ObjectId, ref: 'Item' }],
+  collections: [{ type: Schema.Types.ObjectId, ref: 'Collection' }],
   tags: {
     type: Array
   }
 });
+
+ItemSchema.statics.getFlat = function (find, callback) {
+  Item
+  .findOne(find)
+  .exec(function (err, item) {
+    if (err) {
+      return callback(err)
+    }
+    const returnCollection = {
+      title: item.title,
+      handle: item.handle,
+      id: item.id,
+      description: item.description,
+      excerpt: item.excerpt,
+      tags: item.tags,
+      collections: item.collections.map(col => col.toString()),
+    }
+    return callback(null, returnCollection);
+  });
+}
 
 const Item = mongoose.model('Item', ItemSchema);
 module.exports.Item = Item;

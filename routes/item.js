@@ -58,7 +58,7 @@ exports.getItem = (req, res, next) => {
   setAdminViews(req.app);
   const site = req.app.get('site');
   const errors = [];
-  Item.findById({ _id: req.params.id}, function(err, item) {
+  Item.getFlat({ _id: req.params.id}, function(err, item) {
     if (err) {
       throw err;
     } else {
@@ -247,11 +247,16 @@ exports.postUpdateItem = (req, res) => {
             upsert: true
           },
           function (err, result) {
+            if (err) {
+              console.error(`Could not update collection ${collections[i]} with items`)
+            }
             console.log(result)
           }
         )
       }
       return res.redirect('/admin/items');
+    }).catch(error => {
+      return console.error(error);
     });
   }
 }

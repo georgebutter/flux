@@ -16,7 +16,7 @@
                 </h4>
               </div>
             </div>
-            <a :href="'/admin/navigation/' + navigation._id" class="flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black" v-for="navigation in navigation">
+            <a :href="'/admin/navigation/' + navigation.id" class="flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black" v-for="navigation in navigation">
               <div class="w-1/3 p-4">
                 <p class="underline-none">
                   {{ navigation.title }}

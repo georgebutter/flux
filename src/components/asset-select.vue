@@ -9,9 +9,9 @@
     </div>
     <div :class="['absolute pin-b pt-2 translate-y-full w-full', showList ? '' : 'hidden']">
       <ul class="list-reset shadow-lg bg-white rounded overflow-hidden">
-        <li :class="['cursor-pointer p-2 pl-8 relative', selectedValues.includes(item._id) ? 'bg-accent text-accent-lighter hover:bg-accent-lighter hover:text-accent' : 'hover:bg-grey-lightest']" v-for="item in computedList" @click="toggleItem(item)">
+        <li :class="['cursor-pointer p-2 pl-8 relative', selectedValues.includes(item.id) ? 'bg-accent text-accent-lighter hover:bg-accent-lighter hover:text-accent' : 'hover:bg-grey-lightest']" v-for="item in computedList" @click="toggleItem(item)">
           <div class="absolute pin-y pin-l flex items-center px-2 pointer-events-none">
-            <icon-tick width="20" height="20" v-if="selectedValues.includes(item._id)"/>
+            <icon-tick width="20" height="20" v-if="selectedValues.includes(item.id)"/>
           </div>
           {{ item.title }}
         </li>
@@ -19,9 +19,9 @@
     </div>
   </div>
   <ul class="list-reset mt-1 text-grey" v-if="selectedValues.length">
-    <li class="flex items-center p-2 hover:bg-grey-lighter cursor-pointer" v-for="(_id, index) in selectedValues" :key="_id" :aria-title="`Remove ${selectedTitles[index]}`" @click="toggleItem({_id: _id, title: selectedTitles[index] })">
+    <li class="flex items-center p-2 hover:bg-grey-lighter cursor-pointer" v-for="(id, index) in selectedValues" :key="id" :aria-title="`Remove ${selectedTitles[index]}`" @click="toggleItem({id: id, title: selectedTitles[index] })">
       <icon-close width="20" height="20"/><span class="ml-1">{{ selectedTitles[index] }}</span>
-      <input type="hidden" :name="`${namePrefix}-${index}`" :value="_id"/>
+      <input type="hidden" :name="`${namePrefix}-${index}`" :value="id"/>
     </li>
   </ul>
   <div v-if="showList" class="fixed pin z-10" @click="showList = false"/>
@@ -50,12 +50,12 @@ export default {
       this.showList = false;
     },
     toggleItem (item) {
-      if (this.selectedValues.includes(item._id)) {
-        this.selectedTitles.splice(this.selectedValues.indexOf(item._id), 1);
-        this.selectedValues.splice(this.selectedValues.indexOf(item._id), 1);
+      if (this.selectedValues.includes(item.id)) {
+        this.selectedTitles.splice(this.selectedValues.indexOf(item.id), 1);
+        this.selectedValues.splice(this.selectedValues.indexOf(item.id), 1);
       } else {
         this.selectedTitles.push(item.title);
-        this.selectedValues.push(item._id);
+        this.selectedValues.push(item.id);
       }
       this.showList = false;
     },

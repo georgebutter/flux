@@ -1,7 +1,7 @@
 <template>
   <admin-container>
     <section class="p-6">
-      <form :action="`/admin/apps/${app._id}/update`" method="post" autocomplete="off" novalidate>
+      <form :action="`/admin/apps/${app.id}/update`" method="post" autocomplete="off" novalidate>
         <div class="mb-4" v-if="errors">
           <ul class="list-reset">
             <li v-for="error in errors">

@@ -11,7 +11,7 @@
                 </h4>
               </div>
             </div>
-            <a :href="'/admin/collections/' + collection._id" class="flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black" v-for="collection in collections">
+            <a :href="'/admin/collections/' + collection.id" class="flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black" v-for="collection in collections">
               <div class="w-1/3 p-4">
                 <p class="underline-none">
                   {{ collection.title }}

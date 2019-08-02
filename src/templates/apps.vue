@@ -20,7 +20,7 @@
               </h4>
             </div>
           </div>
-          <a :href="'/admin/apps/' + app._id" class="flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black" v-for="app in apps">
+          <a :href="'/admin/apps/' + app.id" class="flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black" v-for="app in apps">
             <div class="w-1/3 p-4">
               <p class="underline-none">
                 {{ app.name }}
