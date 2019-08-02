@@ -18,7 +18,7 @@ const PermalinkSchema = new Schema({
     enum: ['Collection', 'Item']
   }
 });
-PermalinkSchema.index({ object: 1 }); // schema level
+PermalinkSchema.index({ object: 1, permalink: 1 });
 
 const Permalink = mongoose.model('Permalink', PermalinkSchema);
 module.exports.Permalink = Permalink;
