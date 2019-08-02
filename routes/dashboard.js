@@ -2,10 +2,10 @@ const { setAdminViews, canonicalUrl } = require('../helpers');
 const { Staff } = require('../models/staff');
 
 exports.getDashboard = (req, res, next) => {
+  setAdminViews(req.app);
   if (!req.app.get('installed')) {
     return res.redirect('/install')
   }
-  setAdminViews(req.app);
   const errors = [];
   Staff.findById(req.session.userId, (error, user) => {
     if (user) {
@@ -18,7 +18,14 @@ exports.getDashboard = (req, res, next) => {
         user: user
       });
     } else {
-      return res.redirect('/admin');
+      return res.render('login', {
+        site: req.app.get('site'),
+        page_title: 'Admin',
+        canonical_url: canonicalUrl(req),
+        template: 'login',
+        errors: errors,
+        user: false
+      });
     }
   });
 }
