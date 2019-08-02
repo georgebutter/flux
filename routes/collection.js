@@ -113,6 +113,18 @@ exports.postCreateCollection = (req, res) => {
       field: 'permalink'
     });
   }
+  if (permalink.startsWith('/admin')) {
+    errors.push({
+      message: 'Permalink cannot start with /admin',
+      field: 'permalink'
+    });
+  }
+  if (permalink.startsWith('/install')) {
+    errors.push({
+      message: 'Permalink cannot start with /install',
+      field: 'permalink'
+    });
+  }
   if (errors.length) {
     Staff.findById(req.session.userId, (error, user) => {
       setAdminViews(req.app);
