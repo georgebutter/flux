@@ -35,10 +35,28 @@ exports.getHome = (req, res) => {
 
 exports.get404 = (req, res) => {
   setClientViews(req.app);
-  return res.render('error', {
-    site: req.app.get('site'),
-    page_title: '404',
-    canonical_url: canonicalUrl(req),
-    error: '404 - Page not found'
+  Navigation.find({}, function(err, navigation) {
+    const linklists = {};
+    for (var i = 0; i < navigation.length; i++) {
+      linklists[navigation[i].handle] = navigation[i];
+    }
+    Collection.getFullCollections({}, (err, collection) => {
+      if (err) {
+        return console.error(err);
+      }
+      const collections = {};
+      for (var i = 0; i < collection.length; i++) {
+        collections[collection[i].handle] = collection[i];
+      }
+      return res.render('error', {
+        site: req.app.get('site'),
+        page_title: '404',
+        canonical_url: canonicalUrl(req),
+        error: '404 - Page not found',
+        template: 'index',
+        linklists: linklists,
+        collections: collections
+      });
+    })
   });
 }
