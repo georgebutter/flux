@@ -7,7 +7,7 @@ exports.getNavigations = (req, res, next) => {
   setAdminViews(req.app);
   const site = req.app.get('site');
   const errors = [];
-  Navigation.find({}, function(err, navigation) {
+  Navigation.getManyFlat({}, function(err, navigation) {
     if (err) {
       throw err;
     } else {
@@ -35,7 +35,7 @@ exports.getNavigation = (req, res, next) => {
   console.log(req.params.id)
   const site = req.app.get('site');
   const errors = [];
-  Navigation.findById(req.params.id, function(err, navigation) {
+  Navigation.getFlat({ _id: req.params.id }, function(err, navigation) {
     if (err) {
       throw err;
     } else {
