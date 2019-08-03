@@ -8,7 +8,7 @@ exports.getItems = (req, res) => {
   setAdminViews(req.app);
   const site = req.app.get('site');
   const errors = [];
-  Item.find({}, function(err, items) {
+  Item.getManyFlat({}, function(err, items) {
     if (err) {
       throw err;
     } else {

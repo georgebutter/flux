@@ -32,7 +32,7 @@ ItemSchema.statics.getFlat = function (find, callback) {
     if (err) {
       return callback(err)
     }
-    const returnCollection = {
+    const returnItem = {
       title: item.title,
       handle: item.handle,
       id: item.id,
@@ -41,7 +41,27 @@ ItemSchema.statics.getFlat = function (find, callback) {
       tags: item.tags,
       collections: item.collections.map(col => col.toString()),
     }
-    return callback(null, returnCollection);
+    return callback(null, returnItem);
+  });
+}
+
+ItemSchema.statics.getManyFlat = function (find, callback) {
+  Item
+  .find(find)
+  .exec(function (err, items) {
+    if (err) {
+      return callback(err)
+    }
+    const returnItems = items.map(item => ({
+      title: item.title,
+      handle: item.handle,
+      id: item.id,
+      description: item.description,
+      excerpt: item.excerpt,
+      tags: item.tags,
+      collections: item.collections.map(col => col.toString()),
+    }))
+    return callback(null, returnItems);
   });
 }
 
