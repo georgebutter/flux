@@ -177,13 +177,15 @@ app.delete('/admin/navigation/:id', adminViews.deleteNavigation);
 app.delete('/admin/collections/:id', adminViews.deleteCollection);
 app.delete('/admin/items/:id', adminViews.deleteItem);
 
-// Theme Routes
-app.get('/', themeController.getHome);
-
 // Installation Routes
 app.get('/install', installController.getHome);
 app.post('/install/site', installController.postSite);
 app.post('/install/admin', installController.postAdmin);
+
+// Theme Routes
+app.get('/', themeController.getHome);
+app.get('/:permalink/:handle', themeController.getItem);
+app.get('/:permalink', themeController.getPermalink);
 
 // 404
 app.get('/admin/*', adminViews.get404);

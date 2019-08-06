@@ -67,6 +67,7 @@
 
 <script>
 import axios from 'axios';
+import _ from 'lodash';
 import ErrorsBlock from '../snippets/errors-block.vue';
 import Brick from '../components/brick.vue';
 import PrimaryButton from '../components/primary-button.vue';
@@ -102,6 +103,7 @@ export default {
   },
   data () {
     const { item, errors } = window.siteData;
+    item.description = _.unescape(item.description);
     return {
       item: item,
       errors, errors,

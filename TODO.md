@@ -22,7 +22,7 @@
 ##### Items
  - [ ] Markdown editing for excerpt and content
  - [ ] Markdown buttons for auto generating markdown
- - [ ] Store raw markdown and compiled markdown
+ - [x] Store raw markdown
  - [ ] Hotkeys for markdown editing
  - [ ] Make tags it's own collection then access with id rather than storing growing array on each item
  - [ ] Make tag selector have a tag suggestion
@@ -35,6 +35,8 @@
 
 ##### Users
 - [ ] Default login and registrations pages
+- [ ] Basic user listing
+- [ ] Subscription form
 
 ##### Dashboard
  - [ ] Add basic analytics like page views, most viewed pages, bounce rate etc.
@@ -54,11 +56,15 @@
  - [ ] Add linting
  - [ ] Dynamic routes based on permalinks
  - [ ] Template selection based on current theme
- - [ ] Setup template caching
+ - [ ] Setup template caching - static file generation
  - [ ] CDN to serve specified image size
  - [ ] Liquid img url filter
  - [ ] Convert server side to use TS
  - [ ] Security audit
  - [ ] Accessibility audit
  - [ ] Speed and performance audit
+ - [ ] Handle liquid template errors
+ - [ ] Liquid highlight tags in md
  - [ ] Documentation
+ - [ ] Save hotkeys
+ - [ ] Contact forms

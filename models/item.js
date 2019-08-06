@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+var marked = require('marked');
+var _ = require('lodash');
 const Schema = mongoose.Schema;
 
 const ItemSchema = new Schema({
@@ -25,6 +27,8 @@ const ItemSchema = new Schema({
   }
 });
 
+ItemSchema.index({ handle: 1, tags: 1 });
+
 ItemSchema.statics.getFlat = function (find, callback) {
   Item
   .findOne(find)
@@ -32,11 +36,37 @@ ItemSchema.statics.getFlat = function (find, callback) {
     if (err) {
       return callback(err)
     }
+    if (!item) {
+      return callback('No item found')
+    }
     const returnItem = {
       title: item.title,
       handle: item.handle,
       id: item.id,
-      description: item.description,
+      description: _.escape(item.description),
+      excerpt: item.excerpt,
+      tags: item.tags,
+      collections: item.collections.map(col => col.toString()),
+    }
+    return callback(null, returnItem);
+  });
+}
+
+ItemSchema.statics.getFront = function (find, callback) {
+  Item
+  .findOne(find)
+  .exec(function (err, item) {
+    if (err) {
+      return callback(err)
+    }
+    if (!item) {
+      return callback('No item found')
+    }
+    const returnItem = {
+      title: item.title,
+      handle: item.handle,
+      id: item.id,
+      content: marked(item.description),
       excerpt: item.excerpt,
       tags: item.tags,
       collections: item.collections.map(col => col.toString()),
@@ -56,7 +86,7 @@ ItemSchema.statics.getManyFlat = function (find, callback) {
       title: item.title,
       handle: item.handle,
       id: item.id,
-      description: item.description,
+      description: _.escape(item.description),
       excerpt: item.excerpt,
       tags: item.tags,
       collections: item.collections.map(col => col.toString()),
