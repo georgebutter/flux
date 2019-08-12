@@ -83,7 +83,6 @@ exports.getPermalink = (req, res, next) => {
 
 exports.getItem = (req, res, next) => {
   setClientViews(req.app);
-  console.log(req.params)
   if (req.app.get('installed')) {
     Permalink.getFull(
       { permalink: `/${req.params.permalink}` },
@@ -93,7 +92,6 @@ exports.getItem = (req, res, next) => {
         }
         const template = permalink.objectModel.toLowerCase();
         permalink.object.url = permalink.permalink;
-        console.log(permalink)
         Item.getFront({ handle: req.params.handle}, (err, item) => {
           if (err) {
             return next();

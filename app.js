@@ -68,14 +68,45 @@ app.use('/assets', express.static(path.join(__dirname, `/client/theme/assets`)))
 
 // Setup liquid rendering
 const Liquid = require('liquidjs');
+var Prism = require('prismjs');
 const engine = Liquid({
   root: __dirname,
   extname: '.liquid'
 });
+// Register handlize filter
 engine.registerFilter('handle', (str) => str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, '-').replace(/^-+|-+$/g, ''))
 engine.registerFilter('handleize', (str) => str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, '-').replace(/^-+|-+$/g, ''))
+// Register highlight tag
+engine.registerTag('highlight', {
+  parse: function(tagToken, remainTokens) {
+    this.str = tagToken.args;
+    this.tpl = [];
+    const stream = engine.parser.parseStream(remainTokens)
+      .on('start', () => {
+        console.log(this)
+      })
+      .on('tag:endhighlight', () => stream.stop())
+      .on('template', tpl => this.tpl.push(tpl))
+      .on('end', () => {
+        throw new Error(`tag ${tagToken.raw} not closed`)
+      })
+
+    stream.start()
+  },
+  render: async function(scope, hash) {
+    let code = ''
+    for (let i = 0; i < this.tpl.length; i++) {
+      const block = this.tpl[i].raw
+      code += block
+    }
+    const prismCode = Prism.highlight(code, Prism.languages[this.str], this.str);
+    return `<pre><code class="language-${this.str}">${prismCode}</code></pre>`;
+  },
+});
+
 app.engine('liquid', engine.express());
 app.set('view engine', 'liquid');
+
 
 // Import controllers
 const adminViews = require('./controllers/admin-views');

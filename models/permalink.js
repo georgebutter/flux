@@ -29,10 +29,10 @@ PermalinkSchema.statics.getFull = function (find, callback) {
       return callback(err)
     }
     if (!permalink) {
-      console.log(`Permalink`)
-      console.log(find)
+      // console.log(`Permalink`)
+      // console.log(find)
       return callback('no permalink found')
-      
+
     }
     const returnPermalink = {
       permalink: permalink.permalink,
