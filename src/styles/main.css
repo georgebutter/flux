@@ -129,3 +129,146 @@ input::placeholder {
     transform: translate(19px, 0);
   }
 }
+
+.rte {
+  @apply pb-8;
+}
+
+.rte h2 {
+  @apply text-2xl mb-2;
+}
+
+.rte p {
+  @apply font-serif mb-2;
+}
+
+.rte pre {
+  @apply bg-grey text-primary rounded-lg p-8 mb-4 overflow-x-auto block;
+}
+
+.rte code {
+  @apply font-mono;
+}
+
+/* PrismJS 1.17.1
+https://prismjs.com/download.html#themes=prism-tomorrow&languages=markup+css+clike+javascript */
+/**
+ * prism.js tomorrow night eighties for JavaScript, CoffeeScript, CSS and HTML
+ * Based on https://github.com/chriskempson/tomorrow-theme
+ * @author Rose Pritchard
+ */
+
+.rte code[class*="language-"],
+.rte pre[class*="language-"] {
+	color: #ccc;
+	font-size: 1em;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+
+}
+
+/* Code blocks */
+.rte pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+}
+
+.rte :not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+  @apply bg-grey;
+}
+
+/* Inline code */
+.rte :not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
+}
+
+.rte .token.comment,
+.rte .token.block-comment,
+.rte .token.prolog,
+.rte .token.doctype,
+.rte .token.cdata {
+	@apply text-grey-lighter;
+}
+
+.rte .token.punctuation {
+	@apply text-grey-lightest;
+}
+
+.rte .token.tag,
+.rte .token.attr-name,
+.rte .token.namespace,
+.rte .token.deleted {
+	@apply text-accent;
+}
+
+.rte .token.function-name {
+	@apply text-cyan;
+}
+
+.rte .token.boolean,
+.rte .token.number,
+.rte .token.function {
+	@apply text-orange;
+}
+
+.rte .token.property,
+.rte .token.class-name,
+.rte .token.constant,
+.rte .token.symbol {
+	@apply text-yellow;
+}
+
+.rte .token.selector,
+.rte .token.important,
+.rte .token.atrule,
+.rte .token.keyword,
+.rte .token.builtin {
+	@apply text-pink;
+}
+
+.rte .token.string,
+.rte .token.char,
+.rte .token.attr-value,
+.rte .token.regex,
+.rte .token.variable {
+	@apply text-green;
+}
+
+.rte .token.operator,
+.rte .token.entity,
+.rte .token.url {
+	@apply text-primary;
+}
+
+.rte .token.important,
+.rte .token.bold {
+	font-weight: bold;
+}
+.rte .token.italic {
+	font-style: italic;
+}
+
+.rte .token.entity {
+	cursor: help;
+}
+
+.rte .token.inserted {
+	@apply text-green;
+}

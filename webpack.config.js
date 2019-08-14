@@ -70,6 +70,9 @@ module.exports = {
         test: /\.css$/,
         use: [
           {
+            loader: 'vue-style-loader'
+          },
+          {
             loader: 'style-loader',
           },
           {
