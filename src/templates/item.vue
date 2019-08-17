@@ -3,8 +3,8 @@
     <section class="p-6">
       <form :action="`/admin/items/${item.id}/update`" method="post" autocomplete="off" novalidate>
         <errors-block :errors="errors"/>
-        <div class="flex mb-4">
-          <div class="w-3/5 px-2">
+        <div class="flex flex-wrap flex-row-reverse lg:flex-row mb-4">
+          <div class="w-full lg:w-3/5 px-2">
             <brick>
               <div class="mb-4">
                 <form-label :show="true" for="Title">
@@ -45,7 +45,7 @@
               </div>
             </div>
           </div>
-          <div class="w-2/5 px-2">
+          <div class="w-full lg:w-2/5 px-2">
             <brick>
               <form-label :show="true">
                 Tags

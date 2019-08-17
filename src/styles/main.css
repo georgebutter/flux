@@ -135,15 +135,15 @@ input::placeholder {
 }
 
 .rte h2 {
-  @apply text-2xl mb-2;
+  @apply text-2xl mb-4;
 }
 
 .rte p {
-  @apply font-serif mb-2;
+  @apply font-serif mb-8;
 }
 
 .rte pre {
-  @apply bg-grey text-primary rounded-lg p-8 mb-4 overflow-x-auto block;
+  @apply bg-grey text-primary rounded-lg p-8 mb-8 overflow-x-auto block;
 }
 
 .rte code {
