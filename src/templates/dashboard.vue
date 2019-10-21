@@ -1,18 +1,13 @@
 <template>
-  <admin-container>
-    <section class="p-6">
-      <h2>Test</h2>
-    </section>
-  </admin-container>
+  <section class="p-6">
+    <h2>Test</h2>
+  </section>
 </template>
 
 <script>
-import AdminContainer from '../snippets/admin-container.vue';
 
 export default {
   name: 'dashboard',
-  components: {
-    "admin-container": AdminContainer,
-  }
+  components: {}
 }
 </script>

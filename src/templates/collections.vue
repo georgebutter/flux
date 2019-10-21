@@ -1,7 +1,17 @@
 <template>
-  <admin-container>
-    <section class="p-6">
-      <div class="max-w-lg mx-auto">
+  <section class="p-6">
+    <div class="max-w-lg mx-auto">
+      <div v-if="loading">
+        <brick>
+          <div class="flex -mx-4 border-b border-grey-lighter">
+            <div class="w-full p-4">
+              <h4>
+                Collection title
+              </h4>
+            </div>
+          </div>
+        </brick>
+      <div v-else>
         <div  v-if="collections && collections.length">
           <brick>
             <div class="flex -mx-4 border-b border-grey-lighter">
@@ -11,13 +21,13 @@
                 </h4>
               </div>
             </div>
-            <a :href="'/admin/collections/' + collection.id" class="flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black" v-for="collection in collections">
+            <router-link :to="'/admin/collections/' + collection._id" class="flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black" v-for="collection in collections">
               <div class="w-1/3 p-4">
                 <p class="underline-none">
                   {{ collection.title }}
                 </p>
               </div>
-            </a>
+            </router-link>
           </brick>
           <div class="w-full text-right py-4">
             <primary-button href="/admin/collections/create">
@@ -38,27 +48,47 @@
           </primary-button>
         </div>
       </div>
-    </section>
-  </admin-container>
+    </div>
+  </section>
 </template>
 
 <script>
-import AdminContainer from '../snippets/admin-container.vue';
 import PrimaryButton from '../components/primary-button.vue';
 import IconCollection from '../components/icon-collection.vue';
 import Brick from '../components/brick.vue';
+import axios from 'axios';
+
 export default {
   name: 'collections',
   components: {
-    "admin-container": AdminContainer,
-    "primary-button": PrimaryButton,
-    "icon-collection": IconCollection,
-    "brick": Brick,
+    PrimaryButton,
+    IconCollection,
+    Brick,
   },
   data () {
-    const { collections } = window.siteData;
     return {
-      collections: collections
+      collections: null,
+      loading: false,
+      error: false,
+    }
+  },
+  created () {
+    this.fetchData()
+  },
+  watch: {
+    '$route': 'fetchData'
+  },
+  methods: {
+    fetchData () {
+      this.error = this.collections = null
+      this.loading = true
+
+      axios.get(`/admin/collections.json`)
+      .then(res => {
+        if (res.data.status === 'success') {
+          this.collections = res.data.collections;
+        }
+      })
     }
   }
 }

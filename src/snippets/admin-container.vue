@@ -1,10 +1,10 @@
 <template>
   <div id="app" class="w-full flex flex-row">
     <admin-header :site="site"/>
-    <sidebar :pageTitle="pageTitle" :sidebarOpen="sidebarOpen" v-on:toggleSideBar="toggleSideBar"/>
+    <sidebar :pageTitle="this.$route.name" :sidebarOpen="sidebarOpen" v-on:toggleSideBar="toggleSideBar"/>
     <main :class="['pt-12 w-full transition-padding-left', sidebarOpen ? 'pl-64' : 'pl-16']">
       <section class="p-6">
-        <h1>{{ pageTitle }}</h1>
+        <h1>{{ this.$route.name }}</h1>
       </section>
       <slot></slot>
     </main>
@@ -15,20 +15,16 @@ import Sidebar from '../snippets/sidebar.vue';
 import AdminHeader from '../snippets/admin-header.vue';
 
 export default {
-  name: 'dashboard',
+  name: 'admin-container',
   components: {
-    "sidebar": Sidebar,
-    "admin-header": AdminHeader,
+    Sidebar,
+    AdminHeader,
   },
   data () {
-    const { site, template, suffix, page_title } = window.siteData;
     const storage = localStorage.getItem('sidebarOpen');
     return {
-      suffix: suffix,
-      template: template,
-      site: site,
+      site: null,
       sidebarOpen: storage === 'true' || storage === null,
-      pageTitle: page_title
     }
   },
   methods: {

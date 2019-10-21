@@ -1,32 +1,19 @@
 const { Collection } = require('../models/collection');
 const { Permalink } = require('../models/permalink');
 const { Staff } = require('../models/staff');
-
-const { setAdminViews, canonicalUrl } = require('../helpers');
+const { getAdmin } = require('../helpers');
 
 exports.getCollections = (req, res, next) => {
-  setAdminViews(req.app);
   const site = req.app.get('site');
   const errors = [];
-  Collection.find({}, function(err, collections) {
-    if (err) {
-      throw err;
+  Staff.findById(req.session.userId, (error, user) => {
+    if (user) {
+      return res.send(getAdmin({
+        site: req.app.get('site'),
+        page_title: 'Dashboard',
+      }))
     } else {
-      Staff.findById(req.session.userId, (error, user) => {
-        if (user) {
-          return res.render('admin', {
-            site: site,
-            page_title: 'Collections',
-            canonical_url: canonicalUrl(req),
-            template: 'collections',
-            errors: errors,
-            user: user,
-            collections: collections
-          });
-        } else {
-          return res.redirect('/admin');
-        }
-      });
+      return res.redirect('/admin');
     }
   });
 }

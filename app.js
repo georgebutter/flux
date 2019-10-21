@@ -69,10 +69,12 @@ app.use('/assets', express.static(path.join(__dirname, `/client/theme/assets`)))
 // Setup liquid rendering
 const Liquid = require('liquidjs');
 var Prism = require('prismjs');
-const engine = Liquid({
-  root: __dirname,
+const engine = new Liquid({
+  root: `${__dirname}/client`,
+  cache: env === 'development' ? false : true,
   extname: '.liquid'
 });
+
 // Register handlize filter
 engine.registerFilter('handle', (str) => str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, '-').replace(/^-+|-+$/g, ''))
 engine.registerFilter('handleize', (str) => str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, '-').replace(/^-+|-+$/g, ''))
@@ -106,7 +108,14 @@ engine.registerTag('highlight', {
 
 app.engine('liquid', engine.express());
 app.set('view engine', 'liquid');
-
+app.set('views', [
+  path.resolve(`./client/admin/layouts`),
+  path.resolve(`./client/admin/templates`),
+  path.resolve(`./client/admin/snippets`),
+  path.resolve(`./client/theme/layouts`),
+  path.resolve(`./client/theme/templates`),
+  path.resolve(`./client/theme/snippets`),
+]);
 
 // Import controllers
 const adminViews = require('./controllers/admin-views');

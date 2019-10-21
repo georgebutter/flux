@@ -1,12 +1,12 @@
 <template>
-  <a :href="href" :class="['focus:outline-none active:outline-none hover:text-grey hover:border-grey p-4 border-l-4 overflow-hidden no-underline flex whitespace-no-wrap', active ? 'text-grey border-grey' : 'text-grey-light border-grey-light']">
+  <router-link :to="href" :class="['focus:outline-none active:outline-none hover:text-grey hover:border-grey p-4 border-l-4 overflow-hidden no-underline flex whitespace-no-wrap', active ? 'text-grey border-grey' : 'text-grey-light border-grey-light']">
     <span>
       <component :is="icon" width="20" height="20"/>
     </span>
     <span class="ml-4 whitespace-no-wrap">
       {{ text }}
     </span>
-  </a>
+  </router-link>
 </template>
 
 <script>
@@ -20,15 +20,16 @@ import IconApps from '../components/icon-apps.vue';
 import IconItem from '../components/icon-item.vue';
 
 export default {
+  name: 'button-sidebar',
   components: {
-    "icon-collection": IconCollection,
-    "icon-navigation": IconNavigation,
-    "icon-house": IconHouse,
-    "icon-cog": IconCog,
-    "icon-apps": IconApps,
-    "icon-devices": IconDevices,
-    "icon-users": IconUsers,
-    "icon-item": IconItem,
+    IconCollection,
+    IconNavigation,
+    IconHouse,
+    IconCog,
+    IconApps,
+    IconDevices,
+    IconUsers,
+    IconItem,
   },
   props: {
     text: String,

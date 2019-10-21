@@ -2,7 +2,7 @@
 <html class="h-full">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <title>
       {{ page_title }} | {{ site.name }} | {{ site.description }}
@@ -11,37 +11,10 @@
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,500" rel="stylesheet">
 
     <script defer="defer" src="/admin/assets/admin.bundle.js"></script>
-    <script defer="defer" src="/admin/assets/{{ template }}.bundle.js"></script>
-    <script id="data">
-      window.siteData = {
-        page_title: '{{ page_title }}',
-        canonical_url: '{{ canonical_url }}',
-        template: '{{ template }}',
-        suffix: '{{ suffix }}',
-        site: {{ site }},
-        {% if errors %}errors: {{ errors }},{% endif %}
-        {% if form %}form: {{ form }},{% endif %}
-        {% if apps %}apps: {{ apps }},{% endif %}
-        {% if collections %}collections: {{ collections }},{% endif %}
-        {% if collection %}collection: {{ collection | json }},{% endif %}
-        {% if items %}items: {{ items }},{% endif %}
-        {% if item %}item: {{ item }},{% endif %}
-        {% if navigation %}navigation: {{ navigation }},{% endif %}
-        {% if app %}app: {{ app }},{% endif %}
-        {% if themes %}themes: {{ themes }},{% endif %}
-        {% if theme %}theme: '{{ theme }}',{% endif %}
-        {% if fileTree %}fileTree: {{ fileTree }},{% endif %}
-      }
-    </script>
     {% include 'root' %}
   </head>
   <body class="bg-grey-lightest min-h-full font-sans flex">
-    <main id="{{ template }}">
-      <noscript>
-        {% block 'content' %}
-          <h1>Admin</h1>
-        {% endblock %}
-      </noscript>
+    <main id="admin">
     </main>
   </body>
 </html>

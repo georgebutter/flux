@@ -1,7 +1,6 @@
-const { setAdminViews } = require('./setAdminViews');
-const { setClientViews } = require('./setClientViews');
 const { canonicalUrl } = require('./canonicalUrl');
+const { getAdmin, getLogin } = require('./admin');
 
-exports.setAdminViews = setAdminViews;
-exports.setClientViews = setClientViews;
+exports.getAdmin = getAdmin;
+exports.getLogin = getLogin;
 exports.canonicalUrl = canonicalUrl;

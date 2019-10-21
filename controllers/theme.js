@@ -5,7 +5,6 @@ const { Item } = require('../models/item');
 const { setClientViews, canonicalUrl } = require('../helpers');
 
 exports.getHome = (req, res) => {
-  setClientViews(req.app);
   if (req.app.get('installed')) {
     Navigation.find({}, function(err, navigation) {
       const linklists = {};
@@ -22,6 +21,7 @@ exports.getHome = (req, res) => {
           collections[collection[i].handle] = collection[i];
           collections[collection[i].handle].url = collection[i].permalink.permalink;
         }
+        console.log('index')
         return res.render('index', {
           site: req.app.get('site'),
           page_title: 'Index',
@@ -38,7 +38,6 @@ exports.getHome = (req, res) => {
 }
 
 exports.getPermalink = (req, res, next) => {
-  setClientViews(req.app);
   if (req.app.get('installed')) {
     Permalink.getFull(
       { permalink: `/${req.params.permalink}` },
@@ -82,7 +81,6 @@ exports.getPermalink = (req, res, next) => {
 }
 
 exports.getItem = (req, res, next) => {
-  setClientViews(req.app);
   if (req.app.get('installed')) {
     Permalink.getFull(
       { permalink: `/${req.params.permalink}` },
@@ -131,7 +129,6 @@ exports.getItem = (req, res, next) => {
 }
 
 exports.get404 = (req, res) => {
-  setClientViews(req.app);
   Navigation.find({}, function(err, navigation) {
     const linklists = {};
     for (var i = 0; i < navigation.length; i++) {

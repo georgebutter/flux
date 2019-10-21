@@ -1,31 +1,30 @@
-const { setAdminViews, canonicalUrl } = require('../helpers');
+const { getAdmin, getLogin } = require('../helpers');
 const { Staff } = require('../models/staff');
 
 exports.getDashboard = (req, res, next) => {
-  setAdminViews(req.app);
   if (!req.app.get('installed')) {
     return res.redirect('/install')
   }
-  const errors = [];
   Staff.findById(req.session.userId, (error, user) => {
     if (user) {
-      return res.render('admin', {
+      return res.send(getAdmin({
         site: req.app.get('site'),
         page_title: 'Dashboard',
-        canonical_url: canonicalUrl(req),
-        template: 'dashboard',
-        errors: errors,
-        user: user
-      });
+      }))
     } else {
-      return res.render('login', {
+      return res.send(getLogin({
         site: req.app.get('site'),
-        page_title: 'Admin',
-        canonical_url: canonicalUrl(req),
+        page_title: 'Login',
         template: 'login',
-        errors: errors,
-        user: false
-      });
+        
+      }))
+      // return res.render('admin/templates/login', {
+      //   site: req.app.get('site'),
+      //   page_title: 'Admin',
+      //   canonical_url: canonicalUrl(req),
+      //   template: 'login',
+      //   user: false
+      // });
     }
   });
 }
