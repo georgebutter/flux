@@ -5,6 +5,7 @@ import collections from '../templates/collections.vue'
 import collection from '../templates/collection.vue'
 import createCollection from '../templates/create-collection.vue'
 import items from '../templates/items.vue'
+import createItem from '../templates/create-item.vue'
 import navigation from '../templates/navigation.vue'
 import themes from '../templates/themes.vue'
 import apps from '../templates/apps.vue'
@@ -30,15 +31,7 @@ export default new Router({
         parent: 'Collections',
       },
       name: 'Collections',
-      component: collections
-    },
-    {
-      path: '/admin/collection/:id',
-      meta: {
-        parent: 'Collections',
-      },
-      name: 'Collections',
-      component: collection
+      component: collections,
     },
     {
       path: '/admin/collections/create',
@@ -46,7 +39,15 @@ export default new Router({
         parent: 'Collections',
       },
       name: 'Create a collection',
-      component: createCollection
+      component: createCollection,
+    },
+    {
+      path: '/admin/collections/:id',
+      meta: {
+        parent: 'Collections',
+      },
+      name: 'Collection',
+      component: collection,
     },
     {
       path: '/admin/items',
@@ -54,7 +55,15 @@ export default new Router({
         parent: 'Items',
       },
       name: 'Items',
-      component: items
+      component: items,
+    },
+    {
+      path: '/admin/items/create',
+      meta: {
+        parent: 'Items',
+      },
+      name: 'Create Item',
+      component: createItem,
     },
     {
       path: '/admin/navigation',

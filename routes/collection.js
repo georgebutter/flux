@@ -1,29 +1,12 @@
 const { Collection } = require('../models/collection');
 const { Permalink } = require('../models/permalink');
 const { Staff } = require('../models/staff');
-const { getAdmin } = require('../helpers');
-
-exports.getCollections = (req, res, next) => {
-  const site = req.app.get('site');
-  const errors = [];
-  Staff.findById(req.session.userId, (error, user) => {
-    if (user) {
-      return res.send(getAdmin({
-        site: req.app.get('site'),
-        page_title: 'Dashboard',
-      }))
-    } else {
-      return res.redirect('/admin');
-    }
-  });
-}
 
 exports.getCollection = (req, res, next) => {
-  setAdminViews(req.app);
   const site = req.app.get('site');
   const errors = [];
 
-  Collection.getFullCollection({ _id: req.params.id}, function(err, collection) {
+  Collection.getFullCollection({ _id: req.params.id }, (err, collection) => {
     if (err) {
       throw err;
     } else {
@@ -36,7 +19,7 @@ exports.getCollection = (req, res, next) => {
             template: 'collection',
             errors,
             user,
-            collection
+            collection,
           });
         } else {
           return res.redirect('/admin');
@@ -44,7 +27,7 @@ exports.getCollection = (req, res, next) => {
       });
     }
   });
-}
+};
 
 exports.getCollectionsCreate = (req, res, next) => {
   setAdminViews(req.app);
@@ -60,13 +43,13 @@ exports.getCollectionsCreate = (req, res, next) => {
         template: 'create-collection',
         errors: errors,
         user: user,
-        form: form
+        form: form,
       });
     } else {
       return res.redirect('/admin');
     }
   });
-}
+};
 
 exports.postCreateCollection = (req, res) => {
   const site = req.app.get('site');
@@ -74,42 +57,41 @@ exports.postCreateCollection = (req, res) => {
   const {
     title,
     handle,
-    permalink
+    permalink,
   } = req.body;
-  console.log(req.body)
   const form = {
     title,
     handle,
-    permalink
-  }
+    permalink,
+  };
   if (!title) {
     errors.push({
       message: 'Please provide an collection name',
-      field: 'title'
+      field: 'title',
     });
   }
   if (!handle) {
     errors.push({
       message: 'Please provide an collection handle',
-      field: 'handle'
+      field: 'handle',
     });
   }
   if (!permalink) {
     errors.push({
       message: 'Please provide an collection permalink',
-      field: 'permalink'
+      field: 'permalink',
     });
   }
   if (permalink.startsWith('/admin')) {
     errors.push({
       message: 'Permalink cannot start with /admin',
-      field: 'permalink'
+      field: 'permalink',
     });
   }
   if (permalink.startsWith('/install')) {
     errors.push({
       message: 'Permalink cannot start with /install',
-      field: 'permalink'
+      field: 'permalink',
     });
   }
   if (errors.length) {
@@ -122,11 +104,10 @@ exports.postCreateCollection = (req, res) => {
         template: 'create-collection',
         errors: errors,
         user: user,
-        form: form
+        form: form,
       });
     });
   } else {
-    console.log('[status] Creating new permalink'.grey)
     Permalink.create({
       permalink: permalink,
       objectModel: 'Collection',
@@ -134,19 +115,18 @@ exports.postCreateCollection = (req, res) => {
       if (error) {
         console.log(error);
       }
-      console.log('[status] Creating new collection'.grey)
       Collection.create({
         title: title,
         handle: handle,
-        permalink: link._id
+        permalink: link._id,
       }, (error, collection) => {
         Permalink.updateOne({
-          _id: link._id
+          _id: link._id,
         }, {
           $set: {
             object: collection._id,
-          }
-        }).then(result => {
+          },
+        }).then((result) => {
           if (error) {
             errors.push({ message: error.message });
             Staff.findById(req.session.userId, (error, user) => {
@@ -158,7 +138,7 @@ exports.postCreateCollection = (req, res) => {
                 template: 'create-collection',
                 errors: errors,
                 user: user,
-                form: form
+                form: form,
               });
             });
           } else {
@@ -166,9 +146,9 @@ exports.postCreateCollection = (req, res) => {
           }
         });
       });
-    })
+    });
   }
-}
+};
 
 exports.postUpdateCollection = (req, res) => {
   const site = req.app.get('site');
@@ -176,13 +156,13 @@ exports.postUpdateCollection = (req, res) => {
   const {
     title,
     handle,
-    permalink
+    permalink,
   } = req.body;
   const form = {
     title,
     handle,
-    permalink
-  }
+    permalink,
+  };
   if (!title) {
     errors.push({
       message: 'Please provide a collection title',

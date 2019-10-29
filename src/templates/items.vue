@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import PrimaryButton from '../components/primary-button.vue';
 import IconItem from '../components/icon-item.vue';
 import Brick from '../components/brick.vue';
@@ -52,10 +53,30 @@ export default {
     Brick,
   },
   data () {
-    const { items } = window.siteData;
     return {
-      items: items
+      items: null,
+      loading: false,
     }
-  }
+  },
+    created () {
+      this.fetchData()
+    },
+    watch: {
+      '$route': 'fetchData'
+    },
+    methods: {
+      fetchData () {
+        this.error = this.items = null
+        this.loading = true
+        axios.get(`/admin/items.json`)
+        .then(res => {
+          console.log(res)
+          if (res.data.status === 'success') {
+            this.items = res.data.items;
+          }
+          this.loading = false
+        })
+      }
+    }
 }
 </script>

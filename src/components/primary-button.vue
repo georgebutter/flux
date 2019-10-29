@@ -20,13 +20,17 @@ export default {
       this.loading = true;
     }
   },
-  data () {
-    return {
-      loading: false
+  watch: {
+    loading(isLoading) {
+      this.loading = isLoading
     }
   },
   props: {
     disabled: Boolean,
+    loading: {
+      type: Boolean,
+      default: false
+    },
     href: {
       type: [String, Boolean],
       default: false,

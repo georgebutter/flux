@@ -1,5 +1,3 @@
-// Debugging
-const colors = require('colors');
 // Routing
 const express = require('express');
 const app = express();
@@ -18,8 +16,8 @@ const Site = require('./models/site').Site;
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/cms';
 mongoose.connect(mongoURI);
 const db = mongoose.connection;
-const Grid = require('gridfs-stream');
-Grid.mongo = mongoose.mongo;
+const grid = require('gridfs-stream');
+grid.mongo = mongoose.mongo;
 const fs = require('fs-extra');
 const path = require('path');
 
@@ -31,14 +29,14 @@ const env = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 3000;
 
 // Setup dev webpack compiling
-console.log(`[status] Environment: ${env}`.grey)
+console.log(`[status] Environment: ${env}`);
 if (env === 'development') {
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const config = require('./webpack.config.js');
   const compiler = webpack(config);
   app.use(webpackDevMiddleware(compiler, {
-    publicPath: config.output.publicPath
+    publicPath: config.output.publicPath,
   }));
 }
 
@@ -49,17 +47,19 @@ app.use(session({
   resave: true,
   saveUninitialized: false,
   store: new MongoStore({
-    mongooseConnection: db
-  })
+    mongooseConnection: db,
+  }),
 }));
 
 // Allow large payloads for theme files and images and fonts
-app.use(bodyParser({limit: '10mb'}));
+app.use(bodyParser({
+  limit: '10mb',
+}));
 // Parse incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/admin/assets', express.static(path.join(__dirname, `/client/admin/assets`)));
-app.use('/assets', express.static(path.join(__dirname, `/client/theme/assets`)));
+const assetPath = express.static(path.join(__dirname, `/client/theme/assets`));
+app.use('/assets', assetPath);
 
 // enabling CORS for all requests
 // app.use(cors({ credentials: true,
@@ -68,16 +68,26 @@ app.use('/assets', express.static(path.join(__dirname, `/client/theme/assets`)))
 
 // Setup liquid rendering
 const Liquid = require('liquidjs');
-var Prism = require('prismjs');
+const Prism = require('prismjs');
 const engine = new Liquid({
   root: `${__dirname}/client`,
   cache: env === 'development' ? false : true,
-  extname: '.liquid'
+  extname: '.liquid',
 });
 
 // Register handlize filter
-engine.registerFilter('handle', (str) => str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, '-').replace(/^-+|-+$/g, ''))
-engine.registerFilter('handleize', (str) => str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, '-').replace(/^-+|-+$/g, ''))
+engine.registerFilter('handle', (str) => (
+  str
+    .toLowerCase()
+    .replace(/[^\w\u00C0-\u024f]+/g, '-')
+    .replace(/^-+|-+$/g, ''))
+);
+engine.registerFilter('handleize', (str) => (
+  str
+    .toLowerCase()
+    .replace(/[^\w\u00C0-\u024f]+/g, '-')
+    .replace(/^-+|-+$/g, ''))
+);
 // Register highlight tag
 engine.registerTag('highlight', {
   parse: function(tagToken, remainTokens) {
@@ -85,23 +95,27 @@ engine.registerTag('highlight', {
     this.tpl = [];
     const stream = engine.parser.parseStream(remainTokens)
       .on('start', () => {
-        console.log(this)
+        console.log(this);
       })
       .on('tag:endhighlight', () => stream.stop())
-      .on('template', tpl => this.tpl.push(tpl))
+      .on('template', (tpl) => this.tpl.push(tpl))
       .on('end', () => {
-        throw new Error(`tag ${tagToken.raw} not closed`)
-      })
+        throw new Error(`tag ${tagToken.raw} not closed`);
+      });
 
-    stream.start()
+    stream.start();
   },
   render: async function(scope, hash) {
-    let code = ''
+    let code = '';
     for (let i = 0; i < this.tpl.length; i++) {
-      const block = this.tpl[i].raw
-      code += block
+      const block = this.tpl[i].raw;
+      code += block;
     }
-    const prismCode = Prism.highlight(code, Prism.languages[this.str], this.str);
+    const prismCode = Prism.highlight(
+      code,
+      Prism.languages[this.str],
+      this.str
+    );
     return `<pre><code class="language-${this.str}">${prismCode}</code></pre>`;
   },
 });
@@ -109,9 +123,6 @@ engine.registerTag('highlight', {
 app.engine('liquid', engine.express());
 app.set('view engine', 'liquid');
 app.set('views', [
-  path.resolve(`./client/admin/layouts`),
-  path.resolve(`./client/admin/templates`),
-  path.resolve(`./client/admin/snippets`),
   path.resolve(`./client/theme/layouts`),
   path.resolve(`./client/theme/templates`),
   path.resolve(`./client/theme/snippets`),
@@ -123,60 +134,65 @@ const adminApi = require('./controllers/admin-api');
 const themeController = require('./controllers/theme');
 const installController = require('./controllers/install');
 
-db.on('error', console.error.bind(console, 'connection error:'));
-//Get theme files from Grid fs on connection and store in normal fs
+db .on('error', console.error.bind(console, 'connection error:'));
+// Get theme files from grid fs on connection and store in normal fs
 db.once('open', () => {
   console.log('[db] Connected to database'.green);
-  const gfs = Grid(db.db)
+  const gfs = grid(db.db);
   app.set('gfs', gfs);
-  gfs.files.find().toArray(function (err, files) {
+  gfs.files.find().toArray(function(err, files) {
     for (let i = 0; i < files.length; i++) {
-
-      var readstream = gfs.createReadStream({
-        filename: files[i].filename
+      const readstream = gfs.createReadStream({
+        filename: files[i].filename,
       });
       let file = [];
-      readstream.on('data', function (chunk) {
+      readstream.on('data', function(chunk) {
         file.push(chunk);
       });
-      readstream.on('error', e => {
+      readstream.on('error', (e) => {
         console.log(e);
       });
-      readstream.on('end', function () {
+      readstream.on('end', function() {
         const repoDir = './client/theme';
-        const filepath = path.join(path.resolve(repoDir), files[i].filename)
+        const filepath = path.join(path.resolve(repoDir), files[i].filename);
         file = Buffer.concat(file);
-        fs.outputFile(filepath, file)
+        fs.outputFile(filepath, file);
       });
     }
-  })
+  });
 });
 // Get site data on server reboot
 Site.findOne()
-.then(site => {
-  const { installed, name, handle, description, email } = site;
-  app.set('site', {
-    name,
-    handle,
-    description,
-    email
+  .then((site) => {
+    const { installed, name, handle, description, email } = site;
+    app.set('site', {
+      name,
+      handle,
+      description,
+      email,
+    });
+    app.set('installed', installed);
+    console.log(`[status] Installed: ${installed}`);
+  }).catch((err) => {
+    console.log(`[status] No site found`);
   });
-  app.set('installed', installed);
-  console.log(`[status] Installed: ${installed}`.grey)
-}).catch(err => {
-  console.log(`[status] No site found`.grey)
-});
 
 // Admin Routes
 
 // Admin API
 // Themes
-app.get('/admin/themes/:theme/:key/:file.json', adminApi.getFileJson);
-app.get('/admin/themes/:theme.json', adminApi.getThemeFilesJson);
-app.get('/admin/themes.json', adminApi.getThemesJson);
-app.put('/admin/themes/:theme/:dir/:file.json', adminApi.putThemeFileJson);
+app.get('/admin/themes/:theme/:key/:file.json', adminApi.getFile);
+app.get('/admin/themes/:theme.json', adminApi.getThemeFiles);
+app.get('/admin/themes.json', adminApi.getThemes);
+app.put('/admin/themes/:theme/:dir/:file.json', adminApi.putThemeFile);
 // Collections
-app.get('/admin/collections.json', adminApi.getCollectionJson);
+app.get('/admin/collections.json', adminApi.getCollection);
+app.get('/admin/collections/:ids.json', adminApi.getCollection);
+app.post('/admin/collections/:id/update.json', adminApi.postUpdateCollection);
+app.post('/admin/collections/create.json', adminApi.postCreateCollection);
+app.delete('/admin/collections/:id.json', adminApi.deleteCollection);
+// Items
+app.get('/admin/items.json', adminApi.getItems);
 
 // Admin GET
 app.get('/admin/style-guide', adminViews.getStyleGuide);
@@ -186,11 +202,11 @@ app.get('/admin/users', adminViews.getUsers);
 app.get('/admin/navigation', adminViews.getNavigations);
 app.get('/admin/navigation/create', adminViews.getNavigationCreate);
 app.get('/admin/navigation/:id', adminViews.getNavigation);
-app.get('/admin/collections', adminViews.getCollections);
-app.get('/admin/collections/create', adminViews.getCollectionsCreate);
-app.get('/admin/collections/:id', adminViews.getCollection);
-app.get('/admin/items', adminViews.getItems);
-app.get('/admin/items/create', adminViews.getItemsCreate);
+app.get('/admin/collections', adminViews.sendAdmin);
+app.get('/admin/collections/create', adminViews.sendAdmin);
+app.get('/admin/collections/:id', adminViews.sendAdmin);
+app.get('/admin/items', adminViews.sendAdmin);
+app.get('/admin/items/create', adminViews.sendAdmin);
 app.get('/admin/items/:id', adminViews.getItem);
 app.get('/admin/settings', adminViews.getSettings);
 app.get('/admin/apps', adminViews.getApps);
@@ -232,4 +248,6 @@ app.get('/admin/*', adminViews.get404);
 app.get('*', themeController.get404);
 
 // Listen on port
-app.listen(port, () => console.log(`[status] Express is listening on port ${port} 🚀`.grey));
+app.listen(port, () => (
+  console.log(`[status] Express is listening on port ${port} 🚀`)
+));

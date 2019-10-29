@@ -16,7 +16,6 @@ exports.getDashboard = (req, res, next) => {
         site: req.app.get('site'),
         page_title: 'Login',
         template: 'login',
-        
       }))
       // return res.render('admin/templates/login', {
       //   site: req.app.get('site'),
@@ -83,12 +82,9 @@ exports.deleteSite = (req, res, next) => {
 }
 
 exports.get404 = (req, res) => {
-  setAdminViews(req.app);
-  return res.render('404', {
+  return res.send(getLogin({
     site: req.app.get('site'),
     page_title: '404',
-    canonical_url: canonicalUrl(req),
     template: '404',
-    errors: ['404 - Page not found']
-  });
+  }))
 }

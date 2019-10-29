@@ -11,8 +11,9 @@
             </div>
           </div>
         </brick>
+      </div>
       <div v-else>
-        <div  v-if="collections && collections.length">
+        <div v-if="collections && collections.length">
           <brick>
             <div class="flex -mx-4 border-b border-grey-lighter">
               <div class="w-full p-4">
@@ -21,7 +22,7 @@
                 </h4>
               </div>
             </div>
-            <router-link :to="'/admin/collections/' + collection._id" class="flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black" v-for="collection in collections">
+            <router-link :to="`/admin/collections/${collection._id}`" class="flex -mx-4 rounded hover:bg-grey-lightest text-grey hover:text-black" v-for="collection in collections">
               <div class="w-1/3 p-4">
                 <p class="underline-none">
                   {{ collection.title }}
@@ -43,7 +44,7 @@
           <p class="mb-4">
             Collections are groups of information that you can access on your site. For example, a blog can be a collection of articles, or a menu can be a collection of links.
           </p>
-          <primary-button href="/admin/collections/create">
+          <primary-button href="/admin/collections/create" :loading="sending">
             Create a new collection
           </primary-button>
         </div>
@@ -70,6 +71,7 @@ export default {
       collections: null,
       loading: false,
       error: false,
+      sending: false
     }
   },
   created () {
@@ -82,12 +84,14 @@ export default {
     fetchData () {
       this.error = this.collections = null
       this.loading = true
-
+      console.log('fetching data')
       axios.get(`/admin/collections.json`)
       .then(res => {
+        console.log(res)
         if (res.data.status === 'success') {
           this.collections = res.data.collections;
         }
+        this.loading = false
       })
     }
   }

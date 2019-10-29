@@ -1,7 +1,7 @@
 <template>
   <admin-container>
     <section class="p-6">
-      <form action="/admin/items/create" method="post" autocomplete="off" novalidate>
+      <form v-on:submit="handleSubmit" autocomplete="off" novalidate>
         <errors-block :errors="errors"/>
         <div class="flex mb-4">
           <div class="w-2/3 px-2">
@@ -128,13 +128,12 @@ export default {
     "asset-select": AssetSelect,
   },
   data () {
-    const { form, errors } = window.siteData;
     return {
-      form: form,
-      errors, errors,
-      fields: errors ? errors.map(error => error.field) : [],
-      handle: form.handle || '',
-      title: form.title || '',
+      form: {},
+      errors: [],
+      fields:[],
+      handle: '',
+      title: '',
       additionalFields: []
     }
   },
@@ -159,6 +158,26 @@ export default {
     },
     handleize: function (str) {
       return str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, "-").replace(/^-+|-+$/g, "");
+    },
+    handleSubmit (e) {
+      e.preventDefault();
+      this.updating = true
+      const url = `/admin/items/create.json`;
+      axios.post(url, {
+        title: e.target.title.value,
+        permalink: e.target.permalink.value,
+        handle: e.target.handle.value,
+      }).then(res => {
+        if (res.data.status === 'error') {
+          this.errors = res.data.errors
+        } else {
+          this.collection = collection
+        }
+        this.updating = true
+      })
+      .catch(err => {
+        this.updating = false
+      })
     }
   }
 }

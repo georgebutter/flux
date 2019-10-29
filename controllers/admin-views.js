@@ -1,5 +1,8 @@
+const { Staff } = require('../models/staff');
+const { getAdmin } = require('../helpers');
+
 const {
-  getStyleGuide
+  getStyleGuide,
 } = require('../routes/style-guide');
 
 const {
@@ -7,7 +10,7 @@ const {
   logout,
   postLogin,
   deleteSite,
-  get404
+  get404,
 } = require('../routes/dashboard');
 
 const {
@@ -59,6 +62,22 @@ const {
   getFile
 } = require('../routes/themes')
 
+const sendAdmin = (req, res, next) => {
+  const site = req.app.get('site');
+  const errors = [];
+  Staff.findById(req.session.userId, (error, user) => {
+    if (user) {
+      return res.send(getAdmin({
+        site: req.app.get('site'),
+        page_title: 'Dashboard',
+      }))
+    } else {
+      return res.redirect('/admin');
+    }
+  });
+}
+
+exports.sendAdmin = sendAdmin;
 exports.getStyleGuide = getStyleGuide;
 
 exports.getDashboard = getDashboard;

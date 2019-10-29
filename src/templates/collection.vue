@@ -1,6 +1,6 @@
 <template>
   <section class="p-6">
-    <form :action="`/admin/collections/${collection.id}/update`" method="post" autocomplete="off" novalidate>
+    <form v-on:submit="handleSubmit" v-if="collection">
       <errors-block :errors="errors"/>
       <div class="flex mb-4">
         <div class="w-2/3 px-2">
@@ -9,19 +9,19 @@
               <form-label :show="true" for="Title">
                 Title
               </form-label>
-              <text-field id="Title" type="text" name="title" :value="title" :error="fields.includes('title')" @onInput="createHandle"/>
+              <text-field id="Title" type="text" name="title" :value="collection.title" :error="fields.includes('title')" @onInput="createHandle"/>
             </div>
             <div class="mb-4">
               <form-label :show="true" for="Handle">
                 Handle
               </form-label>
-              <text-field id="Handle" type="text" name="handle" :value="handle" :error="fields.includes('handle')" :readonly="true"/>
+              <text-field id="Handle" type="text" name="handle" :value="collection.handle" :error="fields.includes('handle')" :readonly="true"/>
             </div>
             <div class="mb-4">
               <form-label :show="true" for="Permalink">
                 Permalink
               </form-label>
-              <text-field id="Permalink" type="text" name="permalink" :value="permalink" :error="fields.includes('permalink')"/>
+              <text-field id="Permalink" type="text" name="permalink" :value="collection.permalink.permalink" :error="fields.includes('permalink')"/>
             </div>
             <div v-for="field in additionalFields" class="mb-4 border-t py-4 border-1 border-grey-lighter">
               <div v-if="field.type === 'text'">
@@ -54,7 +54,7 @@
           </brick>
           <div class="flex">
             <div class="w-1/2">
-              <primary-button type="submit">
+              <primary-button type="submit" :loading="updating">
                 Update collection
               </primary-button>
             </div>
@@ -118,7 +118,7 @@ import IconAddItem from '../components/icon-add-item.vue';
 import Heading3 from '../components/heading-3.vue';
 
 export default {
-  name: 'create-collection',
+  name: 'collection',
   components: {
     ErrorsBlock,
     PrimaryButton,
@@ -132,20 +132,34 @@ export default {
     Heading3,
   },
   data () {
-    const { errors, handle, permalink, collection = {} } = window.siteData;
     return {
-      errors, errors,
-      fields: errors ? errors.map(error => error.field) : [],
-      handle: handle || '',
-      permalink: permalink || '',
+      collection: null,
+      loading: false,
+      errors: [],
+      fields: [],
       additionalFields: [],
-      collection: collection,
-      title: collection.title || '',
-      handle: collection.handle || '',
-      permalink: collection.permalink || '',
+      updating: false
     }
   },
+  created () {
+    this.fetchData()
+  },
+  watch: {
+    '$route': 'fetchData'
+  },
   methods: {
+    fetchData () {
+      this.error = this.collections = null
+      this.loading = true
+      axios.get(`/admin/collections/${this.$route.params.id}.json`)
+      .then(res => {
+        if (res.data.status === 'success') {
+          this.collection = res.data.collections[0];
+          console.log(this.collection)
+        }
+        this.loading = false
+      })
+    },
     addTextItem () {
       this.additionalFields.push({
         type: 'text',
@@ -168,9 +182,29 @@ export default {
       return str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, "-").replace(/^-+|-+$/g, "");
     },
     deleteCollection () {
-      const url = `/admin/collections/${this.collection.id}`;
+      const url = `/admin/collections/${this.collection.id}.json`;
       axios.delete(url).then(res => {
         window.location.href = '/admin/collections';
+      })
+    },
+    handleSubmit (e) {
+      e.preventDefault();
+      this.updating = true
+      const url = `/admin/collections/${this.collection._id}/update.json`;
+      axios.post(url, {
+        title: e.target.title.value,
+        permalink: e.target.permalink.value,
+        handle: e.target.handle.value,
+      }).then(res => {
+        if (res.data.status === 'error') {
+          this.errors = res.data.errors
+        } else {
+          this.collection = collection
+        }
+        this.updating = false
+      })
+      .catch(err => {
+        this.updating = false
       })
     }
   }

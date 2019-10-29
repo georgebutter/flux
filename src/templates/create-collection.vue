@@ -1,6 +1,6 @@
 <template>
   <section class="p-6">
-    <form action="/admin/collections/create" method="post" autocomplete="off" novalidate>
+    <form v-on:submit="handleSubmit" novalidate>
       <errors-block :errors="errors"/>
       <div class="flex mb-4">
         <div class="w-2/3 px-2">
@@ -53,7 +53,7 @@
             </div>
           </brick>
           <div class="px-2">
-            <primary-button type="submit">
+            <primary-button type="submit" :loading="updating">
               Create collection
             </primary-button>
           </div>
@@ -98,6 +98,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import ErrorsBlock from '../snippets/errors-block.vue';
 import PrimaryButton from '../components/primary-button.vue';
 import Brick from '../components/brick.vue';
@@ -122,15 +123,15 @@ export default {
     Heading3,
   },
   data () {
-    const { form = {}, errors, handle, permalink } = window.siteData;
     return {
-      form: form,
-      errors, errors,
-      fields: errors ? errors.map(error => error.field) : [],
-      title: form.title,
-      handle: form.handle,
-      permalink: form.permalink,
-      additionalFields: []
+      form: {},
+      errors: [],
+      fields: [],
+      title: '',
+      handle: '',
+      permalink: '',
+      additionalFields: [],
+      updating: false
     }
   },
   methods: {
@@ -154,6 +155,29 @@ export default {
     },
     handleize: function (str) {
       return str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, "-").replace(/^-+|-+$/g, "");
+    },
+    handleSubmit (e) {
+      e.preventDefault();
+      this.updating = true
+      this.errors = []
+      const url = `/admin/collections/create.json`;
+      axios.post(url, {
+        title: e.target.title.value,
+        permalink: e.target.permalink.value,
+        handle: e.target.handle.value,
+      }).then(res => {
+        if (res.data.status === 'error') {
+          this.errors = res.data.errors
+        } else {
+          const { collection } = res.data
+          this.collection = collection
+          this.$router.push({ path: `/admin/collections/${collection._id}` })
+        }
+        this.updating = false
+      })
+      .catch(err => {
+        this.updating = false
+      })
     }
   }
 }

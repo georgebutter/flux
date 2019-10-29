@@ -1,10 +1,10 @@
 module.exports = {
   'env': {
     'browser': true,
+    'commonjs': true,
     'es6': true,
   },
   'extends': [
-    'plugin:vue/essential',
     'google',
   ],
   'globals': {
@@ -13,11 +13,9 @@ module.exports = {
   },
   'parserOptions': {
     'ecmaVersion': 2018,
-    'sourceType': 'module',
   },
-  'plugins': [
-    'vue',
-  ],
   'rules': {
+    "object-curly-spacing": [2, "always"],
+    "indent": ["error", 2]
   },
 };
