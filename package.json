@@ -43,7 +43,7 @@
     "lodash": "^4.17.15",
     "marked": "^0.7.0",
     "monaco-editor-webpack-plugin": "^1.7.0",
-    "mongoose": "^5.4.1",
+    "mongoose": "^5.7.5",
     "nodegit": "^0.24.3",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
