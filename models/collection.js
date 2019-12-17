@@ -1,58 +1,77 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CollectionSchema = new Schema({
   title: {
     required: 'Please enter a name',
     trim: true,
-    type: String
+    type: String,
   },
   handle: {
     required: 'Please enter a handle',
     trim: true,
     type: String,
-    unique: true
+    unique: true,
   },
   permalink: {
     type: Schema.Types.ObjectId,
     ref: 'Permalink',
     required: true,
   },
-  items: [{ type: Schema.Types.ObjectId, ref: 'Item' }]
+  items: [{ type: Schema.Types.ObjectId, ref: 'Item' }],
 });
 
-CollectionSchema.statics.getFullCollection = function (find, callback) {
+CollectionSchema.statics.getFullCollection = function(find, callback) {
   Collection
-  .findOne(find)
-  .populate('items')
-  .populate('permalink')
-  .exec(function (err, collection) {
-    if (err) {
-      return callback(err)
-    }
-    const returnCollection = {
-      title: collection.title,
-      handle: collection.handle,
-      id: collection.id,
-      permalink: collection.permalink.permalink,
-      items: collection.items
-    }
-    return callback(null, returnCollection);
-  });
-}
+    .findOne(find)
+    .populate('items')
+    .populate('permalink')
+    .exec(function(err, collection) {
+      if (err) {
+        return callback(err);
+      }
+      const returnCollection = {
+        title: collection.title,
+        handle: collection.handle,
+        id: collection.id,
+        permalink: collection.permalink.permalink,
+        items: collection.items,
+      };
+      return callback(null, returnCollection);
+    });
+};
 
-CollectionSchema.statics.getFullCollections = function (find, callback) {
+CollectionSchema.statics.getFullCollections = function(find, callback) {
   Collection
-  .find(find)
-  .populate('items')
-  .populate('permalink')
-  .exec(function (err, collections) {
-    if (err) {
-      return callback(err)
-    }
-    return callback(null, collections);
-  });
-}
+    .find(find)
+    .populate('items')
+    .populate('permalink')
+    .exec(function(err, collections) {
+      if (err) {
+        return callback(err);
+      }
+      return callback(null, collections);
+    });
+};
+
+CollectionSchema.statics.getManyFlat = function(find, limit, callback) {
+  Collection
+    .find(find)
+    .limit(limit)
+    .populate('permalink')
+    .exec(function(err, collections) {
+      if (err) {
+        return callback(err);
+      }
+      const returnCollections = collections.map((collection) => ({
+        title: collection.title,
+        handle: collection.handle,
+        id: collection.id,
+        permalink: collection.permalink,
+      }));
+      return callback(null, returnCollections);
+    });
+};
 
 const Collection = mongoose.model('Collection', CollectionSchema);
 module.exports.Collection = Collection;

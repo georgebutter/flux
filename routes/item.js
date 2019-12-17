@@ -31,28 +31,6 @@ exports.getItems = (req, res) => {
   })
 }
 
-exports.getItemsCreate = (req, res, next) => {
-  setAdminViews(req.app);
-  const site = req.app.get('site');
-  const errors = [];
-  const form = {};
-  Staff.findById(req.session.userId, (error, user) => {
-    if (user) {
-      return res.render('admin', {
-        site: site,
-        page_title: 'Create a new item',
-        canonical_url: canonicalUrl(req),
-        template: 'create-item',
-        errors: errors,
-        user: user,
-        form: form
-      });
-    } else {
-      return res.redirect('/admin');
-    }
-  });
-}
-
 
 exports.getItem = (req, res, next) => {
   setAdminViews(req.app);
@@ -79,89 +57,6 @@ exports.getItem = (req, res, next) => {
       });
     }
   });
-}
-
-exports.postCreateItem = (req, res) => {
-  const site = req.app.get('site');
-  const errors = [];
-  const {
-    title,
-    handle,
-  } = req.body;
-  const form = {
-    title,
-    handle
-  }
-  const collections = [];
-  for (let [key, value] of Object.entries(req.body)) {
-    if (key !== 'title' && key !== 'handle') {
-      const [colKey, i] = key.split('-');
-      const index = Number(i);
-      collections[index] = value;
-    }
-  }
-  form.collections = collections;
-  if (!title) {
-    errors.push({
-      message: 'Please provide an item title',
-      field: 'title'
-    });
-  }
-  console.log(errors)
-  console.log(errors.length)
-  if (errors.length) {
-    Staff.findById(req.session.userId, (error, user) => {
-      setAdminViews(req.app);
-      return res.render('admin', {
-        site: site,
-        page_title: 'Create a new item',
-        canonical_url: canonicalUrl(req),
-        template: 'create-item',
-        errors: errors,
-        user: user,
-        form: form
-      });
-    });
-  } else {
-    Item.create({
-      title,
-      handle,
-      collections
-    }, (error, item) => {
-      if (error) {
-        errors.push({ message: error.errmsg });
-        Staff.findById(req.session.userId, (error, user) => {
-          setAdminViews(req.app);
-          return res.render('admin', {
-            site: site,
-            page_title: 'Create a new item',
-            canonical_url: canonicalUrl(req),
-            template: 'create-item',
-            errors: errors,
-            user: user,
-            form: form
-          });
-        });
-      } else {
-        for (var i = 0; i < collections.length; i++) {
-          console.log(collections[i])
-          Collection.updateOne({ _id: collections[i] }, {
-            $push: {
-              items: item._id
-            },
-          },
-          {
-            new: true,
-            upsert: true
-          },
-          function (err, result) {
-            console.log(result)
-          })
-        }
-        return res.redirect('/admin/items');
-      }
-    });
-  }
 }
 
 exports.postUpdateItem = (req, res) => {
@@ -201,7 +96,7 @@ exports.postUpdateItem = (req, res) => {
   }
   if (errors.length) {
     setAdminViews(req.app);
-    Item.findById({ _id: req.params.id}, function(err, item) {
+    Item.findById({ _id: req.params.id }, function(err, item) {
       if (err) {
         throw err;
       } else {
@@ -214,7 +109,7 @@ exports.postUpdateItem = (req, res) => {
               template: 'item',
               errors,
               user,
-              item
+              item,
             });
           } else {
             return res.redirect('/admin');

@@ -19,7 +19,7 @@ const {
   getCollectionsCreate,
   postCreateCollection,
   postUpdateCollection,
-  deleteCollection
+  deleteCollection,
 } = require('../routes/collection');
 
 const {
@@ -28,7 +28,7 @@ const {
   getItemsCreate,
   postCreateItem,
   postUpdateItem,
-  deleteItem
+  deleteItem,
 } = require('../routes/item');
 
 const {

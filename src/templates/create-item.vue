@@ -1,179 +1,95 @@
 <template>
-  <admin-container>
-    <section class="p-6">
-      <form v-on:submit="handleSubmit" autocomplete="off" novalidate>
-        <errors-block :errors="errors"/>
-        <div class="flex mb-4">
-          <div class="w-2/3 px-2">
-            <brick>
-              <div class="mb-4">
-                <form-label :show="true" for="Title">
-                  Title
-                </form-label>
-                <text-field id="Title" type="text" name="title" :value="title" :error="fields.includes('title')" @onInput="createHandle"/>
-              </div>
-              <div class="mb-4">
-                <form-label :show="true" for="Handle">
-                  Handle
-                </form-label>
-                <text-field id="Handle" type="text" name="handle" :value="handle" :error="fields.includes('handle')" :readonly="true"/>
-              </div>
-              <div v-for="field in additionalFields" class="mb-4 border-t py-4 border-1 border-grey-lighter">
-                <div v-if="field.type === 'text'">
-                  <heading-3>
-                    Text
-                  </heading-3>
-                  <div class="mb-4">
-                    <form-label :show="true" :for="`${field.id}-title`">
-                      Title
-                    </form-label>
-                    <text-field :id="`${field.id}-title`" type="text" :name="`${field.id}-title`"/>
-                  </div>
-                  <div class="mb-4">
-                    <form-label :show="true" :for="`${field.id}-handle`">
-                      Handle
-                    </form-label>
-                    <text-field :id="`${field.id}-handle`" type="text" :name="`${field.id}-handle`"/>
-                  </div>
-                  <div class="mb-4">
-                    <form-label :show="true" :for="`${field.id}-value`">
-                      Value
-                    </form-label>
-                    <text-field :id="`${field.id}-value`" type="text" :name="`${field.id}-value`"/>
-                  </div>
-                </div>
-                <div v-else-if="field.type === 'select'">
-
-                </div>
-              </div>
-            </brick>
-            <brick>
-              <form-label :show="true" :for="`collections`">
-                Collections
+  <section class="p-6">
+    <form v-on:submit="handleSubmit" autocomplete="off" novalidate>
+      <errors-block :errors="errors"/>
+      <div class="flex mb-4">
+        <div class="w-full px-2">
+          <brick>
+            <div class="mb-4">
+              <form-label :show="true" for="Title">
+                Title
               </form-label>
-              <asset-select namePrefix="collections" asset="collections"/>
-            </brick>
-            <div class="px-2">
-              <primary-button type="submit">
-                Create item
-              </primary-button>
-            </div>
-          </div>
-          <div class="w-1/3 px-2">
-            <div class="mb-4">
-              <button class="text-left bg-white w-full p-2 flex rounded-lg shadow-lg font-bold items-center" type="button" role="button" @click="addTextItem">
-                <span class="bg-primary rounded-xl text-white p-3 mr-2">
-                  <icon-add-item width="24" height="24"/>
-                </span>
-                Add text field
-              </button>
+              <text-field id="Title" type="text" name="title" :value="title" :error="fields.includes('title')" @onInput="createHandle"/>
             </div>
             <div class="mb-4">
-              <button class="text-left bg-white w-full p-2 flex rounded-lg shadow-lg font-bold items-center" type="button" role="button" @click="addSelectItem">
-                <span class="bg-accent rounded-xl text-white p-3 mr-2">
-                  <icon-add-item width="24" height="24"/>
-                </span>
-                 Add select
-              </button>
+              <form-label :show="true" for="Handle">
+                Handle
+              </form-label>
+              <text-field id="Handle" type="text" name="handle" :value="handle" :error="fields.includes('handle')" :readonly="true"/>
             </div>
-            <div class="mb-4">
-              <button class="text-left bg-white w-full p-2 flex rounded-lg shadow-lg font-bold items-center" type="button" role="button">
-                <span class="bg-yellow rounded-xl text-white p-3 mr-2">
-                  <icon-add-item width="24" height="24"/>
-                </span>
-                 Add list
-              </button>
-            </div>
-            <div class="mb-4">
-              <button class="text-left bg-white w-full p-2 flex rounded-lg shadow-lg font-bold items-center" type="button" role="button">
-                <span class="bg-green rounded-xl text-white p-3 mr-2">
-                  <icon-add-item width="24" height="24"/>
-                </span>
-                 Add toggle
-              </button>
-            </div>
+          </brick>
+          <brick>
+            <form-label :show="true" :for="`collections`">
+              Collections
+            </form-label>
+            <asset-select namePrefix="collections" asset="collections"/>
+          </brick>
+          <div class="px-2">
+            <primary-button type="submit">
+              Create item
+            </primary-button>
           </div>
         </div>
-      </form>
-    </section>
-  </admin-container>
+      </div>
+    </form>
+  </section>
 </template>
 
 <script>
+import axios from 'axios';
 import ErrorsBlock from '../snippets/errors-block.vue';
 import PrimaryButton from '../components/primary-button.vue';
 import Brick from '../components/brick.vue';
 import AdminContainer from '../snippets/admin-container.vue';
 import TextField from '../components/text-field.vue';
-import EmailField from '../components/email-field.vue';
 import FormLabel from '../components/form-label.vue';
-import SelectField from '../components/select-field.vue';
-import IconAddItem from '../components/icon-add-item.vue';
 import Heading3 from '../components/heading-3.vue';
 import AssetSelect from '../components/asset-select.vue';
 
 export default {
   name: 'create-item',
   components: {
-    "errors-block": ErrorsBlock,
-    "primary-button": PrimaryButton,
-    "brick": Brick,
-    "admin-container": AdminContainer,
-    "text-field": TextField,
-    "email-field": EmailField,
-    "form-label": FormLabel,
-    "select-field": SelectField,
-    "icon-add-item": IconAddItem,
-    "heading-3": Heading3,
-    "asset-select": AssetSelect,
+    ErrorsBlock,
+    PrimaryButton,
+    Brick,
+    AdminContainer,
+    TextField,
+    FormLabel,
+    Heading3,
+    AssetSelect,
   },
   data () {
     return {
-      form: {},
       errors: [],
       fields:[],
       handle: '',
       title: '',
-      additionalFields: []
+      updating: false
     }
   },
   methods: {
-    addTextItem: function () {
-      this.additionalFields.push({
-        type: 'text',
-        id: 'test',
-        title: 'Test',
-      });
-    },
-    addSelectItem: function () {
-      this.additionalFields.push({
-        type: 'select',
-        id: 'test-select',
-        title: 'Select',
-      });
-    },
-    createHandle: function (e) {
+    createHandle(e) {
       this.handle = this.handleize(e.target.value);
       this.permalink = `/${this.handle}`;
     },
-    handleize: function (str) {
-      return str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, "-").replace(/^-+|-+$/g, "");
+    handleize(str) {
+      return str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, '-').replace(/^-+|-+$/g, '');
     },
-    handleSubmit (e) {
+    handleSubmit(e) {
       e.preventDefault();
       this.updating = true
       const url = `/admin/items/create.json`;
       axios.post(url, {
         title: e.target.title.value,
-        permalink: e.target.permalink.value,
         handle: e.target.handle.value,
       }).then(res => {
         if (res.data.status === 'error') {
           this.errors = res.data.errors
         } else {
-          this.collection = collection
+          const { item } = res.data
+          this.$router.push({ path: `/admin/items/${item._id}` })
         }
-        this.updating = true
+        this.updating = false
       })
       .catch(err => {
         this.updating = false

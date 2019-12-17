@@ -1,9 +1,9 @@
 <template>
   <section class="p-6">
-    <form v-on:submit="handleSubmit" v-if="collection">
+    <form v-on:submit="handleSubmit" v-if="collection" autocomplete="off" novalidate>
       <errors-block :errors="errors"/>
       <div class="flex mb-4">
-        <div class="w-2/3 px-2">
+        <div class="w-full px-2">
           <brick>
             <div class="mb-4">
               <form-label :show="true" for="Title">
@@ -65,40 +65,6 @@
             </div>
           </div>
         </div>
-        <div class="w-1/3 px-2">
-          <div class="mb-4">
-            <button class="text-left bg-white w-full p-2 flex rounded-lg shadow-lg font-bold items-center" type="button" role="button" @click="addTextItem">
-              <span class="bg-primary rounded-xl text-white p-3 mr-2">
-                <icon-add-item width="24" height="24"/>
-              </span>
-              Add text field
-            </button>
-          </div>
-          <div class="mb-4">
-            <button class="text-left bg-white w-full p-2 flex rounded-lg shadow-lg font-bold items-center" type="button" role="button" @click="addSelectItem">
-              <span class="bg-accent rounded-xl text-white p-3 mr-2">
-                <icon-add-item width="24" height="24"/>
-              </span>
-               Add select
-            </button>
-          </div>
-          <div class="mb-4">
-            <button class="text-left bg-white w-full p-2 flex rounded-lg shadow-lg font-bold items-center" type="button" role="button">
-              <span class="bg-yellow rounded-xl text-white p-3 mr-2">
-                <icon-add-item width="24" height="24"/>
-              </span>
-               Add list
-            </button>
-          </div>
-          <div class="mb-4">
-            <button class="text-left bg-white w-full p-2 flex rounded-lg shadow-lg font-bold items-center" type="button" role="button">
-              <span class="bg-green rounded-xl text-white p-3 mr-2">
-                <icon-add-item width="24" height="24"/>
-              </span>
-               Add toggle
-            </button>
-          </div>
-        </div>
       </div>
     </form>
   </section>
@@ -116,6 +82,7 @@ import FormLabel from '../components/form-label.vue';
 import SelectField from '../components/select-field.vue';
 import IconAddItem from '../components/icon-add-item.vue';
 import Heading3 from '../components/heading-3.vue';
+import { handleize } from '../helpers/';
 
 export default {
   name: 'collection',
@@ -137,7 +104,6 @@ export default {
       loading: false,
       errors: [],
       fields: [],
-      additionalFields: [],
       updating: false
     }
   },
@@ -149,13 +115,12 @@ export default {
   },
   methods: {
     fetchData () {
-      this.error = this.collections = null
+      this.error = null
       this.loading = true
       axios.get(`/admin/collections/${this.$route.params.id}.json`)
       .then(res => {
         if (res.data.status === 'success') {
           this.collection = res.data.collections[0];
-          console.log(this.collection)
         }
         this.loading = false
       })
@@ -175,22 +140,21 @@ export default {
       });
     },
     createHandle (e) {
-      this.handle = this.handleize(e.target.value);
+      this.handle = handleize(e.target.value);
       this.permalink = `/${this.handle}`;
-    },
-    handleize (str) {
-      return str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, "-").replace(/^-+|-+$/g, "");
     },
     deleteCollection () {
       const url = `/admin/collections/${this.collection.id}.json`;
       axios.delete(url).then(res => {
-        window.location.href = '/admin/collections';
+        if (res.data.status === 'success') {
+          this.$router.push({ path: `/admin/collections` })
+        }
       })
     },
     handleSubmit (e) {
       e.preventDefault();
       this.updating = true
-      const url = `/admin/collections/${this.collection._id}/update.json`;
+      const url = `/admin/collections/${this.collection.id}/update.json`;
       axios.post(url, {
         title: e.target.title.value,
         permalink: e.target.permalink.value,
@@ -198,6 +162,7 @@ export default {
       }).then(res => {
         if (res.data.status === 'error') {
           this.errors = res.data.errors
+          this.form = res.data.form
         } else {
           this.collection = collection
         }

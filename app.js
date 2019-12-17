@@ -106,16 +106,13 @@ engine.registerTag('highlight', {
     stream.start();
   },
   render: async function(scope, hash) {
+    const { highlight, languages } = Prism;
     let code = '';
     for (let i = 0; i < this.tpl.length; i++) {
       const block = this.tpl[i].raw;
       code += block;
     }
-    const prismCode = Prism.highlight(
-      code,
-      Prism.languages[this.str],
-      this.str
-    );
+    const prismCode = highlight(code, languages[this.str], this.str);
     return `<pre><code class="language-${this.str}">${prismCode}</code></pre>`;
   },
 });
@@ -134,7 +131,7 @@ const adminApi = require('./controllers/admin-api');
 const themeController = require('./controllers/theme');
 const installController = require('./controllers/install');
 
-db .on('error', console.error.bind(console, 'connection error:'));
+db.on('error', console.error.bind(console, 'connection error:'));
 // Get theme files from grid fs on connection and store in normal fs
 db.once('open', () => {
   console.log('[db] Connected to database'.green);
@@ -188,11 +185,14 @@ app.put('/admin/themes/:theme/:dir/:file.json', adminApi.putThemeFile);
 // Collections
 app.get('/admin/collections.json', adminApi.getCollection);
 app.get('/admin/collections/:ids.json', adminApi.getCollection);
-app.post('/admin/collections/:id/update.json', adminApi.postUpdateCollection);
-app.post('/admin/collections/create.json', adminApi.postCreateCollection);
+app.put('/admin/collections/:id.json', adminApi.updateCollection);
+app.post('/admin/collections/create.json', adminApi.createCollection);
 app.delete('/admin/collections/:id.json', adminApi.deleteCollection);
 // Items
-app.get('/admin/items.json', adminApi.getItems);
+app.get('/admin/items.json', adminApi.getItem);
+app.get('/admin/items/:ids.json', adminApi.getItem);
+app.post('/admin/items/create.json', adminApi.createItem);
+app.put('/admin/items/:id.json', adminApi.updateItem);
 
 // Admin GET
 app.get('/admin/style-guide', adminViews.getStyleGuide);
@@ -207,7 +207,7 @@ app.get('/admin/collections/create', adminViews.sendAdmin);
 app.get('/admin/collections/:id', adminViews.sendAdmin);
 app.get('/admin/items', adminViews.sendAdmin);
 app.get('/admin/items/create', adminViews.sendAdmin);
-app.get('/admin/items/:id', adminViews.getItem);
+app.get('/admin/items/:id', adminViews.sendAdmin);
 app.get('/admin/settings', adminViews.getSettings);
 app.get('/admin/apps', adminViews.getApps);
 app.get('/admin/apps/create', adminViews.getAppsCreate);
@@ -218,15 +218,15 @@ app.get('/admin/delete', adminViews.deleteSite);
 app.get('/admin/themes/:theme/:key/:file', adminViews.getFile);
 
 // Admin POST
-app.post('/admin', adminViews.postLogin);
-app.post('/admin/collections/create', adminViews.postCreateCollection);
-app.post('/admin/collections/:id/update', adminViews.postUpdateCollection);
-app.post('/admin/navigation/create', adminViews.postCreateNavigation);
-app.post('/admin/navigation/:id/update', adminViews.postUpdateNavigation);
-app.post('/admin/apps/create', adminViews.postCreateApp);
-app.post('/admin/apps/:id/update', adminViews.postUpdateApp);
-app.post('/admin/items/create', adminViews.postCreateItem);
-app.post('/admin/items/:id/update', adminViews.postUpdateItem);
+// app.post('/admin', adminViews.postLogin);
+// app.post('/admin/collections/create', adminViews.postCreateCollection);
+// app.post('/admin/collections/:id/update', adminViews.postUpdateCollection);
+// app.post('/admin/navigation/create', adminViews.postCreateNavigation);
+// app.post('/admin/navigation/:id/update', adminViews.postUpdateNavigation);
+// app.post('/admin/apps/create', adminViews.postCreateApp);
+// app.post('/admin/apps/:id/update', adminViews.postUpdateApp);
+// // app.post('/admin/items/create', adminViews.postCreateItem);
+// app.post('/admin/items/:id/update', adminViews.postUpdateItem);
 
 // Admin DELETE
 app.delete('/admin/navigation/:id', adminViews.deleteNavigation);
@@ -249,5 +249,5 @@ app.get('*', themeController.get404);
 
 // Listen on port
 app.listen(port, () => (
-  console.log(`[status] Express is listening on port ${port} 🚀`)
+  console.log(`[status] http://localhost:${port} 🚀`)
 ));

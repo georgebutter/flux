@@ -1,18 +1,19 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import dashboard from '../templates/dashboard.vue'
-import collections from '../templates/collections.vue'
-import collection from '../templates/collection.vue'
-import createCollection from '../templates/create-collection.vue'
-import items from '../templates/items.vue'
-import createItem from '../templates/create-item.vue'
-import navigation from '../templates/navigation.vue'
-import themes from '../templates/themes.vue'
-import apps from '../templates/apps.vue'
-import settings from '../templates/settings.vue'
-import users from '../templates/users.vue'
+import Vue from 'vue';
+import Router from 'vue-router';
+import dashboard from '../templates/dashboard.vue';
+import collections from '../templates/collections.vue';
+import collection from '../templates/collection.vue';
+import createCollection from '../templates/create-collection.vue';
+import items from '../templates/items.vue';
+import item from '../templates/item.vue';
+import createItem from '../templates/create-item.vue';
+import navigation from '../templates/navigation.vue';
+import themes from '../templates/themes.vue';
+import apps from '../templates/apps.vue';
+import settings from '../templates/settings.vue';
+import users from '../templates/users.vue';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -23,7 +24,7 @@ export default new Router({
         parent: 'Dashboard',
       },
       name: 'Dashboard',
-      component: dashboard
+      component: dashboard,
     },
     {
       path: '/admin/collections',
@@ -66,12 +67,20 @@ export default new Router({
       component: createItem,
     },
     {
+      path: '/admin/items/:id',
+      meta: {
+        parent: 'Items',
+      },
+      name: 'Item',
+      component: item,
+    },
+    {
       path: '/admin/navigation',
       meta: {
         parent: 'Navigation',
       },
       name: 'Navigation',
-      component: navigation
+      component: navigation,
     },
     {
       path: '/admin/themes',
@@ -79,7 +88,7 @@ export default new Router({
         parent: 'Themes',
       },
       name: 'Themes',
-      component: themes
+      component: themes,
     },
     {
       path: '/admin/apps',
@@ -87,7 +96,7 @@ export default new Router({
         parent: 'Apps',
       },
       name: 'Apps',
-      component: apps
+      component: apps,
     },
     {
       path: '/admin/settings',
@@ -95,7 +104,7 @@ export default new Router({
         parent: 'Settings',
       },
       name: 'Settings',
-      component: settings
+      component: settings,
     },
     {
       path: '/admin/users',
@@ -103,7 +112,7 @@ export default new Router({
         parent: 'Users',
       },
       name: 'Users',
-      component: users
+      component: users,
     },
-  ]
-})
+  ],
+});

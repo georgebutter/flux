@@ -12,7 +12,12 @@
         </button>
       </div>
     </div>
-    <textarea :class="[`w-full outline-none focus:outline-none active:outline-none h-${h} p-2`, preview ? `hidden`: ``]" :value="markdown" @input="update" :name="name"></textarea>
+    <textarea
+      :class="[`w-full outline-none focus:outline-none active:outline-none h-${h} p-2`, preview ? `hidden`: ``]"
+      :value="markdown"
+      @input="update"
+      :name="name"
+    ></textarea>
     <div :class="[`h-${h} p-2 overflow-y-scroll overflow-x-auto rte `, preview ? ``: `hidden`]" v-html="compiledMarkdown">
     </div>
   </div>
@@ -49,7 +54,6 @@ engine.registerTag('highlight', {
   },
   render: async function(scope, hash) {
     let code = '';
-    console.log(this.tpl)
     for (let i = 0; i < this.tpl.length; i++) {
       const block = this.tpl[i].raw
       code += block
@@ -76,6 +80,7 @@ export default {
   methods: {
     update (e, val) {
       this.markdown = e ? e.target.value : val;
+      this.$emit('onChange', this.markdown)
       engine
       .parseAndRender(this.markdown)
       .then(content => {

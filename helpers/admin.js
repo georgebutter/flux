@@ -2,7 +2,7 @@ const getLayout = ({ page_title, site, root }) =>  {
 
   return `
     <!DOCTYPE html>
-    <html class="h-full">
+    <html lang="en" class="h-full">
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -21,8 +21,8 @@ const getLayout = ({ page_title, site, root }) =>  {
         </main>
       </body>
     </html>
-  `
-}
+  `;
+};
 
 const getForm = ({ page_title, site, root, template, errors, form }) => {
   return `
@@ -38,7 +38,8 @@ const getForm = ({ page_title, site, root, template, errors, form }) => {
 
         <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,500" rel="stylesheet">
 
-        <script defer="defer" src="/admin/assets/${template }.bundle.js"></script>
+        <script defer="defer" src="/admin/assets/${template}.bundle.js">
+        </script>
         <script id="data">
           window.siteData = {
             template: '${template}',
@@ -53,9 +54,8 @@ const getForm = ({ page_title, site, root, template, errors, form }) => {
         </main>
       </body>
     </html>
-  `
-
-}
+  `;
+};
 
 const getRoot = () => {
   return `
@@ -91,14 +91,14 @@ const getRoot = () => {
         --white: #ffffff;
       }
     </style>
-  `
-}
+  `;
+};
 
 exports.getAdmin = ({ page_title, site }) => {
   const root = getRoot();
   return getLayout({ page_title, site, root });
-}
+};
 exports.getLogin = ({ page_title, site, template }) => {
   const root = getRoot();
-  return getForm({ page_title, site, root, template })
-}
+  return getForm({ page_title, site, root, template });
+};

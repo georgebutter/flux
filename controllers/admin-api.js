@@ -113,41 +113,41 @@ exports.getThemeFiles = (req, res) => {
         snippets: [],
       };
       git.Repository.open(path.resolve(repoDir))
-      .then(function(repo) {
-        return repo.getMasterCommit();
-      })
-      .then(function(firstCommitOnMaster) {
-        return firstCommitOnMaster.getTree();
-      })
-      .then(function(tree) {
-        return new Promise(resolve => {
-          const walker = tree.walk();
-          walker.on('entry', entry => {
-            const paths = entry.path().split('/')
-            if (paths.length === 2) {
-              const parent = paths[0];
-              const child = paths[1]
-              fileTree[parent].push(child);
-            }
-          });
-          walker.on('end', trees => {
-            resolve(fileTree)
-          })
-          walker.start();
+        .then(function(repo) {
+          return repo.getMasterCommit();
         })
-      })
-      .done(function() {
-        if (app.themes === 'none') {
-          return res.json({
-            status: 'error: This app does not have permission to read themes'
-          });
-        } else {
-          return res.json({
-            status: 'success',
-            theme: fileTree
-          });
-        }
-      });
+        .then(function(firstCommitOnMaster) {
+          return firstCommitOnMaster.getTree();
+        })
+        .then(function(tree) {
+          return new Promise(resolve => {
+            const walker = tree.walk();
+            walker.on('entry', entry => {
+              const paths = entry.path().split('/')
+              if (paths.length === 2) {
+                const parent = paths[0];
+                const child = paths[1]
+                fileTree[parent].push(child);
+              }
+            });
+            walker.on('end', trees => {
+              resolve(fileTree)
+            })
+            walker.start();
+          })
+        })
+        .done(function() {
+          if (app.themes === 'none') {
+            return res.json({
+              status: 'error: This app does not have permission to read themes'
+            });
+          } else {
+            return res.json({
+              status: 'success',
+              theme: fileTree
+            });
+          }
+        });
     }
   });
 }
@@ -161,176 +161,171 @@ exports.getFile = (req, res, next) => {
     } else {
       const { theme, key, file } = req.params;
       git.Repository.open(path.resolve(repoDir))
-      .then(function(repo) {
-        return repo.getMasterCommit();
-      })
-      .then(function(commit) {
-        return commit.getEntry(`${key}/${file}`);
-      })
-      .then(function(entry) {
-        _entry = entry;
-        return _entry.getBlob();
-      })
-      .then(function(blob) {
-        return res.json({
-          status: 'success',
-          file: blob.toString()
-        });
-      })
-      .done();
+        .then(function(repo) {
+          return repo.getMasterCommit();
+        })
+        .then(function(commit) {
+          return commit.getEntry(`${key}/${file}`);
+        })
+        .then(function(entry) {
+          _entry = entry;
+          return _entry.getBlob();
+        })
+        .then(function(blob) {
+          return res.json({
+            status: 'success',
+            file: blob.toString(),
+          });
+        })
+        .done();
     }
   });
-}
+};
 
 exports.getCollection = (req, res) => {
   Staff.findById(req.session.userId, (error, user) => {
     if (user) {
       const limit = 50;
       const ids = req.params.ids;
-      const query = {}
+      const query = {};
       if (ids) {
         const idarr = ids.split(',');
         const objectIds = [];
-        for (var i = 0; i < idarr.length; i++) {
-          objectIds.push(idarr[i])
+        for (let i = 0; i < idarr.length; i++) {
+          objectIds.push(idarr[i]);
         }
         query._id = {
-          $in: objectIds
-        }
+          $in: objectIds,
+        };
       }
-      Collection
-      .find(query)
-      .limit(limit)
-      .populate('permalink')
-      .exec(function(err, collections) {
+      Collection.getManyFlat(query, limit, (err, collections) => {
         if (err) {
           return res.json({
             status: 'error',
             message: 'Query error',
-            error: err
+            error: err,
           });
         }
         return res.json({
           status: 'success',
-          collections
+          collections,
         });
       });
     } else {
       return res.json({
         status: 'error',
-        message: 'Inactive session'
+        message: 'Inactive session',
       });
     }
   });
-}
+};
 
-exports.postUpdateCollection = (req, res) => {
-  const site = req.app.get('site');
+exports.updateCollection = (req, res) => {
   const errors = [];
   const {
     title,
     handle,
-    permalink
+    permalink,
   } = req.body;
   const form = {
     title,
     handle,
-    permalink
-  }
+    permalink,
+  };
   if (!title) {
     errors.push({
       message: 'Please provide a collection title',
-      field: 'title'
+      field: 'title',
     });
   }
   if (!handle) {
     errors.push({
       message: 'Handle cannot be blank',
-      field: 'handle'
+      field: 'handle',
     });
   }
   if (!permalink) {
     errors.push({
       message: 'Permalink cannot be blank',
-      field: 'permalink'
+      field: 'permalink',
     });
   }
 
   if (errors.length) {
     return res.json({
       status: 'error',
-      errors
+      errors,
+      form,
     });
   } else {
     Permalink.updateOne({ object: req.params.id }, {
       $set: {
-        permalink: req.body.permalink
-      }
-    }).then(linkResult => {
+        permalink: req.body.permalink,
+      },
+    }).then((linkResult) => {
       Collection.updateOne({ _id: req.params.id }, {
         $set: {
           title: req.body.title,
           handle: req.body.handle,
-        }
-      }).then(collectionResult => {
+        },
+      }).then((collectionResult) => {
         return res.json({
           status: 'success',
-          collection: collectionResult
+          collection: collectionResult,
         });
       });
-    })
+    });
   }
-}
+};
 
-exports.postCreateCollection = (req, res) => {
-  const site = req.app.get('site');
+exports.createCollection = (req, res) => {
   const errors = [];
   const {
     title,
     handle,
-    permalink
+    permalink,
   } = req.body;
   const form = {
     title,
     handle,
-    permalink
-  }
+    permalink,
+  };
   if (!title) {
     errors.push({
       message: 'Please provide an collection name',
-      field: 'title'
+      field: 'title',
     });
   }
   if (!handle) {
     errors.push({
       message: 'Please provide an collection handle',
-      field: 'handle'
+      field: 'handle',
     });
   }
   if (!permalink) {
     errors.push({
       message: 'Please provide an collection permalink',
-      field: 'permalink'
+      field: 'permalink',
     });
   }
   if (permalink.startsWith('/admin')) {
     errors.push({
       message: 'Permalink cannot start with /admin',
-      field: 'permalink'
-    })
+      field: 'permalink',
+    });
   }
   if (permalink.startsWith('/install')) {
     errors.push({
       message: 'Permalink cannot start with /install',
-      field: 'permalink'
-    })
+      field: 'permalink',
+    });
   }
   if (errors.length) {
     return res.json({
       status: 'error',
       errors,
-      form
-    })
+      form,
+    });
   } else {
     Permalink.create({
       permalink: permalink,
@@ -341,29 +336,30 @@ exports.postCreateCollection = (req, res) => {
           status: 'error',
           errors: [{
             message: error.errmsg,
-            field: 'permalink'
+            field: 'permalink',
           }],
-          form
-        })
+          form,
+        });
       }
       Collection.create({
         title: title,
         handle: handle,
-        permalink: link._id
+        permalink: link._id,
       }, (error, collection) => {
         Permalink.updateOne({
-          _id: link._id
+          _id: link._id,
         }, {
           $set: {
             object: collection._id,
-          }
+          },
         }).then((result) => {
+          collection.id = collection._id;
           if (error) {
             return res.json({
               status: 'error',
               errors: [{
                 message: error.errmsg,
-                field: 'permalink'
+                field: 'permalink',
               }],
               form,
             });
@@ -407,31 +403,219 @@ exports.deleteCollection = (req, res) => {
   });
 };
 
-exports.getItems = (req, res) => {
-  const site = req.app.get('site');
-  const errors = [];
-  Item.getManyFlat({}, function(err, items) {
-    if (err) {
-      errors.push(err)
+exports.getItem = (req, res) => {
+  Staff.findById(req.session.userId, (error, user) => {
+    if (user) {
+      const limit = 50;
+      const { ids } = req.params;
+      const query = {};
+      if (ids) {
+        const idarr = ids.split(',');
+        const objectIds = [];
+        for (let i = 0; i < idarr.length; i++) {
+          objectIds.push(idarr[i]);
+        }
+        query._id = {
+          $in: objectIds,
+        };
+      }
+      Item.getManyFlat(query, limit, function(err, items) {
+        if (err) {
+          return res.json({
+            status: 'error',
+            errors: [{ message: errmsg }],
+          });
+        } else {
+          return res.json({
+            status: 'success',
+            items: items,
+          });
+        }
+      });
+    } else {
       return res.json({
         status: 'error',
-        errors
+        errors: [{
+          message: 'Inactive session',
+        }],
       });
     }
-    Staff.findById(req.session.userId, (error, user) => {
-      if (user) {
-        return res.json({
-          status: 'success',
-          items: items
-        });
-      } else {
-        return res.json({
-          status: 'error',
-          errors: [{
-            message: 'Inactive session'
-          }]
+  });
+};
+
+exports.createItem = (req, res) => {
+  Staff.findById(req.session.userId, (error, user) => {
+    if (user) {
+      const errors = [];
+      const {
+        title,
+        handle,
+        collections,
+      } = req.body;
+      if (!title) {
+        errors.push({
+          message: 'Please provide an item title',
+          field: 'title',
         });
       }
-    });
-  })
-}
+      if (!handle) {
+        errors.push({
+          message: 'Handle cannot be blank',
+          field: 'handle',
+        });
+      }
+      if (errors.length) {
+        return res.json({
+          status: 'error',
+          errors,
+        });
+      } else {
+        Item.create({
+          title,
+          handle,
+          collections,
+        }, (err, item) => {
+          if (err) {
+            return res.json({
+              status: 'error',
+              errors: [{ message: err.errmsg }],
+            });
+          } else {
+            Collection.updateMany({
+              _id: { $in: collections },
+            },
+            {
+              $push: {
+                items: item._id,
+              },
+            },
+            (err, result) => {
+              if (err) {
+                return res.json({
+                  status: 'error',
+                  errors: [{ message: err.errmsg }],
+                });
+              }
+              return res.json({
+                status: 'success',
+                item: item,
+              });
+            });
+          }
+        });
+      }
+    } else {
+      return res.json({
+        status: 'error',
+        errors: [{
+          message: 'Inactive session',
+        }],
+      });
+    }
+  });
+};
+
+
+exports.updateItem = (req, res) => {
+  Staff.findById(req.session.userId, (error, user) => {
+    if (user) {
+      const errors = [];
+      const {
+        title,
+        handle,
+        excerpt,
+        description,
+        collections,
+        tags,
+      } = req.body;
+
+      if (!title) {
+        errors.push({
+          message: 'Please provide a title',
+          field: 'title',
+        });
+      }
+      if (!handle) {
+        errors.push({
+          message: 'Handle cannot be blank',
+          field: 'handle',
+        });
+      }
+      if (errors.length) {
+        return res.json({
+          status: 'error',
+          errors,
+        });
+      } else {
+        Item.updateOne({ _id: req.params.id }, {
+          $set: {
+            title,
+            handle,
+            excerpt,
+            description,
+            collections,
+            tags,
+          },
+        }).then((itemResult) => {
+          if (collections && collections.length) {
+            for (let i = 0; i < collections.length; i++) {
+              if (!collections[i]) {
+                continue;
+              }
+              Collection.updateOne(
+                { _id: collections[i] },
+                {
+                  $addToSet: {
+                    items: req.params.id,
+                  },
+                },
+                {
+                  new: true,
+                  upsert: true,
+                },
+                (err, result) => {
+                  if (err) {
+                    return res.json({
+                      status: 'error',
+                      errors: [{
+                        message: err.msg,
+                      }],
+                    });
+                  } else if (i === collections.length - 1) {
+                    Item.getFlat({ _id: req.params.id }, (err, item) => {
+                      return res.json({
+                        status: 'success',
+                        item: item,
+                      });
+                    });
+                  }
+                },
+              );
+            }
+          } else {
+            Item.getFlat({ _id: req.params.id }, (err, item) => {
+              return res.json({
+                status: 'success',
+                item: item,
+              });
+            });
+          }
+        }).catch((error) => {
+          return res.json({
+            status: 'error',
+            errors: [{
+              message: 'Could not update item',
+            }],
+          });
+        });
+      }
+    } else {
+      return res.sendStatus(400).json({
+        status: 'error',
+        errors: [{
+          message: 'Inactive session',
+        }],
+      });
+    }
+  });
+};

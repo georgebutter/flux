@@ -41,9 +41,14 @@ export default {
     "icon-tick": IconTick,
     "icon-close": IconClose,
   },
+  watch: {
+    selectedValues (newValues) {
+      console.log(newValues)
+      this.$emit('onChange', newValues)
+    },
+  },
   methods: {
     onFocus () {
-      console.log(this.computedList)
       this.showList = true;
     },
     onBlur () {
@@ -71,11 +76,10 @@ export default {
       if (this.selectedIds.length) {
         axios.get(`/admin/${this.asset}.json?ids=${this.selectedIds.join(',')}`)
         .then(res => {
-          console.log(res.data)
           if (res.data.status === 'success') {
             for (var i = 0; i < res.data.collections.length; i++) {
               this.selectedTitles.push(res.data.collections[i].title);
-              this.selectedValues.push(res.data.collections[i]._id);
+              this.selectedValues.push(res.data.collections[i].id);
             }
           }
         })
