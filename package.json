@@ -40,7 +40,7 @@
     "gridfs-stream": "^1.1.1",
     "helmet": "^3.18.0",
     "liquidjs": "^6.2.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "marked": "^0.7.0",
     "monaco-editor-webpack-plugin": "^1.7.0",
     "mongoose": "^5.7.5",
