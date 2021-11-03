@@ -51,7 +51,7 @@
     "prismjs": "^1.17.1",
     "tailwindcss-gradients": "^1.1.0",
     "uuid": "^3.3.2",
-    "validator": "^10.11.0",
+    "validator": "^13.7.0",
     "vue-monaco": "^0.3.2",
     "vue-style-loader": "^4.1.2",
     "vuedraggable": "^2.23.0"
