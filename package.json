@@ -41,7 +41,7 @@
     "helmet": "^3.18.0",
     "liquidjs": "^6.2.0",
     "lodash": "^4.17.15",
-    "marked": "^0.7.0",
+    "marked": "^4.0.10",
     "monaco-editor-webpack-plugin": "^1.7.0",
     "mongoose": "^5.7.5",
     "nodegit": "^0.24.3",
